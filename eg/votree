@@ -1,0 +1,148 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+
+use Astro::SIMBAD::Client;
+use XML::Parser::Lite;
+use Data::Dumper;
+$Data::Dumper::Terse = 1;
+
+my $simbad = Astro::SIMBAD::Client->new (
+    type => 'vo',
+    parser => {vo => 'parse_vo_lite'},
+);
+
+foreach my $obj (@ARGV) {
+    print Dumper ($simbad->query (id => $obj));
+}
+
+#	The following parser returns an XML parse tree. It could be used
+#	for any piece of XML, but we're using it for a VOTable. The
+#	document itself is returned as a list. Within the list, tags are
+#	list references, with the tag name as element 0, the attributes
+#	as a hash reference in element 1, and the contents as subsequent
+#	elements. Text is returned with leading and trailing blanks
+#	trimmed, and empty strings supressed. So
+#
+#	<?xml version="1.0"?>
+#	<query>Hello
+#	<object type="nautical">sailor</object>
+#	</query
+#
+#	would parse as
+#
+#	[
+#	  ['query', {}, 'Hello',
+#	    ['object', {type => 'nautical'}, 'sailor'],
+#	  ],
+#	]
+#
+#	Note that the empty strings are stripped after the parse is
+#	complete. The obvious thing to do was to strip them in the
+#	Char handler, but that (and Start and End) get called by the
+#	experimental ?{} regular expression handler, and I couldn't
+#	figure out how to use regular expressions without blowing the
+#	context of the originating regular expression.
+
+sub parse_vo_lite {
+
+    my $root;
+    my @tree;
+
+#	Arguments:
+#	Init ($class)
+#	Start ($class, $tag, $attr => $value ...)
+#	Char ($class, $text)
+#	End ($class, $tag)
+#	Final ($class)
+
+    my $psr = XML::Parser::Lite->new (
+	Handlers => {
+	    Init => sub {
+		$root = [];
+		@tree = ($root);
+	    },
+	    Start => sub {
+		shift;
+		my $tag = shift;
+		my $item = [$tag, {@_}];
+		push @{$tree[$#tree]}, $item;
+		push @tree, $item;
+	    },
+	    Char => sub {
+		push @{$tree[$#tree]}, $_[1];
+	    },
+	    End => sub {
+		my $tag = $_[1];
+		die <<eod unless @tree > 1;
+Error - Unmatched end tag </$tag>
+eod
+		die <<eod unless $tag eq $tree[$#tree][0];
+Error - End tag </$tag> does not match start tag <$tree[$#tree][0]>
+eod
+		pop @tree;
+	    },
+	    Final => sub {
+		die <<eod if @tree > 1;
+Error - Missing end tags.
+eod
+		_strip_empty ($root);
+		$root;
+	    },
+	});
+    @{$psr->parse ($_[0])};
+}
+
+#	_strip_empty (\@tree)
+#
+#	splices out anything in the tree that is not a reference and
+#	does not match m/\S/.
+
+sub _strip_empty {
+    my $ref = shift;
+    my $inx = @$ref;
+    while (--$inx >= 0) {
+	my $val = $ref->[$inx];
+	my $typ = ref $val;
+	if ($typ eq 'ARRAY') {
+	    _strip_empty ($val);
+	} elsif (!$typ) {
+	    splice @$ref, $inx, 1 unless $val =~ m/\S/ms;
+	}
+    }
+}
+
+#	$subtree = _find_first (\@tree, $tag, ...)
+#
+#	descends through the given parse tree, recursively finding the
+#	given tags, and returning the subtree thus identified. It dies
+#	if a tag cannot be found. You would, for example, call
+#	$subtree = _find_first (\@tree, qw{VOTABLE RESOURCE TABLE})
+#	to get the first table in a VOTABLE document.
+#
+#	As things stand, this is unused code. But since this is an
+#	example, I left it in.
+
+sub _find_first {
+    my $tree = shift;
+    TAG_LOOP:
+    foreach my $tag (@_) {
+	foreach my $branch (@$tree) {
+	    next unless ref $branch eq 'ARRAY' && $branch->[0] eq $tag;
+	    $tree = $branch;
+	    next TAG_LOOP;
+	}
+	die "Error - Tag <$tag> not found.\n";
+    }
+    $tree;
+}
+__END__
+
+Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+All rights reserved.
+
+This script is free software; you can use it, redistribute it
+and/or modify it under the same terms as Perl itself. Please see
+L<http://perldoc.perl.org/index-licence.html> for the current licenses.
+

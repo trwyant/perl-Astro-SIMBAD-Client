@@ -1,0 +1,38 @@
+Astro::SIMBAD::Client
+
+This module provides an object-oriented interface to SIMBAD 4. The new
+SOAP queries are supported, with the object carrying default output type
+and output format, as well as server name on the assumption that mirrors
+will be forthcoming.
+
+There are also methods to submit scripts, both verbatim and from files,
+and to execute the 'url queries'.
+
+Both queries and scripts have hooks for parsing the output. A couple
+parse routines are included, as well as formats to produce output
+parsable by the parse routines. The contents of the eg directory provide
+examples of the use of both. But the primary focus of this package is
+data acquisition, not parsing or presentation.
+
+Also included is 'simbadc', a simple script for using the class
+interactively. The 'simbadc' script can also be used as a Unix filter,
+that is, you can redirect commands into it from a file, or pipe them
+in from another program.
+
+At this time, SIMBAD 4 is release 1.0 beta. Consequently, this module
+should also be considered beta, or even alpha.
+
+This module is installable by the usual incantation:
+
+    gunzip Astro-SIMBAD-Client-9.999.tar.gz
+    tar -xf Astro-SIMBAD-Client-9.999.tar
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+Of course, since it's pure Perl, you can just expand the kit and drop
+Client.pm in the Astro/SIMBAD directory in the appropriate place in your
+@INC directories.
+
+Tom Wyant

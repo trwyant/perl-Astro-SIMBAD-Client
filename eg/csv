@@ -1,0 +1,67 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+
+use Astro::SIMBAD::Client;
+use Data::Dumper;
+use File::Basename;
+use Getopt::Long;
+
+$Data::Dumper::Terse = 1;
+
+my $usage = <<eod;
+
+Query SIMBAD 4 for the objects on the command line. The result is given
+as comma-separated values.
+
+usage: @{[basename $0]} [options] object ...
+
+where the options are
+  -help
+    displays this text;
+  -parse
+    invokes a simple parser, and displays the result with Data::Dumper.
+
+eod
+
+my %opt;
+
+GetOptions (\%opt, qw{help parse}) && @ARGV or die $usage;
+$opt{help} and do {print $usage; exit};
+
+my $simbad = Astro::SIMBAD::Client->new (
+    type => 'txt',
+    format => {txt => <<'eod'},
+%idlist(NAME|1),%coord(d;A),%coord(d;D),%plx(V),
+%pm(A),%pm(D),%rv(V)\n
+eod
+    parser => {txt => $opt{parse} ? 'parse_csv' : ''},
+);
+
+my @rslt;
+foreach my $obj (@ARGV) {
+    eval {
+	push @rslt, $simbad->query (id => $obj);
+    };
+    print $@ if $@;
+}
+
+print $opt{parse} ? Dumper (\@rslt) : @rslt;
+
+sub parse_csv {
+    my @data;
+    foreach (split '\n', $_[0]) {
+	push @data, [split '\s*,\s*', $_];
+    }
+    wantarray ? @data : \@data;
+}
+__END__
+
+Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+All rights reserved.
+
+This script is free software; you can use it, redistribute it
+and/or modify it under the same terms as Perl itself. Please see
+L<http://perldoc.perl.org/index-licence.html> for the current licenses.
+

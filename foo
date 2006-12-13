@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VOTABLE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="xmlns:http://www.ivoa..net/xml/VOTable-1.1.xsd" version="1.1">
+    <DEFINITIONS>
+	<COOSYS ID="COOSYS" equinox="2000" epoch="J2000" system="ICRS"/>
+    </DEFINITIONS>
+    <RESOURCE name="Simbad query" type="results">
+	<TABLE ID="SimbadScript" name="mine"><DESCRIPTION>Simbad script executed on 2006.10.13CEST04:34:24</DESCRIPTION>
+	    <FIELD ID="ID_S_1" name="ID" datatype="char" width="100" ucd="meta.id" arraysize="*">
+		<DESCRIPTION>Identifier</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="OTYPE" name="OTYPE" datatype="char" width="6" ucd="src.class" arraysize="*">
+		<DESCRIPTION>Object type</DESCRIPTION>
+	    </FIELD>
+	    <DATA>
+		<TABLEDATA>
+		    <TR><TD>NAME ARCTURUS</TD><TD>V*</TD></TR>
+		    <TR><TD>V* alf Vir</TD><TD>RotV*Ell</TD></TR>
+
+		</TABLEDATA>
+
+	    </DATA>
+	</TABLE>
+    </RESOURCE>
+</VOTABLE>
+<?xml version="1.0" encoding="UTF-8"?>
+<VOTABLE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="xmlns:http://www.ivoa..net/xml/VOTable-1.1.xsd" version="1.1">
+    <DEFINITIONS>
+	<COOSYS ID="COOSYS" equinox="2000" epoch="J2000" system="ICRS"/>
+    </DEFINITIONS>
+    <RESOURCE name="Simbad query" type="results">
+	<TABLE ID="SimbadScript" name="yours"><DESCRIPTION>Simbad script executed on 2006.10.13CEST04:34:25</DESCRIPTION>
+	    <FIELD ID="ID_S_1" name="ID" datatype="char" width="100" ucd="meta.id" arraysize="*">
+		<DESCRIPTION>Identifier</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="RA" name="RA" datatype="double" precision="8" width="12" ucd="pos.eq.ra;meta.main" unit="deg">
+		<DESCRIPTION>Right ascension</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="DEC" name="DEC" datatype="double" precision="8" width="12" ucd="pos.eq.dec;meta.main" unit="deg">
+		<DESCRIPTION>Declination</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="RA_PREC" name="RA_PREC">
+		<DESCRIPTION>Right ascension precision</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="DEC_PREC" name="DEC_PREC">
+		<DESCRIPTION>Declination precision</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="COO_ERR_MAJA" name="COO_ERR_MAJA" datatype="float" precision="3" width="6" ucd="phys.angSize.smajAxis;pos.errorEllipse;pos.eq" unit="arcsec">
+		<DESCRIPTION>Coordinate error major axis</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="COO_ERR_MINA" name="COO_ERR_MINA" datatype="float" precision="3" width="6" ucd="phys.angSize.smajAxis;pos.errorEllipse;pos.eq" unit="arcsec">
+		<DESCRIPTION>Coordinate error minor axis</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="COO_ERR_ANGLE" name="COO_ERR_ANGLE" datatype="short" width="3" ucd="pos.posAng;pos.errorEllipse;pos.eq" unit="deg">
+		<DESCRIPTION>Coordinate error angle</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="COO_QUAL" name="COO_QUAL" datatype="char" width="1" ucd="meta.code.qual;pos.eq">
+		<DESCRIPTION>Coordinate quality</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="COO_WAVELENGTH" name="COO_WAVELENGTH" datatype="char" width="1" ucd="instr.bandpass;pos.eq">
+		<DESCRIPTION>Wavelength class for the origin of the coordinates (R,I,V,U,X,G)</DESCRIPTION>
+	    </FIELD>
+	    <FIELD ID="COO_BIBCODE" name="COO_BIBCODE" datatype="char" width="19" ucd="meta.bib.bibcode;pos.eq" arraysize="*">
+		<DESCRIPTION>Coordinate reference</DESCRIPTION>
+	    </FIELD>
+	    <DATA>
+		<TABLEDATA>
+		    <TR><TD>CCDM J14396-6050AB</TD><TD>219.90085000000</TD><TD>-60.83561944444</TD><TD>0</TD><TD>0</TD><TD>1500.</TD><TD>1250.</TD><TD>179</TD><TD>C</TD><TD>Vis</TD><TD>~</TD></TR>
+		    <TR><TD>NAME CANOPUS</TD><TD>095.98795791667</TD><TD>-52.69566055556</TD><TD>0</TD><TD>0</TD><TD>5.04</TD><TD>4.51</TD><TD>165</TD><TD>A</TD><TD>Vis</TD><TD>1997A&amp;A...323L..49P</TD></TR>
+
+		</TABLEDATA>
+
+	    </DATA>
+	</TABLE>
+    </RESOURCE>
+</VOTABLE>
+

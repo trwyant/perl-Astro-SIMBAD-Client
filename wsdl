@@ -1,0 +1,71 @@
+#!/usr/local/bin/perl
+
+use Getopt::Long;
+use SOAP::Lite;
+
+my %opt = (
+);
+
+GetOptions (\%opt, qw{test});
+
+my $url = 'http://simweb.u-strasbg.fr/axis/services/WSQuery?wsdl';
+
+my $soap = SOAP::Schema->schema_url ($url)
+			->parse ()
+			->load
+			;
+my $code = $soap->stub;
+
+#	As of 26-Sep-2006, the above WSDL specifies port 8080.
+#	This is incorrect.
+
+$code =~ s|:8080\b||mg;
+
+#	Change the package name.
+
+$code =~ s{package WSQueryInterfaceService;}
+    {package Astro::SIMBAD4::WSQueryInterfaceService;}m;
+
+#	Tell carp not to report SOAP::Lite errors relative to this
+#	module.
+
+my $chunk = 'use Carp ();
+our @CARP_NOT = qw{SOAP::Lite};	## TRW';
+$code =~ s/use Carp \(\);/$chunk/m;
+
+#	Splice in server name as first argument.
+
+my $chunk = <<'eod';
+  ## TRW vvvv
+  my $server = shift or Carp::croak "No server specified";;
+  $method{endpoint} or Carp::croak "No server address (proxy) specified";
+  my $endpoint = sprintf $method{endpoint}, $server;
+  ## $self->proxy($method{endpoint} || Carp::croak "No server address (proxy) specified") 
+  $self->proxy ($endpoint)
+  ## TRW ^^^^
+eod
+$code =~ s/simweb.u-strasbg.fr/%s/mg;
+$code =~ s/\$self->proxy\(\$method\{endpoint\} \|\| Carp::croak.+$/$chunk/m;
+$code =~ s{\$self->endpoint\(\$method\{endpoint\}\)}
+    {\$self->endpoint\(\$endpoint\)}m;
+
+#	Append the test code if desired.
+
+$opt{test} and $code .= <<'eod';
+
+package main;
+
+$ARGV[0] ||= 'Arcturus';
+$ARGV[2] ||= 'txt';
+$ARGV[1] ||= $ARGV[2] eq 'vo' ? 'idlist(1) coo' : '%IDLIST(1): %COO\n';
+splice @ARGV, 3 if @ARGV > 3;
+
+print Astro::SIMBAD4::WSQueryInterfaceService->queryObjectById (
+    'simweb.u-strasbg.fr', @ARGV);
+eod
+
+
+
+#	Print our result.
+
+print $code;

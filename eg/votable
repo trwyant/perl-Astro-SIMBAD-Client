@@ -1,0 +1,77 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+
+use Astro::SIMBAD::Client;
+use Getopt::Long;
+
+my $usage = <<eod;
+
+Query Simbad 4 for a list of objects in VOTable format.
+
+usage: votable [options] object ...
+
+where the valid options are:
+  -dumper
+    causes the result to be parsed by Parse_VO_Table and then dumped by
+    Data::Dumper::Dumper;
+  -help
+    displays this text;
+  -url_query
+    performs a query by URL, rather than a SOAP query;
+  -yaml
+    causes the result to be parsed by Parse_VO_Table and then dumped by
+    YAML::Dump;
+eod
+
+my %opt;
+
+GetOptions (\%opt, qw{dumper help url_query yaml}) && (@ARGV || $opt{help})
+    or die $usage;
+$opt{help} and do {print $usage; exit};
+
+my $simbad = Astro::SIMBAD::Client->new (type => 'vo');
+
+my @dump_as;
+foreach ([dumper => 'Data::Dumper::Dumper'], [yaml => 'YAML::Dump']) {
+    next unless $opt{$_->[0]};
+    my @what = split '::', $_->[1];
+    my $method = pop @what;
+    my $pkg = join '::', @what;
+    eval "require $pkg";
+    $@ and die <<eod;
+Error - $pkg not found in \@INC.
+eod
+    my $ref = $pkg->can ($method) or die <<eod;
+Programming error - $pkg does not support $method().
+eod
+    push @dump_as, [$_->[1] => $ref]; 
+}
+$simbad->set (parser => {vo => 'Parse_VO_Table'}) if @dump_as;
+
+foreach my $obj (@ARGV) {
+    my $rslt = $opt{url_query} ?
+	$simbad->url_query (id => Ident => $obj) :
+	$simbad->query (id => $obj);
+    if (!$rslt) {
+	warn <<eod;
+Warning - Object $obj not found.
+eod
+    } elsif (@dump_as) {
+	foreach (@dump_as) {
+	    print "\n$_->[0] output:\n", $_->[1]->($rslt);
+	}
+    } else {
+	print $rslt;
+    }
+}
+__END__
+
+Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+All rights reserved.
+
+This script is free software; you can use it, redistribute it
+and/or modify it under the same terms as Perl itself. Please see
+L<http://perldoc.perl.org/index-licence.html> for the current licenses.
+

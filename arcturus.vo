@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VOTABLE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="xmlns:http://www.ivoa..net/xml/VOTable-1.1.xsd" version="1.1">
+<DEFINITIONS>
+<COOSYS ID="COOSYS" equinox="2000" epoch="J2000" system="ICRS"/>
+</DEFINITIONS>
+<RESOURCE name="Simbad query" type="results">
+<TABLE ID="simbad" name="Object arcturus"><DESCRIPTION>Web Service simbad queryObject</DESCRIPTION>
+<FIELD ID="ID_S_NAME_1" name="ID" datatype="char" width="100" ucd="meta.id" arraysize="*">
+<DESCRIPTION>Identifier</DESCRIPTION>
+</FIELD>
+<FIELD ID="OTYPE" name="OTYPE" datatype="char" width="6" ucd="src.class" arraysize="*">
+<DESCRIPTION>Object type</DESCRIPTION>
+</FIELD>
+<FIELD ID="RA" name="RA" datatype="double" precision="8" width="12" ucd="pos.eq.ra;meta.main" unit="deg">
+<DESCRIPTION>Right ascension</DESCRIPTION>
+</FIELD>
+<FIELD ID="DEC" name="DEC" datatype="double" precision="8" width="12" ucd="pos.eq.dec;meta.main" unit="deg">
+<DESCRIPTION>Declination</DESCRIPTION>
+</FIELD>
+<FIELD ID="PLX_VALUE" name="PLX_VALUE" datatype="double" precision="3" width="9" ucd="pos.parallax.trig" unit="mas">
+<DESCRIPTION>Parallax</DESCRIPTION>
+</FIELD>
+<FIELD ID="PMRA" name="PMRA" datatype="double" precision="3" width="9" ucd="pos.pm;pos.eq.ra" unit="mas.yr-1">
+<DESCRIPTION>Proper motion in RA</DESCRIPTION>
+</FIELD>
+<FIELD ID="PMDEC" name="PMDEC" datatype="double" precision="3" width="9" ucd="pos.pm;pos.eq.dec" unit="mas.yr-1">
+<DESCRIPTION>Proper motion in DEC</DESCRIPTION>
+</FIELD>
+<FIELD ID="RV_VALUE" name="RV_VALUE" datatype="double" precision="3" ucd="spect.dopplerVeloc.opt" unit="km.s-1">
+<DESCRIPTION>Radial velocity</DESCRIPTION>
+</FIELD>
+<FIELD ID="Z_VALUE" name="Z_VALUE" datatype="double" precision="7" ucd="src.redshift">
+<DESCRIPTION>Redshift</DESCRIPTION>
+</FIELD>
+<FIELD ID="SP_TYPE" name="SP_TYPE" datatype="char" width="36" ucd="src.spType" arraysize="*">
+<DESCRIPTION>MK spectral type</DESCRIPTION>
+</FIELD>
+<FIELD ID="FLUX_B_F" name="FLUX" datatype="float" ucd="phot.flux">
+<DESCRIPTION>Flux / magnitude</DESCRIPTION>
+</FIELD>
+<FIELD ID="FLUX_V_F" name="FLUX" datatype="float" ucd="phot.flux">
+<DESCRIPTION>Flux / magnitude</DESCRIPTION>
+</FIELD>
+<FIELD ID="IDLIST" name="IDLIST" datatype="char" ucd="meta.id" arraysize="*">
+<DESCRIPTION>List of identifiers</DESCRIPTION>
+</FIELD>
+<DATA>
+<TABLEDATA>
+<TR><TD>NAME ARCTURUS</TD><TD>V*</TD><TD>213.91530000000</TD><TD>+19.18241027778</TD><TD>88.85</TD><TD>-1093.43</TD><TD>-1999.43</TD><TD>-5.2</TD><TD>v -5.2</TD><TD>K1.5III</TD><TD>1.19</TD><TD>-0.04</TD><TD>?IDLIST</TD></TR>
+
+</TABLEDATA>
+
+</DATA>
+</TABLE>
+</RESOURCE>
+</VOTABLE>
+

@@ -1,0 +1,33 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+
+use Astro::SIMBAD::Client;
+use File::Basename;
+
+@ARGV or do {print <<eod; exit};
+
+Execute one or more SIMBAD 4 scripts, displaying the results.
+
+usage: @{[basename $0]} file ...
+
+eod
+
+my $simbad = Astro::SIMBAD::Client->new ();
+
+foreach my $fn (@ARGV) {
+    eval {
+	print $simbad->script_file ($fn);
+    };
+    warn $@ if $@;
+}
+__END__
+
+Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+All rights reserved.
+
+This script is free software; you can use it, redistribute it
+and/or modify it under the same terms as Perl itself. Please see
+L<http://perldoc.perl.org/index-licence.html> for the current licenses.
+
