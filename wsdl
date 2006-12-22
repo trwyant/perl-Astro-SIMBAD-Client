@@ -6,9 +6,10 @@ use SOAP::Lite;
 my %opt = (
 );
 
-GetOptions (\%opt, qw{test});
+GetOptions (\%opt, qw{minimal test});
 
-my $url = 'http://simweb.u-strasbg.fr/axis/services/WSQuery?wsdl';
+## my $url = 'http://simweb.u-strasbg.fr/axis/services/WSQuery?wsdl';
+my $url = 'http://simbad.u-strasbg.fr/axis/services/WSQuery?wsdl';
 
 my $soap = SOAP::Schema->schema_url ($url)
 			->parse ()
@@ -21,6 +22,8 @@ my $code = $soap->stub;
 
 $code =~ s|:8080\b||mg;
 
+unless ($opt{minimal}) {
+
 #	Change the package name.
 
 $code =~ s{package WSQueryInterfaceService;}
@@ -29,13 +32,13 @@ $code =~ s{package WSQueryInterfaceService;}
 #	Tell carp not to report SOAP::Lite errors relative to this
 #	module.
 
-my $chunk = 'use Carp ();
+    my $chunk = 'use Carp ();
 our @CARP_NOT = qw{SOAP::Lite};	## TRW';
-$code =~ s/use Carp \(\);/$chunk/m;
+    $code =~ s/use Carp \(\);/$chunk/m;
 
 #	Splice in server name as first argument.
 
-my $chunk = <<'eod';
+    my $chunk = <<'eod';
   ## TRW vvvv
   my $server = shift or Carp::croak "No server specified";;
   $method{endpoint} or Carp::croak "No server address (proxy) specified";
@@ -44,14 +47,17 @@ my $chunk = <<'eod';
   $self->proxy ($endpoint)
   ## TRW ^^^^
 eod
-$code =~ s/simweb.u-strasbg.fr/%s/mg;
-$code =~ s/\$self->proxy\(\$method\{endpoint\} \|\| Carp::croak.+$/$chunk/m;
-$code =~ s{\$self->endpoint\(\$method\{endpoint\}\)}
-    {\$self->endpoint\(\$endpoint\)}m;
+    $code =~ s/simweb.u-strasbg.fr/%s/mg;
+    $code =~ s/\$self->proxy\(\$method\{endpoint\} \|\| Carp::croak.+$/$chunk/m;
+    $code =~ s{\$self->endpoint\(\$method\{endpoint\}\)}
+	{\$self->endpoint\(\$endpoint\)}m;
+
+}
 
 #	Append the test code if desired.
 
-$opt{test} and $code .= <<'eod';
+if ($opt{test}) {
+    $code .= <<'eod';
 
 package main;
 
@@ -60,9 +66,14 @@ $ARGV[2] ||= 'txt';
 $ARGV[1] ||= $ARGV[2] eq 'vo' ? 'idlist(1) coo' : '%IDLIST(1): %COO\n';
 splice @ARGV, 3 if @ARGV > 3;
 
+eod
+    $code .= $opt{minimal} ? <<'eod' : <<'eod';
+print WSQueryInterfaceService->queryObjectById (@ARGV);
+eod
 print Astro::SIMBAD4::WSQueryInterfaceService->queryObjectById (
     'simweb.u-strasbg.fr', @ARGV);
 eod
+}
 
 
 
