@@ -5,11 +5,13 @@
 ^Build$
 ^Changes_
 CVS/
+\.DS_Store$
 ^foo$
 ^ivoa.vo$
 ^Makefile$
 ^MANIFEST\.
 ^pm_to_blib$
+^ref/
 ^t/manifest.t$
 \.old$
 \.swp$
