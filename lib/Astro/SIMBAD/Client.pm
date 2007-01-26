@@ -58,7 +58,7 @@ use LWP::UserAgent;			# Comes with libwww-perl
 use HTTP::Request::Common qw{POST};	# Comes with libwww-perl
 use SOAP::Lite;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -461,7 +461,7 @@ as 'to be developed'. They are documented in the help at
 L<http://simbad.u-strasbg.fr/simbad/sim-help?Page=simbad4>, and this
 method implements that interface to the best of my ability. But 'vo'
 queries began returning empty VOTables on or about December 3 2006, and
-as of December 13 still behave this way. The 'txt' queries appear to
+as of January 26 2007 still behave this way. The 'txt' queries appear to
 work.
 
 =cut
@@ -638,9 +638,9 @@ sub script {
 
 This method submits the given script file to SIMBAD, returning the
 result of the script. Unlike script(), the argument is the name of the
-file containing the script, not the text of the script, and no default
-format is applied. However, if a parser for 'script' has been specified,
-it will be applied to the output.
+file containing the script, not the text of the script. However, if a
+parser for 'script' has been specified, it will be applied to the
+output.
 
 =cut
 
@@ -1172,11 +1172,8 @@ The default specifies formats for output types 'txt' and 'vo'. The
 'txt' default is FORMAT_TXT_YAML_BASIC; the 'vo' default is
 FORMAT_VO_BASIC.
 
-The default format for 'script' is blank, under the assumption that the
-script provides its own format. If you provide a 'script' format, it
-must be a 'txt'-style format, and it will be prepended to the script you
-pass to the script() method. There is no way to default the format for
-the script_file() method.
+There is no way to specify a default format for the 'script' or
+'script_file' methods.
 
 =for html <a name="parser"></a>
 
@@ -1202,7 +1199,7 @@ to '', meaning no parser is used.
 
 =item server (string)
 
-This attribute specifies the server to be used. As of December 13 2006,
+This attribute specifies the server to be used. As of January 26 2007,
 only 'simbad.u-strasbg.fr' is valid, since as of that date Harvard
 University has not yet converted their mirror to SIMBAD 4.
 
@@ -1239,9 +1236,9 @@ Thomas R. Wyant, III (F<wyant at cpan dot org>)
 
 =head1 COPYRIGHT
 
-Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2007 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
-This module is free software; you can use it, redistribute it
-and/or modify it under the same terms as Perl itself. Please see
+This module is free software; you can use it, redistribute it and/or
+modify it under the same terms as Perl itself. Please see
 L<http://perldoc.perl.org/index-licence.html> for the current licenses.
