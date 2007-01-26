@@ -1,8 +1,8 @@
 votable myvo {
 id(NAME|1)
 otype
-ra
-dec
+ra(d)
+dec(d)
 plx_value
 pmra
 pmdec

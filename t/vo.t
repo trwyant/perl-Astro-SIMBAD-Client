@@ -34,11 +34,11 @@ eod
 todo query id Arcturus (vo) - name
 
 deref 0 data 0 2 value
-want 213.9153
+want 213.9153000
 todo query id Arcturus (vo) - right ascension
 
 deref 0 data 0 3 value
-want +19.18241027778
+want +19.1824103
 todo query id Arcturus (vo) - declination
 
 deref 0 data 0 4 value
@@ -76,11 +76,11 @@ eod
 test script_file t/arcturus.vo - name
 
 deref 0 data 0 2 value
-want 213.9153
+want 213.9153000
 test script_file t/arcturus.vo - right ascension
 
 deref 0 data 0 3 value
-want +19.18241027778
+want +19.1824103
 test script_file t/arcturus.vo - declination
 
 deref 0 data 0 4 value
@@ -122,13 +122,21 @@ test url_query id Arcturus (vo) - name
 deref 0 data 0
 find meta 1 name RA
 deref_curr value
-want 213.9153
+# want 213.9153
+# As of about SIMBAD4 1.005 the default became sexigesimal
+want <<eod
+14 15 39.6720
+eod
 test url_query id Arcturus (vo) - right ascension
 
 deref 0 data 0
 find meta 1 name DEC
 deref_curr value
-want +19.18241027778
+# want +19.18241027778
+# As of about SIMBAD4 1.005 the default became sexigesimal
+want <<eod
++19 10 56.677
+eod
 test qurl_uery id Arcturus (vo) - declination
 
 deref 0 data 0
