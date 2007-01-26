@@ -1,2 +1,8 @@
 0.001
   Initial release
+0.002
+  Modified Build.PL and Makefile.PL to ask if simbadc is to be installed.
+  Modified vo tests to follow change of VOTable coordinate format
+    to sexagesimal about SIMBAD4 1.005 January 26 2007.
+  Corrected Astro::SIMBAD::Client documentation.
+  Corrected simbadc documentation.
