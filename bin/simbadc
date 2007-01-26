@@ -10,7 +10,7 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.001';
+my $VERSION = '0.002';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
@@ -135,7 +135,11 @@ example:
  eod>eod
  simbadc>
 
-specifies a format to be used for a 'txt' mode query.
+specifies a format to be used for a 'txt' mode query. Note that
+
+ simbadc> set format txt=<<eod
+
+is B<not> equivalent; the '<<eod' must be a token all by itself.
 
 The following commands are implemented by this script, in addition to
 (or in lieu of) the commands documented in L<Astro::SIMBAD::Client>:
@@ -373,7 +377,7 @@ Thomas R. Wyant, III (F<wyant at cpan dot org>)
 
 =head1 COPYRIGHT
 
-Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2007 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
 This script is free software; you can use it, redistribute it
