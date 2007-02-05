@@ -4,6 +4,7 @@
 ^blib/
 ^Build$
 ^Changes_
+^cover_db/
 CVS/
 \.DS_Store$
 ^foo$
