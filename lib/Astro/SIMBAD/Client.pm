@@ -58,7 +58,7 @@ use LWP::UserAgent;			# Comes with libwww-perl
 use HTTP::Request::Common qw{POST};	# Comes with libwww-perl
 use SOAP::Lite;
 
-our $VERSION = '0.002';
+our $VERSION = '0.002_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -1022,11 +1022,27 @@ sub _call {
       push(@parameters, $param);
     }
   }
+
 ## TRW  $self->endpoint($method{endpoint})
-  $self->endpoint($endpoint)	## TRW
-       ->ns($method{namespace})
+## TRW       ->ns($method{namespace})
 ## TRW      ->on_action(sub{qq!"$method{soapaction}"!});
-       ->on_action (sub{$method{soapaction}});
+
+## vvv TRW
+
+if ($self->can ('ns')) {
+    $self->endpoint($endpoint)
+	->ns($method{namespace})
+	->on_action (sub{$method{soapaction}});
+} else {
+    $self->endpoint($endpoint)
+	->envprefix ('soap')
+	->uri($method{namespace})
+	->on_action (sub{$method{soapaction}});
+}
+
+## ^^^ TRW
+
+if ($self->serializer->can ('register_ns')) {	## TRW
 $self->serializer->register_ns("http://schemas.xmlsoap.org/wsdl/soap/","wsdlsoap");
   $self->serializer->register_ns("http://schemas.xmlsoap.org/wsdl/","wsdl");
   $self->serializer->register_ns("http://uif.simbad.cds","intf");
@@ -1034,6 +1050,7 @@ $self->serializer->register_ns("http://schemas.xmlsoap.org/wsdl/soap/","wsdlsoap
   $self->serializer->register_ns("http://schemas.xmlsoap.org/soap/encoding/","soapenc");
   $self->serializer->register_ns("http://xml.apache.org/xml-soap","apachesoap");
   $self->serializer->register_ns("http://www.w3.org/2001/XMLSchema","xsd");
+}	## TRW
   my $som = $self->SUPER::call($method => @parameters); 
   if ($self->want_som) {
       return $som;
