@@ -6,3 +6,8 @@
     to sexagesimal about SIMBAD4 1.005 January 26 2007.
   Corrected Astro::SIMBAD::Client documentation.
   Corrected simbadc documentation.
+0.003
+  Have Makefile.PL generate LICENSE tag if supported by the version of
+    ExtUtils::MakeMaker in use.
+  Make Astro::SIMBAD::Client work with SOAP::Lite 0.55, which is what
+    ships with ActivePerl.

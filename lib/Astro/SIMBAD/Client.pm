@@ -58,7 +58,7 @@ use LWP::UserAgent;			# Comes with libwww-perl
 use HTTP::Request::Common qw{POST};	# Comes with libwww-perl
 use SOAP::Lite;
 
-our $VERSION = '0.002_01';
+our $VERSION = '0.003';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 

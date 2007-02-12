@@ -6,7 +6,7 @@ use warnings;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.002_02';
+our $VERSION = '0.003';
 
 my $vers = '';
 
