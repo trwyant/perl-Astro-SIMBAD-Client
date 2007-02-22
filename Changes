@@ -11,3 +11,6 @@
     ExtUtils::MakeMaker in use.
   Make Astro::SIMBAD::Client work with SOAP::Lite 0.55, which is what
     ships with ActivePerl.
+0.004
+  Explicitly load URI::Escape.
+  Add HTML::Entities and URI::Escape as required by this class.
