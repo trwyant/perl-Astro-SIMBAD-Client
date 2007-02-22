@@ -6,7 +6,7 @@ use warnings;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.003';
+our $VERSION = '0.003_01';
 
 my $vers = '';
 
@@ -51,8 +51,10 @@ WriteMakefile (
 	NAME => 'Astro::SIMBAD::Client',
 	VERSION_FROM => 'lib/Astro/SIMBAD/Client.pm',
 	PREREQ_PM => {
+	    'HTML::Entities'	=> 0,
 	    'LWP::UserAgent'	=> 0,
 	    'SOAP::Lite'	=> 0,
+	    'URI::Escape'	=> 0,
 	},
 	PL_FILES => {},	# Prevent old MakeMaker from running Build.PL
 	EXE_FILES => \@exe_files,

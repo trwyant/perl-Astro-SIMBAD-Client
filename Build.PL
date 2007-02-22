@@ -7,15 +7,17 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.002';
+our $VERSION = '0.002_01';
 
 my $bldr = Module::Build->new (
 	dist_author => 'Tom Wyant (wyant at cpan dot org)',
 	dist_abstract => 'Fetch astronomical data from SIMBAD 4.',
 	module_name => 'Astro::SIMBAD::Client',
 	requires => {
+	    'HTML::Entities' => 0,
 	    'LWP::UserAgent' => 0,
 	    'SOAP::Lite' => 0,
+	    'URI::Escape' => 0,
 	},
 #	dist_version_from => 'ECI.pm',
 	dynamic_config => 1,
