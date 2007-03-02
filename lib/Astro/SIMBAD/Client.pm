@@ -59,7 +59,7 @@ use HTTP::Request::Common qw{POST};	# Comes with libwww-perl
 use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 
-our $VERSION = '0.004';
+our $VERSION = '0.004_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -601,35 +601,46 @@ to the caller.
 
 =cut
 
-sub script {
-    my $self = shift;
-    my $debug = $self->get ('debug');
-    my $script = shift;
+{
+
+    my $escaper;
+
+    sub script {
+	my $self = shift;
+	my $debug = $self->get ('debug');
+	my $script = shift;
 ##    if (my $format = $self->get ('format')->{script}) {
 ##	$format =~ s/\n//gm;
 ##	$script = 'format obj "' . $format . "\"\n\n" . $script;
 ##    }
 
-    $script = URI::Escape::uri_escape_utf8 ($script);
+	$escaper ||= URI::Escape->can ('uri_escape_utf8') ||
+	    URI::Escape->can ('uri_escape') || croak <<eod;
+Error - URI::Escape does not implement uri_escape_utf8() or
+        uri_escape(). Please upgrade.
+eod
+	$script = $escaper->($script);
 
-    my $server = $self->get ('server');
-    my $url = "http://$server/simbad/sim-script?" .
-	'submit=submit+script&script=' . $script;
-    my $ua = LWP::UserAgent->new ();
-    my $resp = $ua->get ($url);
+	my $server = $self->get ('server');
+	my $url = "http://$server/simbad/sim-script?" .
+	    'submit=submit+script&script=' . $script;
+	my $ua = LWP::UserAgent->new ();
+	my $resp = $ua->get ($url);
 
-    $resp->is_success or croak $resp->status_line;
+	$resp->is_success or croak $resp->status_line;
 
-    my $rslt = $resp->content or return;
-    unless ($self->get ('verbatim')) {
-	$rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
-    }
-    if (my $parser = $self->_get_parser ('script')) {
+	my $rslt = $resp->content or return;
+	unless ($self->get ('verbatim')) {
+	    $rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
+	}
+	if (my $parser = $self->_get_parser ('script')) {
 ##	$rslt =~ s/.*?::data:+.?$//sm or croak $rslt;
-	my @rslt = $parser->($rslt);
-	return wantarray ? @rslt : \@rslt;
-    } else {
-	return $rslt;
+	    my @rslt = $parser->($rslt);
+	    return wantarray ? @rslt : \@rslt;
+	} else {
+	    return $rslt;
+	}
+
     }
 
 }
