@@ -14,3 +14,8 @@
 0.004
   Explicitly load URI::Escape.
   Add HTML::Entities and URI::Escape as required by this class.
+0.005
+  Fall back to uri_escape if uri_escape_utf8 is not available.
+0.006
+  Use XML::DoubleEncodedEntities to deal with occasional double
+    encoding of VOTable data.
