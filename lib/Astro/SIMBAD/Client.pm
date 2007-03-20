@@ -58,8 +58,9 @@ use LWP::UserAgent;			# Comes with libwww-perl
 use HTTP::Request::Common qw{POST};	# Comes with libwww-perl
 use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
+use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -527,6 +528,7 @@ work.
 	my $resp = Astro::SIMBAD::Client::WSQueryInterfaceService->$method (
 	    $self->get ('server'), @args);
 	return unless defined $resp;
+	$resp = XML::DoubleEncodedEntities::decode ($resp);
 	return wantarray ? ($parser->($resp)) : [$parser->($resp)]
 	    if $parser;
 	return $resp;
@@ -633,6 +635,7 @@ eod
 	unless ($self->get ('verbatim')) {
 	    $rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
 	}
+	$rslt = XML::DoubleEncodedEntities::decode ($rslt);
 	if (my $parser = $self->_get_parser ('script')) {
 ##	$rslt =~ s/.*?::data:+.?$//sm or croak $rslt;
 	    my @rslt = $parser->($rslt);
@@ -844,7 +847,7 @@ eod
 	my $resp = $ua->post ($url, \%args);
 
 	$resp->is_success or croak $resp->status_line;
-	$resp = $resp->content;
+	$resp = XML::DoubleEncodedEntities::decode ($resp->content);
 
 	my $parser;
 	if (my $type = $type_unmap{$args{'output.format'}}) {

@@ -6,7 +6,7 @@ use warnings;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 my $vers = '';
 
@@ -55,6 +55,7 @@ WriteMakefile (
 	    'LWP::UserAgent'	=> 0,
 	    'SOAP::Lite'	=> 0,
 	    'URI::Escape'	=> 0,
+	    'XML::DoubleEncodedEntities' => 1.0,
 	},
 	PL_FILES => {},	# Prevent old MakeMaker from running Build.PL
 	EXE_FILES => \@exe_files,

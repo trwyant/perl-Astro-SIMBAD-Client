@@ -7,7 +7,7 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 my $bldr = Module::Build->new (
 	dist_author => 'Tom Wyant (wyant at cpan dot org)',
@@ -18,6 +18,7 @@ my $bldr = Module::Build->new (
 	    'LWP::UserAgent' => 0,
 	    'SOAP::Lite' => 0,
 	    'URI::Escape' => 0,
+	    'XML::DoubleEncodedEntities' => 1.0,
 	},
 #	dist_version_from => 'ECI.pm',
 	dynamic_config => 1,
