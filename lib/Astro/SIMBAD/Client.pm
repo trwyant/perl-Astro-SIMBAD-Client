@@ -8,6 +8,18 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
  my $simbad = Astro::SIMBAD::Client->new ();
  print $simbad->query (id => 'Arcturus');
 
+=head1 NOTICE
+
+As of SIMBAD4 version 1.019a released 26-Mar-2007, 'vo' web service
+queries have begun returning data. But I<caveat user>, at least until
+stability is demonstrated.
+
+Beginning with Astro::SIMBAD::Client version 0.006_01, FORMAT_VO_BASIC
+returns decimal degrees for right ascension and declination. This was
+always the intention, but it was impossible to test the requisite format
+changes until the SIMBAD4 web service started returning data in response
+to 'vo' queries.
+
 =head1 DESCRIPTION
 
 This package implements the SOAP query interface to version 4 of the
@@ -31,7 +43,9 @@ query() method implements this, and queryObjectByBib,
 queryObjectByCoord, and queryObjectById have been provided as
 convenience methods. The documentation speaks of this functionality as
 under development. As of December 13 2006 'txt' queries work as
-advertised, but 'vo' queries return empty VOTables. I<Caveat user.>
+advertised, but 'vo' queries return empty VOTables. The 'vo' queries
+started working again with SIMBAD4 1.019a on March 26, 2007, but
+I<Caveat user.>
 
 Astro::SIMBAD::Client is object-oriented, with the object supplying not
 only the SIMBAD server name, but the default format and output type for
@@ -60,7 +74,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.006';
+our $VERSION = '0.006_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -111,7 +125,7 @@ eod
 #	     S = spectral type
 
 use constant FORMAT_VO_BASIC => join ',', qw{
-    id(NAME|1) otype ra dec plx_value pmra pmdec rv_value z_value
+    id(NAME|1) otype ra(d) dec(d) plx_value pmra pmdec rv_value z_value
     sp_type flux(B) flux(V)};
     # Note that idlist was documented at one point as being the
     # VOTable equivalent of %IDLIST. But it is no longer documented,
@@ -463,8 +477,11 @@ as 'to be developed'. They are documented in the help at
 L<http://simbad.u-strasbg.fr/simbad/sim-help?Page=simbad4>, and this
 method implements that interface to the best of my ability. But 'vo'
 queries began returning empty VOTables on or about December 3 2006, and
-as of January 26 2007 still behave this way. The 'txt' queries appear to
-work.
+as of January 26 2007 still behave this way. They started working again
+with SIMBAD4 1.019a on March 26 2007.
+
+The 'txt' queries appear to work, except for occasional failures,
+typically the day before (or of) a SIMBAD4 upgrade.
 
 =cut
 
