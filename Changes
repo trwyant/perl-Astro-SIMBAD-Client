@@ -19,3 +19,8 @@
 0.006
   Use XML::DoubleEncodedEntities to deal with occasional double
     encoding of VOTable data.
+0.007
+  Change FORMAT_VO_BASIC to return decimal degrees for right ascension
+    and declination. This was always the intent, but could not be tested
+    until 'vo' web service queries started working.
+  Document change in status of web service 'vo' queries.
