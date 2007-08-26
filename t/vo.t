@@ -22,40 +22,45 @@ count
 want 1
 test query id Arcturus (vo) - count of tables
 
+# For a long time the following did not work. Because the problem
+# appeared to be on the SIMBAD end, they were 'todo'.
+
 deref 0 data
 count
 want 1
-todo query id arcturus (vo) - count of rows
+test query id arcturus (vo) - count of rows
 
 deref 0 data 0 0 value
 want <<eod
 NAME ARCTURUS
 eod
-todo query id Arcturus (vo) - name
+test query id Arcturus (vo) - name
 
 deref 0 data 0 2 value
 want 213.9153000
-todo query id Arcturus (vo) - right ascension
+test query id Arcturus (vo) - right ascension
 
 deref 0 data 0 3 value
 want +19.1824103
-todo query id Arcturus (vo) - declination
+test query id Arcturus (vo) - declination
 
 deref 0 data 0 4 value
 want 88.85
-todo query id Arcturus (vo) - parallax
+test query id Arcturus (vo) - parallax
 
 deref 0 data 0 5 value
 want -1093.43
-todo query id Arcturus (vo) - proper motion in right ascension
+test query id Arcturus (vo) - proper motion in right ascension
 
 deref 0 data 0 6 value
 want -1999.43
-todo query id Arcturus (vo) - proper motion in declination
+test query id Arcturus (vo) - proper motion in declination
 
 deref 0 data 0 7 value
 want -5.2
-todo query id Arcturus (vo) - radial velocity
+test query id Arcturus (vo) - radial velocity
+
+# For a long time the previous was 'todo'
 
 set parser script=Parse_VO_Table
 script_file t/arcturus.vo
