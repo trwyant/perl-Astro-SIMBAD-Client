@@ -13,7 +13,7 @@ BEGIN {
     };
 }
 
-our $VERSION = '0.001';
+our $VERSION = '0.001_01';
 
 if ($skip) {
     skip ($skip, 1);
@@ -27,6 +27,7 @@ CGI
 CPAN
 IDs
 Ident
+Jul
 SIMBAD
 VOTable
 VOTables
