@@ -24,3 +24,5 @@
     and declination. This was always the intent, but could not be tested
     until 'vo' web service queries started working.
   Document change in status of web service 'vo' queries.
+0.008
+  Add release() method, to return SIMBAD release number.
