@@ -63,6 +63,10 @@ sub test {
 	} else {
 	    $obj = $smb;
 	}
+	my $index;
+	if ($verb =~ s/\[(\d+)\]$//) {
+	    $index = $1;
+	}
 	if ($verb eq 'access') {
 	} elsif ($verb eq 'clear') {
 	    $got = $ref = undef;
@@ -120,23 +124,32 @@ sub test {
 	    $test++;
 	    $got = 'undef' unless defined $got;
 	    chomp $got;
-	    chomp $want;
+	    ref $want or chomp $want;
 	    print <<eod;
 #
 # Test $test - @args
 #     Expect: $want
 #        Got: $got
 eod
-	    if (numberp ($want) && numberp ($got)) {
+	    if (ref $want eq 'Regexp') {
+		skip ($skip, $got =~ m/$want/);
+	    } elsif (numberp ($want) && numberp ($got)) {
 		skip ($skip, $want == $got);
 	    } else {
 		skip ($skip, $want eq $got);
 	    }
 	} elsif ($verb eq 'want') {
 	    $want = shift @args;
+	} elsif ($verb eq 'want_re') {
+	    $want = shift @args;
+	    $want = qr{$want};
 	} elsif ($obj->can ($verb)) {
 	    unless ($skip) {
-		$got = eval {$obj->$verb (@args)};
+		if (defined $index) {
+		    $got = eval {($obj->$verb (@args))[$index]};
+		} else {
+		    $got = eval {$obj->$verb (@args)};
+		}
 		if ($@) {
 		    warn $@;
 		    $got = $@;
