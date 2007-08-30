@@ -19,9 +19,6 @@ interactively. The 'simbadc' script can also be used as a Unix filter,
 that is, you can redirect commands into it from a file, or pipe them
 in from another program.
 
-At this time, SIMBAD 4 is release 1.0 beta. Consequently, this module
-should also be considered beta, or even alpha.
-
 This module is installable by the usual incantation:
 
     gunzip Astro-SIMBAD-Client-9.999.tar.gz
