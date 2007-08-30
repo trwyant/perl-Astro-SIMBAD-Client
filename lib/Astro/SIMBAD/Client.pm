@@ -74,7 +74,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.007';
+our $VERSION = '0.008';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -596,6 +596,59 @@ See the query() documentation for more information.
 sub queryObjectById {
     my $self = shift;
     $self->query (id => @_);
+}
+
+=item $release = $simbad->release ();
+
+This method returns the current SIMBAD4 release, as scraped from the
+top-level web page. This will look something like 'SIMBAD4 1.045 -
+27-Jul-2007'
+
+If called in list context, it returns ($major, $minor, $point, $patch,
+$date).  The returned information corresponding to the scalar example
+above is:
+
+ $major => 4
+ $minor => 1
+ $point => 45
+ $patch => ''
+ $date => '27-Jul-2007'
+
+The $patch will usually be empty, but occasionally you get something
+like release '1.019a', in which case $patch would be 'a'.
+
+Please note that this method is B<not> based on a published interface,
+but is simply a web page scraper, and subject to all the problems such
+software is heir to. What the algorithm attempts to do is to find (and
+parse, if called in list context) the contents of the next E<lt>tdE<gt>
+after 'Release:' (case-insensitive).
+
+=cut
+
+sub release {
+    my $self = shift;
+    my $ua = LWP::UserAgent->new ();
+    my $rslt = $ua->get ('http://' . $self->{server} . '/simbad/');
+    $rslt->is_success or croak "Error - ", $rslt->status_line;
+    my ($rls) = $rslt->content =~
+	m{Release:.*?</td>.*?<td.*?>(.*?)</td>}sxi
+	or croak "Error - Release information not found";
+    $rls =~ s{<.*?>}{}g;
+    $rls =~ s/^\s+//;
+    $rls =~ s/\s+$//;
+    wantarray or return $rls;
+    $rls =~ s/\s+-\s+/ /;
+    my ($major, $minor, $date) = split '\s+', $rls
+	or croak "Error - Release '$rls' is ill-formed";
+    $major =~s/^\D+//;
+    $major += 0;
+    ($minor, my $point) = split '\.', $minor, 2;
+    $minor += 0;
+    ($point, my $patch) = $point =~ m/^(\d+)(.*)/
+	or croak "Error - Release '$rls' is ill-formed: bad point";
+    defined $patch or $patch = '';
+    $point += 0;
+    return ($major, $minor, $point, $patch, $date);
 }
 
 =item $value = $simbad->script ($script);
