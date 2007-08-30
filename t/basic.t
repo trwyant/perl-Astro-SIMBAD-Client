@@ -31,6 +31,7 @@ my $test = 2;
 foreach ([get => debug => 0], [set => debug => 1], [get => debug => 1]) {
     my ($method, @args) = @$_;
     if ($method eq 'get') {
+	$test++;
 	my $want = pop @args;
 	$rslt = $smb->$method (@args);
 	print <<eod;
