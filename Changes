@@ -26,3 +26,9 @@
   Document change in status of web service 'vo' queries.
 0.008
   Add release() method, to return SIMBAD release number.
+0.009
+  Add 'post' attribute.
+  Mark url_query VOTable tests todo, since they stopped working
+    15-Oct-2007. Document this under 'NOTICES' in the code.
+  Clean up the POD tests.
+  Remove shebang lines where not warranted.
