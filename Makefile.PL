@@ -1,12 +1,10 @@
-#!/usr/bin/perl
-
 use strict;
 use warnings;
 
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 my $vers = '';
 
