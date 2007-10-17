@@ -1,5 +1,3 @@
-#!/usr/local/bin/perl
-
 use strict;
 use warnings;
 
@@ -108,12 +106,12 @@ url_query id Ident Arcturus
 
 count
 want 1
-test url_query id Arcturus (vo) - count of tables
+todo url_query id Arcturus (vo) - count of tables
 
 deref 0 data
 count
 want 1
-test url_query id arcturus (vo) - count of rows
+todo url_query id arcturus (vo) - count of rows
 
 ##deref 0 data 0 0 value
 deref 0 data 0
@@ -122,7 +120,7 @@ deref_curr value
 want <<eod
 NAME ARCTURUS
 eod
-test url_query id Arcturus (vo) - name
+todo url_query id Arcturus (vo) - name
 
 deref 0 data 0
 find meta 1 name RA
@@ -132,7 +130,7 @@ deref_curr value
 want <<eod
 14 15 39.6720
 eod
-test url_query id Arcturus (vo) - right ascension
+todo url_query id Arcturus (vo) - right ascension
 
 deref 0 data 0
 find meta 1 name DEC
@@ -142,29 +140,29 @@ deref_curr value
 want <<eod
 +19 10 56.677
 eod
-test qurl_uery id Arcturus (vo) - declination
+todo qurl_uery id Arcturus (vo) - declination
 
 deref 0 data 0
 find meta 1 name PLX_VALUE
 deref_curr value
 want 88.85
-test url_query id Arcturus (vo) - parallax
+todo url_query id Arcturus (vo) - parallax
 
 deref 0 data 0
 find meta 1 name PMRA
 deref_curr value
 want -1093.43
-test url_query id Arcturus (vo) - proper motion in right ascension
+todo url_query id Arcturus (vo) - proper motion in right ascension
 
 deref 0 data 0
 find meta 1 name PMDEC
 deref_curr value
 want -1999.43
-test url_query id Arcturus (vo) - proper motion in declination
+todo url_query id Arcturus (vo) - proper motion in declination
 
 deref 0 data 0
 find meta 1 name oRV:RVel
 deref_curr value
 want -5.2
-test url_query id Arcturus (vo) - radial velocity
+todo url_query id Arcturus (vo) - radial velocity
 
