@@ -20,6 +20,13 @@ always the intention, but it was impossible to test the requisite format
 changes until the SIMBAD4 web service started returning data in response
 to 'vo' queries.
 
+As of about 16-Oct-2007, the url_query method is unable to return
+VOTable data. My read on this is that it is a SIMBAD glitch introduced
+with release 1.052 on that date -- either that or it's an intentional
+change of functionality which the documentation has not caught up with.
+Until this is resolved, retrieving VOTable data via a url_query is
+unsupported, and the corresponding test steps are marked 'todo'.
+
 =head1 DESCRIPTION
 
 This package implements the SOAP query interface to version 4 of the
@@ -74,7 +81,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.008';
+our $VERSION = '0.009';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -144,6 +151,7 @@ my %static = (
 	vo => '',
 	script => '',
     },
+    post => 1,
     type => 'txt',
 ##    server => 'simweb.u-strasbg.fr',
     server => 'simbad.u-strasbg.fr',
@@ -902,9 +910,9 @@ explicitly set up a parser for that.
     sub url_query {
 	my $self = shift;
 	my $query = shift;
+	my $debug = $self->get ('debug');
 	my $url = 'http://' . $self->get ('server') . '/simbad/sim-' .
 	    $query;
-	my $ua = LWP::UserAgent->new ();
 	@_ % 2 and croak <<eod;
 Error - url_query needs an even number of arguments after the query
         type.
@@ -914,7 +922,7 @@ eod
 	    my $type = $self->get ('type');
 	    $args{'output.format'} = $type_map{$type} || $type;
 	}
-	my $resp = $ua->post ($url, \%args);
+	my $resp = $self->_retrieve ($url, \%args);
 
 	$resp->is_success or croak $resp->status_line;
 	$resp = XML::DoubleEncodedEntities::decode ($resp->content);
@@ -1026,6 +1034,41 @@ eod
 	@parts = split '::', $pkg;
     }
     return wantarray ? ($pkg, $code, join ('/', @parts) . '.pm') : $pkg;
+}
+
+sub _retrieve {
+    my ($self, $url, $args) = @_;
+    my $debug = $self->get ('debug');
+    my $inx = 1;
+    my $caller;
+    my $ua = LWP::UserAgent->new ();
+    if ($self->get ('post')) {
+	if ($debug) {
+	    do {
+		$caller = (caller ($inx++))[3];
+	    } while $caller eq '(eval)';
+	    print "Debug $caller posting to $url\n";
+	    foreach my $key (sort keys %$args) {
+		print "    $key => $args->{$key}\n";
+	    }
+	}
+	$ua->post ($url, $args);
+    } else {
+	require HTML::Entities;
+	my $join = '?';
+	foreach my $key (sort keys %$args) {
+	    $url .= $join . HTML::Entities::encode_entities ($key) .
+	    '=' . HTML::Entities::encode_entities ($args->{$key});
+	    $join = '&';
+	}
+	if ($debug) {
+	    do {
+		$caller = (caller ($inx++))[3];
+	    } while $caller eq '(eval)';
+	    print "Debug $caller getting from $url\n";
+	}
+	$ua->get ($url);
+    }
 }
 
 
@@ -1296,6 +1339,15 @@ the query results will be returned verbatim.
 The output types are anything legal for the query() method (i.e. 'txt'
 and 'vo' at the moment), plus 'script' for a script parser. All default
 to '', meaning no parser is used.
+
+=item post (boolean)
+
+=for html <a name="post"></a>
+
+This attribute specifies that url_query() data should be acquired using
+a POST request. If false, a GET request is used.
+
+The default is 1 (i.e. true).
 
 =for html <a name="server"></a>
 
