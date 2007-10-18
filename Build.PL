@@ -5,13 +5,14 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.005';
+our $VERSION = '0.005_01';
 
 my $bldr = Module::Build->new (
 	dist_author => 'Tom Wyant (wyant at cpan dot org)',
 	dist_abstract => 'Fetch astronomical data from SIMBAD 4.',
 	module_name => 'Astro::SIMBAD::Client',
 	requires => {
+	    perl => 5.006,	# for 'our'.
 	    'HTML::Entities' => 0,
 	    'LWP::UserAgent' => 0,
 	    'SOAP::Lite' => 0,

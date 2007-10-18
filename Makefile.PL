@@ -4,7 +4,11 @@ use warnings;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.006';
+BEGIN {
+    require 5.006  # for 'our'. Incantation from http://cpantest.grango.org/
+}
+
+our $VERSION = '0.006_01';
 
 my $vers = '';
 
