@@ -21,11 +21,11 @@ changes until the SIMBAD4 web service started returning data in response
 to 'vo' queries.
 
 As of about 16-Oct-2007, the url_query method is unable to return
-VOTable data. My read on this is that it is a SIMBAD glitch introduced
-with release 1.052 on that date -- either that or it's an intentional
-change of functionality which the documentation has not caught up with.
-Until this is resolved, retrieving VOTable data via a url_query is
-unsupported, and the corresponding test steps are marked 'todo'.
+VOTable data. This appears to be due to a bug introduced on that date by
+SIMBAD4 release 1.052, and fixed by 1.053 on 18-Oct-2007 (wow! fast!).
+Astro::SIMBAD::Client responded by marking the corresponding tests
+'todo' in release 0.009 on 17-Oct-2007, and making them real tests again
+in release 0.010.
 
 =head1 DESCRIPTION
 
@@ -81,7 +81,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.009';
+our $VERSION = '0.010';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -894,6 +894,10 @@ output.format is 'VOTable', and the 'txt' parser (if any) is called if
 output.format is 'ASCII'. If output.format is 'HTML', you will need to
 explicitly set up a parser for that.
 
+The type of HTTP interaction depends on the setting of the L<post|/post>
+attribute: if true a POST is done; otherwise all arguments are tacked
+onto the end of the URL and a GET is done.
+
 =cut
 
 {	# Begin local symbol block.
@@ -1054,11 +1058,10 @@ sub _retrieve {
 	}
 	$ua->post ($url, $args);
     } else {
-	require HTML::Entities;
 	my $join = '?';
 	foreach my $key (sort keys %$args) {
-	    $url .= $join . HTML::Entities::encode_entities ($key) .
-	    '=' . HTML::Entities::encode_entities ($args->{$key});
+	    $url .= $join . uri_escape ($key) .  '=' . uri_escape (
+		$args->{$key});
 	    $join = '&';
 	}
 	if ($debug) {
