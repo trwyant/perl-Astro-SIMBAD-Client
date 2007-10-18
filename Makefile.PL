@@ -1,14 +1,14 @@
+BEGIN {
+    require 5.006  # for 'our'. Incantation from http://cpantest.grango.org/
+}
+
 use strict;
 use warnings;
 
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-BEGIN {
-    require 5.006  # for 'our'. Incantation from http://cpantest.grango.org/
-}
-
-our $VERSION = '0.006_01';
+our $VERSION = '0.006_02';
 
 my $vers = '';
 
