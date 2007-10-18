@@ -32,3 +32,9 @@
     15-Oct-2007. Document this under 'NOTICES' in the code.
   Clean up the POD tests.
   Remove shebang lines where not warranted.
+0.010
+  Specify minimum Perl version of 5.006 in Build.PL and Makefile.PL.
+  Change url_query VOTable tests from todo back to test, since they
+    now work as of 18-Oct-2007.
+  Corrected the code used to escape URLs in the centralized requester
+    (use URL::Escape, not HTML::Entities).
