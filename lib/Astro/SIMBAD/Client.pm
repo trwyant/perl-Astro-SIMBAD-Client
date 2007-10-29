@@ -81,7 +81,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.010';
+our $VERSION = '0.010_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -987,24 +987,18 @@ sub _get_parser {
     $self->_get_coderef ($self->get ('parser')->{$type});
 }
 
-{	# begin local symbol block.
-
-    my %tried = ('.pm' => 'No such module');
-
+{	# Local symbol block. Oh, for 5.10 and state variables.
+    my %error;
+    my %rslt;
     sub _load_module {
-	my $pkg = shift;
-	(my $file = $pkg) =~ s|::|/|g;
-	$file .= '.pm';
-	unless ($INC{$file} || $tried{$file}) {
-	    eval {require $file};
-	    if ($@) {
-		$tried{$file} = $@;
-	    }
-	}
-	$tried{$file} and croak "Error - Unable to load $pkg";
+	my  ($module) = @_;
+	exists $error{$module} and croak $error{$module};
+	exists $rslt{$module} and return $rslt{$module};
+	$rslt{$module} = eval "require $module";
+	$@ and croak ($error{$module} = $@);
+	return $rslt{$module};
     }
-
-}	# end local symbol block.
+}	# End local symbol block.
 
 #	($package, $subroutine, $file) = $self->_parse_subroutine_name ($name);
 #
