@@ -81,7 +81,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.010_01';
+our $VERSION = '0.010_02';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -963,7 +963,7 @@ eod
 	my $self = shift;
 	my $parser = shift;
 	if ($parser && !ref $parser) {
-	    my ($pkg, $code, $file) =
+	    my ($pkg, $code) =
 		$self->_parse_subroutine_name ($parser);
 	    unless ($parser = $pkg->can ($code) or !$self->get ('autoload')) {
 		_load_module ($pkg);
@@ -1000,11 +1000,10 @@ sub _get_parser {
     }
 }	# End local symbol block.
 
-#	($package, $subroutine, $file) = $self->_parse_subroutine_name ($name);
+#	($package, $subroutine) = $self->_parse_subroutine_name ($name);
 #
 #	This method parses the given name, and returns the package name
-#	in which the subroutine is defined, the subroutine name, and the
-#	file name of the package in which the subroutine resides.  If
+#	in which the subroutine is defined and the subroutine name. If
 #	the $name is a bare subroutine name, the package is the calling
 #	package unless that package contains no such subroutine but
 #	$self->can($name) is true, in which case the package is
@@ -1031,7 +1030,7 @@ Error - '$parser' yields undefined package name.
 eod
 	@parts = split '::', $pkg;
     }
-    return wantarray ? ($pkg, $code, join ('/', @parts) . '.pm') : $pkg;
+    return wantarray ? ($pkg, $code) : $pkg;
 }
 
 sub _retrieve {
