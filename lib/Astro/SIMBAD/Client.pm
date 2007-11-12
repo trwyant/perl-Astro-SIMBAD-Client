@@ -11,21 +11,13 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 =head1 NOTICE
 
 As of SIMBAD4 version 1.019a released 26-Mar-2007, 'vo' web service
-queries have begun returning data. But I<caveat user>, at least until
-stability is demonstrated.
+(SOAP) queries have begun returning data, and have worked ever since.
 
 Beginning with Astro::SIMBAD::Client version 0.006_01, FORMAT_VO_BASIC
 returns decimal degrees for right ascension and declination. This was
 always the intention, but it was impossible to test the requisite format
 changes until the SIMBAD4 web service started returning data in response
 to 'vo' queries.
-
-As of about 16-Oct-2007, the url_query method is unable to return
-VOTable data. This appears to be due to a bug introduced on that date by
-SIMBAD4 release 1.052, and fixed by 1.053 on 18-Oct-2007 (wow! fast!).
-Astro::SIMBAD::Client responded by marking the corresponding tests
-'todo' in release 0.009 on 17-Oct-2007, and making them real tests again
-in release 0.010.
 
 =head1 DESCRIPTION
 
@@ -81,7 +73,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.010_02';
+our $VERSION = '0.011';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 

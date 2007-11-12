@@ -38,3 +38,7 @@
     now work as of 18-Oct-2007.
   Corrected the code used to escape URLs in the centralized requester
     (use URL::Escape, not HTML::Entities).
+0.011
+  Modify parse module loader to use 'eval "require $module"' rather
+    than generating .pm file name, to work with .pmc modules when and
+    if they appear.
