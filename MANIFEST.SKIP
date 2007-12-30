@@ -12,6 +12,7 @@ CVS/
 ^Makefile$
 ^MANIFEST\.
 ^pm_to_blib$
+^pod2htm.\.tmp$
 ^ref/
 ^t/executable.t$
 ^t/manifest.t$
