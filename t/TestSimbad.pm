@@ -94,6 +94,10 @@ sub test {
 	    require Data::Dumper;
 	    local $Data::Dumper::Terse = 1;
 	    warn "\$got = ", Data::Dumper::Dumper ($got);
+	} elsif ($verb eq 'echo') {
+	    foreach (split '\n', join ' ', @args) {
+		print "# $_\n";
+	    }
 	} elsif ($verb eq 'find') {
 	    my $target = pop @args;
 	    if (ref $got eq 'ARRAY') {
