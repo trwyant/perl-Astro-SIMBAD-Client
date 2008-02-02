@@ -10,7 +10,7 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.002';
+my $VERSION = '0.002_01';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
@@ -45,6 +45,11 @@ while (defined (my $buffer = _readline ())) {
     next if $buffer =~ m/^#/;
 
     my @args = eval {map {m/^<</ ? _heredoc ($_) :
+	m/^<(.*)/ ? do {
+	    open (my $fh, '<', $1) or die "Failed to open $1: $!\n";
+	    local $/ = undef;
+	    scalar <$fh>;
+	} :
 	m/^(>{1,2})(.+)/ ? do {
 		open (my $fh, $1, $2) or die <<eod;
 Error - Failed to open $2
@@ -140,6 +145,12 @@ specifies a format to be used for a 'txt' mode query. Note that
  simbadc> set format txt=<<eod
 
 is B<not> equivalent; the '<<eod' must be a token all by itself.
+
+If a token begins with '<', the rest of the token is taken as a file
+name, and the contents of the file are substituted for the token. Note
+that this does B<not> give a mechanism for feeding commands from a file,
+since the contents of the input file are not parsed. It does, however,
+give a less painful way to test tweaks of complex formats.
 
 The following commands are implemented by this script, in addition to
 (or in lieu of) the commands documented in L<Astro::SIMBAD::Client>:
