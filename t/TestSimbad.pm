@@ -13,6 +13,7 @@ sub test {
 	my $test = 0;
 	my @todo;
 	while (<$fh>) {
+	    m/^\s*end\b/ and last;
 	    m/^\s*test\b/ and do {$test++; next};
 	    m/^\s*todo\b/ and do {$test++; push @todo, $test; next};
 	    m/^\s*access\b/ and do {
@@ -35,7 +36,7 @@ sub test {
     my $class = 'Astro::SIMBAD::Client';
     my $smb = $class->new ();
     my $obj = $smb;
-    my ($got, $ref, $skip, $want);
+    my ($canned, $got, $ref, $skip, $want);
     while (<$fh>) {
 	chomp;
 	s/^\s+//;
@@ -98,6 +99,8 @@ sub test {
 	    foreach (split '\n', join ' ', @args) {
 		print "# $_\n";
 	    }
+	} elsif ($verb eq 'end') {
+	    last;
 	} elsif ($verb eq 'find') {
 	    my $target = pop @args;
 	    if (ref $got eq 'ARRAY') {
@@ -117,6 +120,16 @@ sub test {
 		       and do {$got = $item; last;};
 		}
 	    }
+	} elsif ($verb eq 'load') {
+	    if (@args) {
+		my $fn = $args[0];
+		open (my $fh, '<', $fn) or die "Failed to open $fn: $!\n";
+		local $/ = undef;
+		$canned = eval scalar <$fh>;
+		$@ and die $@;
+	    } else {
+		$canned = undef;
+	    }
 	} elsif ($verb eq 'require') {
 	    $skip = @args > 1 ? ("Can not load any of " . join (', ', @args)) :
 		@args ? "Can not load @args" : '';
@@ -127,13 +140,16 @@ sub test {
 	} elsif ($verb eq 'test' || $verb eq 'todo') {
 	    $test++;
 	    $got = 'undef' unless defined $got;
-	    chomp $got;
-	    ref $want or chomp $want;
+	    foreach ($want, $got) {
+		ref $_ and next;
+		chomp $_;
+		m/(.+?)\s+$/ and numberp ($1) and $_ = $1;
+	    }
 	    print <<eod;
 #
 # Test $test - @args
-#     Expect: $want
-#        Got: $got
+#     Expect: @{[groom ($want)]}
+#        Got: @{[groom ($got)]}
 eod
 	    if (ref $want eq 'Regexp') {
 		skip ($skip, $got =~ m/$want/);
@@ -144,6 +160,20 @@ eod
 	    }
 	} elsif ($verb eq 'want') {
 	    $want = shift @args;
+	} elsif ($verb eq 'want_load') {
+	    $want = $canned;
+	    foreach my $key (@args) {
+		my $ref = ref $want;
+		if ($ref eq 'ARRAY') {
+		    $want = $want->[$key];
+		} elsif ($ref eq 'HASH') {
+		    $want = $want->{$key};
+		} elsif ($ref) {
+		    die "Loaded data contains unexpected $ref reference for key $key\n";
+		} else {
+		    die "Loaded data does not contain key @args\n";
+		}
+	    }
 	} elsif ($verb eq 'want_re') {
 	    $want = shift @args;
 	    $want = qr{$want};
@@ -166,6 +196,14 @@ eod
     }
 }
 
+
+sub groom {
+    my $thing = shift;
+    defined $thing or return 'undef';
+    ref $thing and return $thing;
+    numberp ($thing) and return $thing;
+    return "'$thing'"
+}
 
 sub numberp {
     $_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/
