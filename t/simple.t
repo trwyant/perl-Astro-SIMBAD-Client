@@ -13,6 +13,8 @@ set type txt
 set format txt=FORMAT_TXT_SIMPLE_BASIC
 set parser txt=Parse_TXT_Simple
 
+load t/canned.data
+
 echo <<eod
 
 The following tests use the query (SOAP) interface
@@ -25,33 +27,31 @@ want 1
 test query id Arcturus (txt) - number of objects returned
 
 deref 0 name
-want <<eod
-NAME ARCTURUS
-eod
+want_load arcturus name
 test query id Arcturus (txt) - name
 
 deref 0 ra
-want 213.9153
+want_load arcturus ra
 test query id Arcturus (txt) - right ascension
 
 deref 0 dec
-want 19.1824103
+want_load arcturus dec
 test query id Arcturus (txt) - declination
 
 deref 0 plx
-want 88.85
+want_load arcturus plx
 test query id Arcturus (txt) - parallax
 
 deref 0 pmra
-want -1093.43
+want_load arcturus pmra
 test query id Arcturus (txt) - proper motion in right ascension
 
 deref 0 pmdec
-want -1999.43
+want_load arcturus pmdec
 test query id Arcturus (txt) - proper motion in declination
 
 deref 0 radial
-want -5.2
+want_load arcturus radial
 test query id Arcturus (txt) - radial velocity in recession
 
 clear
@@ -72,33 +72,31 @@ want 1
 test script 'query id arcturus' - number of objects returned
 
 deref 0 name
-want <<eod
-NAME ARCTURUS
-eod
+want_load arcturus name
 test script 'query id arcturus' - name
 
 deref 0 ra
-want 213.9153
+want_load arcturus ra
 test script 'query id arcturus' - right ascension
 
 deref 0 dec
-want 19.1824103
+want_load arcturus dec
 test script 'query id arcturus' - declination
 
 deref 0 plx
-want 88.85
+want_load arcturus plx
 test script 'query id arcturus' - parallax
 
 deref 0 pmra
-want -1093.43
+want_load arcturus pmra
 test script 'query id arcturus' - proper motion in right ascension
 
 deref 0 pmdec
-want -1999.43
+want_load arcturus pmdec
 test script 'query id arcturus' - proper motion in declination
 
 deref 0 radial
-want -5.2
+want_load arcturus radial
 test script 'query id arcturus' - radial velocity in recession
 
 clear
@@ -115,31 +113,29 @@ want 1
 test script_file t/arcturus.simple - number of objects returned
 
 deref 0 name
-want <<eod
-NAME ARCTURUS
-eod
+want_load arcturus name
 test script_file t/arcturus.simple - name
 
 deref 0 ra
-want 213.9153
+want_load arcturus ra
 test script_file t/arcturus.simple - right ascension
 
 deref 0 dec
-want 19.1824103
+want_load arcturus dec
 test script_file t/arcturus.simple - declination
 
 deref 0 plx
-want 88.85
+want_load arcturus plx
 test script_file t/arcturus.simple - parallax
 
 deref 0 pmra
-want -1093.43
+want_load arcturus pmra
 test script_file t/arcturus.simple - proper motion in right ascension
 
 deref 0 pmdec
-want -1999.43
+want_load arcturus pmdec
 test script_file t/arcturus.simple - proper motion in declination
 
 deref 0 radial
-want -5.2
+want_load arcturus radial
 test script_file t/arcturus.simple - radial velocity in recession

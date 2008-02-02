@@ -11,6 +11,8 @@ access
 
 require XML::Parser XML::Parser::Lite
 
+load t/canned.data
+
 set type vo
 set parser vo=Parse_VO_Table
 
@@ -34,33 +36,31 @@ want 1
 test query id arcturus (vo) - count of rows
 
 deref 0 data 0 0 value
-want <<eod
-NAME ARCTURUS
-eod
+want_load arcturus name
 test query id Arcturus (vo) - name
 
 deref 0 data 0 2 value
-want 213.9153000
+want_load arcturus ra
 test query id Arcturus (vo) - right ascension
 
 deref 0 data 0 3 value
-want +19.1824103
+want_load arcturus dec
 test query id Arcturus (vo) - declination
 
 deref 0 data 0 4 value
-want 88.85
+want_load arcturus plx
 test query id Arcturus (vo) - parallax
 
 deref 0 data 0 5 value
-want -1093.43
+want_load arcturus pmra
 test query id Arcturus (vo) - proper motion in right ascension
 
 deref 0 data 0 6 value
-want -1999.43
+want_load arcturus pmdec
 test query id Arcturus (vo) - proper motion in declination
 
 deref 0 data 0 7 value
-want -5.2
+want_load arcturus radial
 test query id Arcturus (vo) - radial velocity
 
 # For a long time the previous was 'todo'
@@ -83,33 +83,31 @@ want 1
 test script_file t/arcturus.vo - count rows
 
 deref 0 data 0 0 value
-want <<eod
-NAME ARCTURUS
-eod
+want_load arcturus name
 test script_file t/arcturus.vo - name
 
 deref 0 data 0 2 value
-want 213.9153000
+want_load arcturus ra
 test script_file t/arcturus.vo - right ascension
 
 deref 0 data 0 3 value
-want +19.1824103
+want_load arcturus dec
 test script_file t/arcturus.vo - declination
 
 deref 0 data 0 4 value
-want 88.85
+want_load arcturus plx
 test script_file t/arcturus.vo - parallax
 
 deref 0 data 0 5 value
-want -1093.43
+want_load arcturus pmra
 test script_file t/arcturus.vo - proper motion in right ascension
 
 deref 0 data 0 6 value
-want -1999.43
+want_load arcturus pmdec
 test script_file t/arcturus.vo - proper motion in declination
 
 deref 0 data 0 7 value
-want -5.2
+want_load arcturus radial
 test script_file t/arcturus.vo - radial velocity
 
 echo <<eod
@@ -132,19 +130,20 @@ test url_query id arcturus (vo) - count of rows
 deref 0 data 0
 find meta 1 name MAIN_ID
 deref_curr value
-want <<eod
-NAME ARCTURUS
-eod
+want_load arcturus name
 test url_query id Arcturus (vo) - name
 
 deref 0 data 0
 find meta 1 name RA
 deref_curr value
 # want 213.9153
-# As of about SIMBAD4 1.005 the default became sexigesimal
-want <<eod
-14 15 39.6720
-eod
+# As of about SIMBAD4 1.005 the default became sexagesimal
+# As of 1.069 (probably much earlier) you can set coodisp1=d to display
+# in decimal. Maybe.
+##want <<eod
+##14 15 39.6720
+##eod
+want_load arcturus ra_hms
 test url_query id Arcturus (vo) - right ascension
 
 deref 0 data 0
@@ -152,32 +151,35 @@ find meta 1 name DEC
 deref_curr value
 # want +19.18241027778
 # As of about SIMBAD4 1.005 the default became sexigesimal
-want <<eod
-+19 10 56.677
-eod
-test qurl_uery id Arcturus (vo) - declination
+# As of 1.069 (probably much earlier) you can set coodisp1=d to display
+# in decimal. Maybe.
+##want <<eod
+##+19 10 56.677
+##eod
+want_load arcturus dec_dms
+test url_uery id Arcturus (vo) - declination
 
 deref 0 data 0
 find meta 1 name PLX_VALUE
 deref_curr value
-want 88.85
+want_load arcturus plx
 test url_query id Arcturus (vo) - parallax
 
 deref 0 data 0
 find meta 1 name PMRA
 deref_curr value
-want -1093.43
+want_load arcturus pmra
 test url_query id Arcturus (vo) - proper motion in right ascension
 
 deref 0 data 0
 find meta 1 name PMDEC
 deref_curr value
-want -1999.43
+want_load arcturus pmdec
 test url_query id Arcturus (vo) - proper motion in declination
 
 deref 0 data 0
 find meta 1 name oRV:RVel
 deref_curr value
-want -5.2
+want_load arcturus radial
 test url_query id Arcturus (vo) - radial velocity
 
