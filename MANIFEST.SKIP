@@ -7,7 +7,7 @@
 ^cover_db/
 CVS/
 \.DS_Store$
-^foo$
+^foo/
 ^ivoa.vo$
 ^Makefile$
 ^MANIFEST\.
