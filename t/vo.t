@@ -14,6 +14,11 @@ require XML::Parser XML::Parser::Lite
 set type vo
 set parser vo=Parse_VO_Table
 
+echo <<eod
+
+The following tests use the query (SOAP) interface
+eod
+
 query id Arcturus
 
 count
@@ -60,6 +65,11 @@ test query id Arcturus (vo) - radial velocity
 
 # For a long time the previous was 'todo'
 
+echo <<eod
+
+The following tests use the script_file interface
+eod
+
 set parser script=Parse_VO_Table
 script_file t/arcturus.vo
 
@@ -101,6 +111,11 @@ test script_file t/arcturus.vo - proper motion in declination
 deref 0 data 0 7 value
 want -5.2
 test script_file t/arcturus.vo - radial velocity
+
+echo <<eod
+
+The following tests use the url_query interface
+eod
 
 url_query id Ident Arcturus
 

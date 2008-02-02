@@ -13,6 +13,11 @@ set type txt
 set format txt=FORMAT_TXT_SIMPLE_BASIC
 set parser txt=Parse_TXT_Simple
 
+echo <<eod
+
+The following tests use the query (SOAP) interface
+eod
+
 query id Arcturus
 
 count
@@ -51,6 +56,11 @@ test query id Arcturus (txt) - radial velocity in recession
 
 clear
 set parser script=Parse_TXT_Simple
+
+echo <<eod
+
+The following tests use the script interface
+eod
 
 script <<eod
 format obj "---\nname: %idlist(NAME|1)\ntype: %otype\nlong: %otypelist\nra: %coord(d;A)\ndec: %coord(d;D)\nplx: %plx(V)\npmra: %pm(A)\npmdec: %pm(D)\nradial: %rv(V)\nredshift: %rv(Z)\nspec: %sptype(S)\nbmag: %fluxlist(B)[%flux(F)]\nvmag: %fluxlist(V)[%flux(F)]\nident: %idlist[%*,]\n"
@@ -92,6 +102,11 @@ want -5.2
 test script 'query id arcturus' - radial velocity in recession
 
 clear
+
+echo <<eod
+
+The following tests use the script_file interface
+eod
 
 script_file t/arcturus.simple
 
