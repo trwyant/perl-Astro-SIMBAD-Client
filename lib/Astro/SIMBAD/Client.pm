@@ -10,14 +10,14 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-As of SIMBAD4 version 1.019a released 26-Mar-2007, 'vo' web service
-(SOAP) queries have begun returning data, and have worked ever since.
-
-Beginning with Astro::SIMBAD::Client version 0.006_01, FORMAT_VO_BASIC
-returns decimal degrees for right ascension and declination. This was
-always the intention, but it was impossible to test the requisite format
-changes until the SIMBAD4 web service started returning data in response
-to 'vo' queries.
+The current release adds the L</url_args> hash attribute, which can be
+used to supply default arguments to the url_query() method. This is
+initially empty. I was tempted to have its initial value be {coodisp1 =>
+'d'}, since this package typically prefers decimal representations of
+degrees to sexagesimal ones, but the current behaviour has been around
+long enough that I was reluctant to change it. And (at least as of
+SIMBAD4 1.071 08-Feb-2008) there appears to be no way to modify VOTable
+output this way.
 
 =head1 DESCRIPTION
 
@@ -73,7 +73,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.011';
+our $VERSION = '0.011_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -144,9 +144,10 @@ my %static = (
 	script => '',
     },
     post => 1,
-    type => 'txt',
 ##    server => 'simweb.u-strasbg.fr',
     server => 'simbad.u-strasbg.fr',
+    type => 'txt',
+    url_args => {},
     verbatim => 0,
 );
 
@@ -775,6 +776,7 @@ it sets the default value of the attribute.
     my %mutator = (
 	format => \&_set_hash,
 	parser => \&_set_hash,
+	url_args => \&_set_hash,
     );
 
     my %transform = (
@@ -914,6 +916,10 @@ Error - url_query needs an even number of arguments after the query
         type.
 eod
 	my %args = @_;
+	my $dflt = $self->get ('url_args');
+	foreach my $key (keys %$dflt) {
+	    exists ($args{$key}) or $args{$key} = $dflt->{$key};
+	}
 	unless ($args{'output.format'}) {
 	    my $type = $self->get ('type');
 	    $args{'output.format'} = $type_map{$type} || $type;
@@ -1357,6 +1363,24 @@ since the SIMBAD web site hints at more types to come. SIMBAD appears
 to treat an unrecognized type as 'txt'.
 
 The default is 'txt'.
+
+=for html <a name="url_args"></a>
+
+=item url_args (hash)
+
+This attribute specifies default arguments for url_query method. These
+will be applied only if not specified in the method call. Any argument
+given in the SIMBAD documentation may be specified. For example:
+
+ $cl->set (url_args => {coodisp1 => d});
+
+causes the query to return coordinates in degrees and decimals rather
+than in sexagesimal (degrees, minutes, and seconds or hours, minutes,
+and seconds, as the case may be.) Note, however, that VOTable output
+does not seem to be affected by this.
+
+The initial default for this attribute is an empty hash; that is, no
+arguments are defaulted by this mechanism.
 
 =for html <a name="verbatim"></a>
 
