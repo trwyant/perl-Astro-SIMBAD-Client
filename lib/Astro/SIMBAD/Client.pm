@@ -73,7 +73,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.011_02';
+our $VERSION = '0.011_03';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -175,10 +175,24 @@ parentheses. This method is exposed for the curious.
 
 =cut
 
+=begin comment
+
 sub agent {
     my $self = shift;
     my $ua = _get_user_agent ();
     $ua->agent ();
+}
+
+=end comment
+
+=cut
+
+{
+    my $agent_string;
+    sub agent {
+	$agent_string ||= join (' ', LWP::UserAgent->_agent,
+	    __PACKAGE__ . '/' . $VERSION);
+    }
 }
 
 =item @attribs = $simbad->attributes ();
@@ -1021,8 +1035,9 @@ sub _get_parser {
 
 sub _get_user_agent {
     my $ua = LWP::UserAgent->new ();
-    $ua->agent ($ua->_agent . ' (' . __PACKAGE__ . ' ' . $VERSION .
-	')');
+##    $ua->agent ($ua->_agent . ' (' . __PACKAGE__ . ' ' . $VERSION .
+##	')');
+    $ua->agent (&agent);
     $ua;
 }
 
