@@ -14,7 +14,7 @@ The current release adds the L</url_args> hash attribute, which can be
 used to supply default arguments to the url_query() method. This is
 initially empty. I was tempted to have its initial value be {coodisp1 =>
 'd'}, since this package typically prefers decimal representations of
-degrees to sexagesimal ones, but the current behaviour has been around
+degrees to sexagesimal ones, but the current behavior has been around
 long enough that I was reluctant to change it. And (at least as of
 SIMBAD4 1.071 08-Feb-2008) there appears to be no way to modify VOTable
 output this way.
@@ -73,7 +73,7 @@ use SOAP::Lite;
 use URI::Escape;			# Comes with libwww-perl
 use XML::DoubleEncodedEntities;
 
-our $VERSION = '0.011_01';
+our $VERSION = '0.011_02';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -164,6 +164,21 @@ sub new {
     my $self = bless {}, $class;
     $self->set (%static, @_);
     return $self;
+}
+
+=item $string = $simbad->agent ();
+
+This method retrieves the user agent string used to identify this
+package in queries to SIMBAD. This string will be the default string for
+LWP::UserAgent, with this package name and version number appended in
+parentheses. This method is exposed for the curious.
+
+=cut
+
+sub agent {
+    my $self = shift;
+    my $ua = _get_user_agent ();
+    $ua->agent ();
 }
 
 =item @attribs = $simbad->attributes ();
@@ -628,7 +643,7 @@ after 'Release:' (case-insensitive).
 
 sub release {
     my $self = shift;
-    my $ua = LWP::UserAgent->new ();
+    my $ua = _get_user_agent ();
     my $rslt = $ua->get ('http://' . $self->{server} . '/simbad/');
     $rslt->is_success or croak "Error - ", $rslt->status_line;
     my ($rls) = $rslt->content =~
@@ -697,7 +712,7 @@ eod
 	my $server = $self->get ('server');
 	my $url = "http://$server/simbad/sim-script?" .
 	    'submit=submit+script&script=' . $script;
-	my $ua = LWP::UserAgent->new ();
+	my $ua = _get_user_agent ();
 	my $resp = $ua->get ($url);
 
 	$resp->is_success or croak $resp->status_line;
@@ -737,7 +752,7 @@ sub script_file {
 
     my $server = $self->get ('server');
     my $url = "http://$server/simbad/sim-script";
-    my $ua = LWP::UserAgent->new ();
+    my $ua = _get_user_agent ();
     my $rqst = POST $url, 
 	Content_Type => 'form-data',
 	Content => [
@@ -998,6 +1013,19 @@ sub _get_parser {
     }
 }	# End local symbol block.
 
+#	$ua = _get_user_agent ();
+#
+#	This subroutine returns an LWP::UserAgent object with its agent
+#	string set to the default, with our class name and version
+#	appended in parentheses.
+
+sub _get_user_agent {
+    my $ua = LWP::UserAgent->new ();
+    $ua->agent ($ua->_agent . ' (' . __PACKAGE__ . ' ' . $VERSION .
+	')');
+    $ua;
+}
+
 #	($package, $subroutine) = $self->_parse_subroutine_name ($name);
 #
 #	This method parses the given name, and returns the package name
@@ -1036,7 +1064,7 @@ sub _retrieve {
     my $debug = $self->get ('debug');
     my $inx = 1;
     my $caller;
-    my $ua = LWP::UserAgent->new ();
+    my $ua = _get_user_agent ();
     if ($self->get ('post')) {
 	if ($debug) {
 	    do {
@@ -1372,7 +1400,7 @@ This attribute specifies default arguments for url_query method. These
 will be applied only if not specified in the method call. Any argument
 given in the SIMBAD documentation may be specified. For example:
 
- $cl->set (url_args => {coodisp1 => d});
+ $simbad->set (url_args => {coodisp1 => d});
 
 causes the query to return coordinates in degrees and decimals rather
 than in sexagesimal (degrees, minutes, and seconds or hours, minutes,
