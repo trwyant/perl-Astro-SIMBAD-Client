@@ -115,6 +115,7 @@ echo <<eod
 The following tests use the url_query interface
 eod
 
+set url_args coodisp1=d
 url_query id Ident Arcturus
 
 count
@@ -126,7 +127,6 @@ count
 want 1
 test url_query id arcturus (vo) - count of rows
 
-##deref 0 data 0 0 value
 deref 0 data 0
 find meta 1 name MAIN_ID
 deref_curr value
@@ -139,11 +139,9 @@ deref_curr value
 # want 213.9153
 # As of about SIMBAD4 1.005 the default became sexagesimal
 # As of 1.069 (probably much earlier) you can set coodisp1=d to display
-# in decimal. Maybe.
-##want <<eod
-##14 15 39.6720
-##eod
+# in decimal. But this seems not to work for VOTable output.
 want_load arcturus ra_hms
+# want_load arcturus ra
 test url_query id Arcturus (vo) - right ascension
 
 deref 0 data 0
@@ -152,11 +150,9 @@ deref_curr value
 # want +19.18241027778
 # As of about SIMBAD4 1.005 the default became sexigesimal
 # As of 1.069 (probably much earlier) you can set coodisp1=d to display
-# in decimal. Maybe.
-##want <<eod
-##+19 10 56.677
-##eod
+# in decimal. But this seems not to work for VOTable output.
 want_load arcturus dec_dms
+# want_load arcturus dec
 test url_uery id Arcturus (vo) - declination
 
 deref 0 data 0
