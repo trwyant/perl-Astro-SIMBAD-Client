@@ -36,6 +36,7 @@ preprocessed
 queryObjectByBib
 queryObjectByCoord
 queryObjectById
+sexagesimal
 simbad
 simbadc
 simweb
