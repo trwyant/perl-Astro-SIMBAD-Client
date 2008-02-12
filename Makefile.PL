@@ -8,7 +8,7 @@ use warnings;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.007_01';
+our $VERSION = '0.007_02';
 
 my $vers = '';
 
@@ -56,6 +56,7 @@ WriteMakefile (
 	PREREQ_PM => {
 	    'HTML::Entities'	=> 0,
 	    'LWP::UserAgent'	=> 0,
+	    'Scalar::Util'	=> 1.01,	# Not in Perl 5.6.
 	    'SOAP::Lite'	=> 0,
 	    'URI::Escape'	=> 0,
 	    'XML::DoubleEncodedEntities' => 1.0,

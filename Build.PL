@@ -9,7 +9,7 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.006';
+our $VERSION = '0.006_01';
 
 my $bldr = Module::Build->new (
 	dist_author => 'Tom Wyant (wyant at cpan dot org)',
@@ -20,6 +20,7 @@ my $bldr = Module::Build->new (
 	    'HTML::Entities' => 0,
 	    'LWP::UserAgent' => 0,
 	    'SOAP::Lite' => 0,
+	    'Scalar::Util' => 1.01,	# Not in Perl 5.6
 	    'URI::Escape' => 0,
 	    'XML::DoubleEncodedEntities' => 1.0,
 	},
