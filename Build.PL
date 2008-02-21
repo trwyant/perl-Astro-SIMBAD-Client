@@ -9,7 +9,7 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.006_01';
+our $VERSION = '0.007';
 
 my $bldr = Module::Build->new (
 	dist_author => 'Tom Wyant (wyant at cpan dot org)',
