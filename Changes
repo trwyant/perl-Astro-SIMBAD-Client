@@ -42,3 +42,15 @@
   Modify parse module loader to use 'eval "require $module"' rather
     than generating .pm file name, to work with .pmc modules when and
     if they appear.
+0.012
+  Astro::SIMBAD::Client
+    Add url_args attribute to provide default arguments to the url_query
+      method.
+    Add 'Astro::SIMBAD::Client' and version number to user agent string.
+    Add Scalar::Util as a requirement, since this is not bundled with
+      Perl 5.6.
+    Add a delay (3 seconds by default) between queries of a given
+      server. The 'delay' attribute controls this. Subsecond delays are
+      available if Time::HiRes can be loaded.
+  bin/simbadc
+    Parse <filename as replacing the token with the contents of the file.
