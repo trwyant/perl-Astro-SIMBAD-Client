@@ -1482,8 +1482,8 @@ Thomas R. Wyant, III (F<wyant at cpan dot org>)
 
 =head1 COPYRIGHT
 
-Copyright 2006, 2007 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
-All rights reserved.
+Copyright 2006, 2007, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot
+org>).  All rights reserved.
 
 This module is free software; you can use it, redistribute it and/or
 modify it under the same terms as Perl itself. Please see
