@@ -52,5 +52,7 @@
     Add a delay (3 seconds by default) between queries of a given
       server. The 'delay' attribute controls this. Subsecond delays are
       available if Time::HiRes can be loaded.
+    Update copyright.
   bin/simbadc
     Parse <filename as replacing the token with the contents of the file.
+    Update copyright.
