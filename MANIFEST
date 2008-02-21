@@ -21,7 +21,6 @@ t/canned.data
 t/pod.t
 t/pod_coverage.t
 t/release.t
-t/services.t
 t/simple.t
 t/TestSimbad.pm
 t/vo.t

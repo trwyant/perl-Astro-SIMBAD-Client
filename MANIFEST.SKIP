@@ -16,6 +16,7 @@ CVS/
 ^ref/
 ^t/executable.t$
 ^t/manifest.t$
+^t/services.t$
 \.old$
 \.swp$
 ^t/pod_spelling.t$
