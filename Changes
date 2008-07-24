@@ -56,3 +56,8 @@
   bin/simbadc
     Parse <filename as replacing the token with the contents of the file.
     Update copyright.
+0.013
+  Astro::SIMBAD::Client
+    Add =head1 LICENSE (CPANTS game)
+  t/canned.data
+    Track change in data returned by %OTYPE in SIMBAD4 1.092 21-Jul-2008
