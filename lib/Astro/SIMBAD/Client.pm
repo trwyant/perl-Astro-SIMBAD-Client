@@ -10,18 +10,14 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-The current release adds the L</url_args> hash attribute, which can be
-used to supply default arguments to the url_query() method. This is
-initially empty. I was tempted to have its initial value be {coodisp1 =>
-'d'}, since this package typically prefers decimal representations of
-degrees to sexagesimal ones, but the current behavior has been around
-long enough that I was reluctant to change it. And (at least as of
-SIMBAD4 1.071 08-Feb-2008) there appears to be no way to modify VOTable
-output this way.
+The current release tacks a change in the data returned by %OTYPE in
+SIMBAD4 1.092 dated 21-Jul-2008; they got rid of the trailing blanks,
+which affected at least the developer tests).
 
-The current release also adds the L</delay> attribute, which controls
-the minimum interval (in seconds) between requests to a given SIMBAD
-server.
+Other than that, the only change is the addition of a LICENSE section
+to the POD.
+
+For previous changes, see the Changes file.
 
 =head1 DESCRIPTION
 
@@ -83,7 +79,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.012_01';
+our $VERSION = '0.013';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
