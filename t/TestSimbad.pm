@@ -18,13 +18,13 @@ sub test {
 	    m/^\s*todo\b/ and do {$test++; push @todo, $test; next};
 	    m/^\s*access\b/ and do {
 		eval {require LWP::UserAgent} or do {
-		    print "1..0 # Skipped: Can not load LWP::UserAgent\n";
+		    print "1..0 # skip Can not load LWP::UserAgent\n";
 		    exit;
 		};
 		my $svr = Astro::SIMBAD::Client->get ('server');
 		my $resp = LWP::UserAgent->new->get ("http://$svr/");
 		$resp->is_success or do {
-		    print "1..0 # Skipped: $svr @{[$resp->status_line]}\n";
+		    print "1..0 # skip $svr @{[$resp->status_line]}\n";
 		    exit;
 		};
 	    };
