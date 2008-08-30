@@ -1,6 +1,4 @@
-BEGIN {
-    require 5.006  # for 'our'. Incantation from http://cpantest.grango.org/
-}
+use 5.008;
 
 use strict;
 use warnings;

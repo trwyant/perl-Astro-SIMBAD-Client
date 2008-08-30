@@ -57,6 +57,9 @@ The following methods should be considered public:
 
 =cut
 
+use 5.008;	# Because of MailTools, used by SOAP::Lite.
+		# Otherwise it would be 5.006 because of 'our'.
+
 use strict;
 use warnings;
 
@@ -79,7 +82,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.013';
+our $VERSION = '0.013_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
