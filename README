@@ -28,6 +28,8 @@ This module is installable by the usual incantation:
     make test
     make install
 
+A Build.PL file is provided for those who prefer Module::Build.
+
 Of course, since it's pure Perl, you can just expand the kit and drop
 Client.pm in the Astro/SIMBAD directory in the appropriate place in your
 @INC directories.
