@@ -9,6 +9,7 @@ eg/script
 eg/votable
 eg/votree
 lib/Astro/SIMBAD/Client.pm
+lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
