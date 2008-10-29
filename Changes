@@ -67,3 +67,6 @@
       MailTools, and we require SOAP::Lite.
     Fix TAP emitted by t::TestSimbad, so that we get useful output when
       the server is unreachable or unresponsive.
+0.015
+  Split Astro::SIMBAD::Client::WSQueryInterfaceService into its own file
+    for bookkeeping purposes.
