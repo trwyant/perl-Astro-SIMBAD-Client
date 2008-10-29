@@ -83,7 +83,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.014_01';
+our $VERSION = '0.015';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
