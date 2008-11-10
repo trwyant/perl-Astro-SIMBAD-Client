@@ -72,7 +72,7 @@ sub test {
 	} elsif ($verb eq 'clear') {
 	    $got = $ref = undef;
 	} elsif ($verb eq 'count') {
-	    if (!defined $got) {
+	    if ($skip || !defined $got) {
 		$got = undef;
 	    } elsif (ref $got eq 'ARRAY') {
 		$got = @$got;
