@@ -187,6 +187,9 @@ eod
 		if ($@) {
 		    warn $@;
 		    $got = $@;
+		    if ($got =~ m/^(5\d+)/) {
+			$skip = $got;
+		    }
 		}
 		$ref = $got if ref $got;
 	    }
