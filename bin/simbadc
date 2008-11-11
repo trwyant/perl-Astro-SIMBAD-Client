@@ -10,7 +10,7 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.002_01';
+my $VERSION = '0.002_02';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
@@ -294,7 +294,7 @@ sub show {
 		    defined $val->{$key} ? "$key=$val->{$key}" : "$key=");
 	    }
 	} else {
-	    push @rslt, _quote (@verb, $name, $val);
+	    push @rslt, _quote (@verb, $name, defined $val ? $val : ());
 	}
     }
     my $rslt = join '', @rslt;
