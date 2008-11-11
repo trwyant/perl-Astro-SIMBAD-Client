@@ -130,6 +130,8 @@ sub test {
 	    } else {
 		$canned = undef;
 	    }
+	} elsif ($verb eq 'noskip') {
+	    $skip = undef;
 	} elsif ($verb eq 'require') {
 	    $skip = @args > 1 ? ("Can not load any of " . join (', ', @args)) :
 		@args ? "Can not load @args" : '';
