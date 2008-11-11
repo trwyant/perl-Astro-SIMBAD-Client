@@ -83,7 +83,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.015';
+our $VERSION = '0.015_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -1103,6 +1103,12 @@ sub _retrieve {
     my $ua = _get_user_agent ();
     $self->_delay ();
     if (UNIVERSAL::isa ($url, 'HTTP::Request')) {
+	if ($debug) {
+	    do {
+		$caller = (caller ($inx++))[3];
+	    } while $caller eq '(eval)';
+	    print "Debug $caller executing ", $url->as_string, "\n";
+	}
 	$ua->request ($url);
     } elsif ($self->get ('post') && %$args) {
 	if ($debug) {
