@@ -10,7 +10,7 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-The current release tacks a change in the data returned by %OTYPE in
+The current release tracks a change in the data returned by %OTYPE in
 SIMBAD4 1.092 dated 21-Jul-2008; they got rid of the trailing blanks,
 which affected at least the developer tests).
 
@@ -83,7 +83,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.015_01';
+our $VERSION = '0.015_02';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
