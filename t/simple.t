@@ -55,6 +55,7 @@ want_load arcturus radial
 test query id Arcturus (txt) - radial velocity in recession
 
 clear
+noskip
 set parser script=Parse_TXT_Simple
 
 echo <<eod
