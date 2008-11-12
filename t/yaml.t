@@ -9,7 +9,7 @@ __DATA__
 
 access
 
-require YAML
+require YAML YAML::Syck
 
 set type txt
 set parser txt=YAML::Load
@@ -56,7 +56,9 @@ deref 0 radial
 want_load arcturus radial
 test query id Arcturus (txt) - radial velocity in recession
 
+noskip
 clear
+require YAML YAML::Syck
 set parser script=YAML::Load
 
 echo <<eod

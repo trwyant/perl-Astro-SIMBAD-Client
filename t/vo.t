@@ -70,6 +70,8 @@ echo <<eod
 The following tests use the script_file interface
 eod
 
+noskip
+require XML::Parser XML::Parser::Lite
 set parser script=Parse_VO_Table
 script_file t/arcturus.vo
 
@@ -115,6 +117,8 @@ echo <<eod
 The following tests use the url_query interface
 eod
 
+noskip
+require XML::Parser XML::Parser::Lite
 set url_args coodisp1=d
 url_query id Ident Arcturus
 
