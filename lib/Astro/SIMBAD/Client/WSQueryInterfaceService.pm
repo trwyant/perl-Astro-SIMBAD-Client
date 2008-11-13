@@ -10,7 +10,7 @@ package Astro::SIMBAD::Client::WSQueryInterfaceService;
 # -- generated from http://simweb.u-strasbg.fr/axis/services/WSQuery?wsdl
 
 ## TRW vvvv
-our $VERSION = '0.015_01';
+our $VERSION = '0.015_02';
 ## TRW ^^^^
 
 my %methods = (
@@ -62,7 +62,10 @@ use vars qw(@ISA $AUTOLOAD @EXPORT_OK %EXPORT_TAGS);
 
 sub _call {
   my ($self, $method) = (shift, shift);
-  my $name = UNIVERSAL::isa($method => 'SOAP::Data') ? $method->name : $method;
+  ## TRW vvvv
+  ## my $name = UNIVERSAL::isa($method => 'SOAP::Data') ? $method->name : $method;
+  my $name = eval {$method->isa('SOAP::Data')} ? $method->name : $method;
+  ## TRW ^^^^
   my %method = %{$methods{$name}};
   ## TRW vvvv
   my $server = shift or Carp::croak "No server specified";;
@@ -119,7 +122,10 @@ $self->serializer->register_ns("http://schemas.xmlsoap.org/wsdl/soap/","wsdlsoap
   if ($self->want_som) {
       return $som;
   }
-  UNIVERSAL::isa($som => 'SOAP::SOM') ? wantarray ? $som->paramsall : $som->result : $som;
+  ## TRW vvvv
+  ## UNIVERSAL::isa($som => 'SOAP::SOM') ? wantarray ? $som->paramsall : $som->result : $som;
+  eval {$som->isa('SOAP::SOM')} ? wantarray ? $som->paramsall : $som->result : $som;
+  ## TRW ^^^^
 }
 
 sub BEGIN {
@@ -136,7 +142,10 @@ no strict 'refs';
 for my $method (@EXPORT_OK) {
   my %method = %{$methods{$method}};
   *$method = sub {
-    my $self = UNIVERSAL::isa($_[0] => __PACKAGE__) 
+    ## TRW vvvv
+    ## my $self = UNIVERSAL::isa($_[0] => __PACKAGE__) 
+    my $self = eval {$_[0]->isa(__PACKAGE__)}
+    ## TRW ^^^^
       ? ref $_[0] ? shift # OBJECT
                   # CLASS, either get self or create new and assign to self
                   : (shift->self || __PACKAGE__->self(__PACKAGE__->new))

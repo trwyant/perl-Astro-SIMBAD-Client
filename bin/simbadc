@@ -84,7 +84,7 @@ eod
     if ($@) {
 	warn $@
     } elsif (defined $rslt &&
-	    !UNIVERSAL::isa ($rslt, 'Astro::SIMBAD::Client')) {
+	    !eval {$rslt->isa('Astro::SIMBAD::Client')}) {
 	print ref $rslt ? Dumper ($rslt) : "$rslt\n";
     }
 }
