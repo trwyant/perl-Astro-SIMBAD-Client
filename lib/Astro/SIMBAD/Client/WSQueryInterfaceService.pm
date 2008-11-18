@@ -10,7 +10,7 @@ package Astro::SIMBAD::Client::WSQueryInterfaceService;
 # -- generated from http://simweb.u-strasbg.fr/axis/services/WSQuery?wsdl
 
 ## TRW vvvv
-our $VERSION = '0.015_02';
+our $VERSION = '0.016';
 ## TRW ^^^^
 
 my %methods = (

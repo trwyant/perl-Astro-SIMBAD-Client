@@ -8,17 +8,6 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
  my $simbad = Astro::SIMBAD::Client->new ();
  print $simbad->query (id => 'Arcturus');
 
-=head1 NOTICE
-
-The current release tracks a change in the data returned by %OTYPE in
-SIMBAD4 1.092 dated 21-Jul-2008; they got rid of the trailing blanks,
-which affected at least the developer tests).
-
-Other than that, the only change is the addition of a LICENSE section
-to the POD.
-
-For previous changes, see the Changes file.
-
 =head1 DESCRIPTION
 
 This package implements several query interfaces to version 4 of the
@@ -83,7 +72,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.015_03';
+our $VERSION = '0.016';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 

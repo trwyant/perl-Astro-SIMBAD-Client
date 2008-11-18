@@ -70,3 +70,6 @@
 0.015
   Split Astro::SIMBAD::Client::WSQueryInterfaceService into its own file
     for bookkeeping purposes.
+0.016
+  Eliminate calls to UNIVERSAL::isa as a function.
+  Revise tests to deal more gracefully with 5xx errors.
