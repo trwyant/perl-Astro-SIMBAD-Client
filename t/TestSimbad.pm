@@ -6,6 +6,8 @@ use warnings;
 use Astro::SIMBAD::Client;
 use Test;
 
+my %loaded;
+
 sub test {
     my $fh = shift;
     {
@@ -58,6 +60,12 @@ sub test {
 	    }
 	}
 	my $verb = shift @args;
+	if ($verb eq 'loaded') {
+	    $loaded{shift @args} or next;
+	    $verb = shift @args;
+	    $verb eq 'test' || $verb eq 'todo'
+		and die "'test' or 'todo' in 'loaded' not supported";
+	}
 	if ($verb eq 'static') {
 	    $obj = $class;
 	    $verb = shift;
@@ -137,7 +145,11 @@ sub test {
 		@args ? "Can not load @args" : '';
 	    foreach (@args) {
 		eval "require $_";
-		$@ or do {$skip = ''; last};
+		$@ or do {
+		    $skip = '';
+		    $loaded{$_} = 1;
+		    last
+		};
 	    }
 	} elsif ($verb eq 'test' || $verb eq 'todo') {
 	    $test++;
