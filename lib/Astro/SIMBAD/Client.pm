@@ -72,7 +72,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.016';
+our $VERSION = '0.016_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -1022,6 +1022,13 @@ sub _get_parser {
     my ($self, $type) = @_;
     $self->_get_coderef ($self->get ('parser')->{$type});
 }
+
+#	$rslt = _load_module($name)
+#
+#	This subroutine loads the named module using 'require'. It
+#	croaks if the load fails, or returns the result of the
+#	'require' if it succeeds. Results are cached, so subsequent
+#	calls simply do what the first one did.
 
 {	# Local symbol block. Oh, for 5.10 and state variables.
     my %error;
