@@ -73,3 +73,5 @@
 0.016
   Eliminate calls to UNIVERSAL::isa as a function.
   Revise tests to deal more gracefully with 5xx errors.
+0.017
+  Fix test failure when YAML::Syck installed but YAML not.
