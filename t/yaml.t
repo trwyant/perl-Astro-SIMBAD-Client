@@ -12,7 +12,8 @@ access
 require YAML YAML::Syck
 
 set type txt
-set parser txt=YAML::Load
+loaded YAML set parser txt=YAML::Load
+loaded YAML::Syck set parser txt=YAML::Syck::Load
 set format txt=FORMAT_TXT_YAML_BASIC
 
 load t/canned.data
@@ -56,10 +57,16 @@ deref 0 radial
 want_load arcturus radial
 test query id Arcturus (txt) - radial velocity in recession
 
+# Maybe we're skipping because of a problem with SOAP; so we clear
+# the skip indicator. We re-require after this, because maybe we're
+# skipping because of missing modules.
+
 noskip
-clear
 require YAML YAML::Syck
-set parser script=YAML::Load
+loaded YAML set parser script=YAML::Load
+loaded YAML::Syck set parser script=YAML::Syck::Load
+
+clear
 
 echo <<eod
 
