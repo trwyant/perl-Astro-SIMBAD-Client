@@ -19,9 +19,12 @@ t/arcturus.vo
 t/arcturus.yaml
 t/basic.t
 t/canned.data
+t/executable.t
+t/manifest.t
 t/pod.t
 t/pod_coverage.t
 t/release.t
+t/services.t
 t/simple.t
 t/TestSimbad.pm
 t/vo.t

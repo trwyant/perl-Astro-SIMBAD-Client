@@ -1,10 +1,18 @@
+package main;
+
 use strict;
 use warnings;
 
 use t::TestSimbad;
 
+unless ($ENV{DEVELOPER_TEST}) {
+    print "1..0 # skip Environment variable DEVELOPER_TEST not set.\n";
+    exit;
+}
+
 t::TestSimbad::test (*DATA);
 
+1;
 __END__
 
 access
