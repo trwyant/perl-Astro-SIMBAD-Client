@@ -1,3 +1,5 @@
+package main;
+
 use strict;
 use warnings;
 
@@ -5,6 +7,7 @@ use t::TestSimbad;
 
 t::TestSimbad::test (*DATA);
 
+1;
 __END__
 
 access

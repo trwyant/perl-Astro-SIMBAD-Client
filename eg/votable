@@ -27,27 +27,34 @@ eod
 
 my %opt;
 
-GetOptions (\%opt, qw{dumper help url_query yaml}) && (@ARGV || $opt{help})
+(GetOptions (\%opt,
+    help => sub {print $usage; exit},
+    qw{dumper url_query yaml}) && @ARGV)
     or die $usage;
-$opt{help} and do {print $usage; exit};
 
 my $simbad = Astro::SIMBAD::Client->new (type => 'vo');
 
 my @dump_as;
-foreach ([dumper => 'Data::Dumper::Dumper'], [yaml => 'YAML::Dump']) {
-    next unless $opt{$_->[0]};
-    my @what = split '::', $_->[1];
-    my $method = pop @what;
-    my $pkg = join '::', @what;
-    eval "require $pkg";
-    $@ and die <<eod;
-Error - $pkg not found in \@INC.
-eod
-    my $ref = $pkg->can ($method) or die <<eod;
-Programming error - $pkg does not support $method().
-eod
-    push @dump_as, [$_->[1] => $ref]; 
+if ($opt{dumper}) {
+    eval {
+	require Data::Dumper;
+	push @dump_as, ['Data::Dumper::Dumper', Data::Dumper->can('Dumper')];
+    };
+    $@ and die $@;
 }
+if ($opt{yaml}) {
+    eval {
+	require YAML;
+	push @dump_as, ['YAML::Dump', YAML->can('Dump')];
+	1;
+    } || eval {
+	require YAML::Syck;
+	push @dump_as, ['YAML::Syck::Dump', YAML::Syck->can('Dump')];
+	1;
+    };
+    $@ and die $@;
+}
+
 $simbad->set (parser => {vo => 'Parse_VO_Table'}) if @dump_as;
 
 foreach my $obj (@ARGV) {
@@ -68,7 +75,7 @@ eod
 }
 __END__
 
-Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
 This script is free software; you can use it, redistribute it

@@ -6,7 +6,7 @@ use warnings;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 
-our $VERSION = '0.008';
+our $VERSION = '0.008_01';
 
 my $vers = '';
 
@@ -31,16 +31,12 @@ if ($^O eq 'MSWin32') {
 } elsif ($^O eq 'VMS') {
     foreach my $fni (map {"[.bin]$_"} @exe_files) {
 	my $fno = "$fni.com";
-	open (my $fhi, '<', $fni) or die <<eod;
-Error - Unable to open $fni
-        $!
-eod
-	open (my $fho, '>', $fno) or die <<eod;
-Error - Unable to open $fno
-        $!
-eod
+	open (my $fhi, '<', $fni) or die "Unable to open $fni: $!\n";
+	open (my $fho, '>', $fno) or die "Unable to open $fno: $!\n";
 	print $fho "$Config{startperl}\n";
 	while (<$fhi>) {print $fho $_}
+	close $fho;
+	close $fhi;
     }
     @clean_files = @exe_files = map {"[.bin]$_.com"} @exe_files;
 } else {

@@ -1,5 +1,10 @@
 #!/usr/local/bin/perl
 
+package main;
+
+use strict;
+use warnings;
+
 use Getopt::Long;
 use SOAP::Lite;
 
@@ -38,7 +43,7 @@ our @CARP_NOT = qw{SOAP::Lite};	## TRW';
 
 #	Splice in server name as first argument.
 
-    my $chunk = <<'eod';
+    $chunk = <<'eod';
   ## TRW vvvv
   my $server = shift or Carp::croak "No server specified";;
   $method{endpoint} or Carp::croak "No server address (proxy) specified";

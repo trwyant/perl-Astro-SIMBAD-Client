@@ -19,11 +19,12 @@ Error - Failed to open $fn
 eod
     local $/ = undef;
     my $data = <$fh>;
-    [Astro::SIMBAD::Client::Parse_VO_Table ($data)];
+    close $fh;
+    return [Astro::SIMBAD::Client::Parse_VO_Table ($data)];
 }
 __END__
 
-Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
 This script is free software; you can use it, redistribute it

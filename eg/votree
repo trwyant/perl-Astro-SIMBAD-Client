@@ -46,6 +46,7 @@ foreach my $obj (@ARGV) {
 #	context of the originating regular expression.
 
 sub parse_vo_lite {
+    my $xml = shift;
 
     my $root;
     my @tree;
@@ -67,19 +68,19 @@ sub parse_vo_lite {
 		shift;
 		my $tag = shift;
 		my $item = [$tag, {@_}];
-		push @{$tree[$#tree]}, $item;
+		push @{$tree[-1]}, $item;
 		push @tree, $item;
 	    },
 	    Char => sub {
-		push @{$tree[$#tree]}, $_[1];
+		push @{$tree[-1]}, $_[1];
 	    },
 	    End => sub {
 		my $tag = $_[1];
 		die <<eod unless @tree > 1;
 Error - Unmatched end tag </$tag>
 eod
-		die <<eod unless $tag eq $tree[$#tree][0];
-Error - End tag </$tag> does not match start tag <$tree[$#tree][0]>
+		die <<eod unless $tag eq $tree[-1][0];
+Error - End tag </$tag> does not match start tag <$tree[-1][0]>
 eod
 		pop @tree;
 	    },
@@ -91,7 +92,7 @@ eod
 		$root;
 	    },
 	});
-    @{$psr->parse ($_[0])};
+    return @{$psr->parse ($xml)};
 }
 
 #	_strip_empty (\@tree)
@@ -111,6 +112,7 @@ sub _strip_empty {
 	    splice @$ref, $inx, 1 unless $val =~ m/\S/ms;
 	}
     }
+    return;
 }
 
 #	$subtree = _find_first (\@tree, $tag, ...)
@@ -125,9 +127,9 @@ sub _strip_empty {
 #	example, I left it in.
 
 sub _find_first {
-    my $tree = shift;
+    my ($tree, @want) = @_;
     TAG_LOOP:
-    foreach my $tag (@_) {
+    foreach my $tag (@want) {
 	foreach my $branch (@$tree) {
 	    next unless ref $branch eq 'ARRAY' && $branch->[0] eq $tag;
 	    $tree = $branch;
@@ -135,11 +137,11 @@ sub _find_first {
 	}
 	die "Error - Tag <$tag> not found.\n";
     }
-    $tree;
+    return $tree;
 }
 __END__
 
-Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
 This script is free software; you can use it, redistribute it

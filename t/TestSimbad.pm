@@ -63,7 +63,7 @@ sub test {
 	if ($verb eq 'loaded') {
 	    $loaded{shift @args} or next;
 	    $verb = shift @args;
-	    $verb eq 'test' || $verb eq 'todo'
+	    ($verb eq 'test' || $verb eq 'todo')
 		and die "'test' or 'todo' in 'loaded' not supported";
 	}
 	if ($verb eq 'static') {
@@ -124,7 +124,7 @@ sub test {
 			    $test = undef;
 			} 
 		    }
-		    defined $test && $test eq $target
+		    (defined $test && $test eq $target)
 		       and do {$got = $item; last;};
 		}
 	    }
@@ -133,8 +133,13 @@ sub test {
 		my $fn = $args[0];
 		open (my $fh, '<', $fn) or die "Failed to open $fn: $!\n";
 		local $/ = undef;
-		$canned = eval scalar <$fh>;
+		# Perl::Critic does not like string evals, but the
+		# following needs to load arbitrary data dumped with
+		# Data::Dumper. I could switch to YAML, but that is
+		# not a core module.
+		$canned = eval scalar <$fh>;	## no critic ProhibitStringyEval
 		$@ and die $@;
+		close $fh;
 	    } else {
 		$canned = undef;
 	    }
@@ -144,7 +149,14 @@ sub test {
 	    $skip = @args > 1 ? ("Can not load any of " . join (', ', @args)) :
 		@args ? "Can not load @args" : '';
 	    foreach (@args) {
-		eval "require $_";
+		# Perl::Critic does not like string evals, but this is
+		# a test and needs to be relatively lightweight.
+		# Duplicating the semantics of a bareword require wasn't
+		# too bad before .pmc got un-deprecated, but any code
+		# rendering the bareword module name into a string would
+		# need to respond correctly to these semantic changes
+		# under different versions of perl.
+		eval "require $_";	## no critic ProhibitStringyEval
 		$@ or do {
 		    $skip = '';
 		    $loaded{$_} = 1;
@@ -211,6 +223,7 @@ eod
 	    die "Error - $class does not support method $verb\n";
 	}
     }
+    return;
 }
 
 
@@ -222,8 +235,11 @@ sub groom {
     return "'$thing'"
 }
 
-sub numberp {
-    $_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/
+# Perl::Critic always wants @_ unpacked, but that seems overkill for a
+# one-liner. CAVEAT: do NOT modify the contents of @_, as the modification
+# will be visible to the caller. Modifying @_ itself is fine.
+sub numberp {	## no critic RequireArgUnpacking
+    return ($_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/);
 }
 
 1;

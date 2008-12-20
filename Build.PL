@@ -7,7 +7,7 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.007';
+our $VERSION = '0.007_01';
 
 my $bldr = Module::Build->new (
 	dist_author => 'Tom Wyant (wyant at cpan dot org)',
@@ -48,16 +48,12 @@ if ($^O eq 'MSWin32') {
 } elsif ($^O eq 'VMS') {
     foreach my $fni (map {"[.bin]$_"} @exe_files) {
 	my $fno = "$fni.com";
-	open (my $fhi, '<', $fni) or die <<eod;
-Error - Unable to open $fni
-        $!
-eod
-	open (my $fho, '>', $fno) or die <<eod;
-Error - Unable to open $fno
-        $!
-eod
+	open (my $fhi, '<', $fni) or die "Unable to open $fni: $!\n";
+	open (my $fho, '>', $fno) or die "Unable to open $fno: $!\n";
 	print $fho "$Config{startperl}\n";
 	while (<$fhi>) {print $fho $_}
+	close $fho;
+	close $fhi;
     }
     @clean_files = @exe_files = map {"[.bin]$_.com"} @exe_files;
 } else {

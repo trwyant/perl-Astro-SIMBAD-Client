@@ -24,7 +24,7 @@ foreach my $fn (@ARGV) {
 }
 __END__
 
-Copyright 2006 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
 This script is free software; you can use it, redistribute it

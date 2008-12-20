@@ -10,13 +10,17 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.002_02';
+my $VERSION = '0.002_03';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
 my $object;
 
-my $rl = Term::ReadLine->new ('Fetch data from SIMBAD 4') if -t STDIN;
+my $rl;
+# Perl::Critic likes IO::Interactive::is_interactive, but that messes
+# with STDOUT and ARGV also, which we do not want.
+-t STDIN	## no critic ProhibitInteractiveTest
+    and $rl = Term::ReadLine->new ('Fetch data from SIMBAD 4');
 my $fh = *STDIN;
 
 print <<eod if $rl;
@@ -34,8 +38,11 @@ eod
 #	Main program loop
 
 while (defined (my $buffer = _readline ())) {
-    
-    select STDOUT;
+
+    # Conway's objection to this is relevant to autoflushing. Perl::
+    # critic extends this, but offers no alternative when changing
+    # stdout.
+    select STDOUT;	## no critic ProhibitOneArgSelect
 
     chomp $buffer;
     $buffer =~ s/^\s+//;
@@ -49,17 +56,25 @@ while (defined (my $buffer = _readline ())) {
 	    open (my $fh, '<', $1) or die "Failed to open $1: $!\n";
 	    local $/ = undef;
 	    scalar <$fh>;
+	    close $fh;
 	} :
 	m/^(>{1,2})(.+)/ ? do {
-		open (my $fh, $1, $2) or die <<eod;
+	    # We intend to use this handle as standard out, so it needs
+	    # to hang around for a while.
+	    open (my $fh, $1, $2) or die <<eod;	## no critic RequireBriefOpen
 Error - Failed to open $2
         $!
 eod
-		select $fh;
-		()
-	    }
-	    : $_}
-	parse_line ('\s+', 0, $buffer)};
+	    # Conway's book discourages this for setting autoflush.
+	    # Perl::Critic extends this to all uses of the single
+	    # argument select. But I'm using it to designate the
+	    # handle for standard output, which Perl::Critic's docs
+	    # ignore.
+	    select $fh;	## no critic ProhibitOneArgSelect
+	    ()
+	} : $_ }
+	parse_line ('\s+', 0, $buffer)
+    };
     $@ and do {warn $@; next};
     my $verb = shift @args;
     if ($verb eq 'static') {
@@ -73,7 +88,7 @@ eod
     my $rslt = eval {
 	if ($verb =~ m/\W/ || $verb =~ m/^_/) {
 	    die "Error - Syntactically invalid verb '$verb'\n";
-	} elsif (my $code = __PACKAGE__->can ($verb)) {
+	} elsif (my $code = __PACKAGE__->can ('_cmd_' . $verb)) {
 	    $code->(@args);
 	} elsif ($simbad->can ($verb)) {
 	    $object->$verb (@args);
@@ -164,16 +179,18 @@ values.
 
 =cut
 
-sub default {
-    @_ = $simbad->attributes () unless @_;
-    foreach my $name (@_) {
+sub _cmd_default {
+    my @args = @_;
+    @args or @args = $simbad->attributes();
+    foreach my $name (@args) {
 	my $val = $class->get ($name);
 	$val->{clear} = 1 if ref $val eq 'HASH';
 	$simbad->set ($name, $val);
     }
+    return $simbad;
 }
 
-###sub dump {
+###sub _cmd_dump {
 ###    Dumper ($simbad);
 ###}
 
@@ -184,8 +201,9 @@ CORE::exit. End-of-file also works.
 
 =cut
 
-sub exit {
+sub _cmd_exit {
     CORE::exit;
+    return;	# Should never get here.
 }
 
 =item help
@@ -209,7 +227,10 @@ The help command is not available under MacPerl (Mac OS 9 and below)
 because of the way Perl executable scripts are constructed.
 eod
 	} else {
-	    eval "use Pod::Usage";
+	    eval {
+		require Pod::Usage;
+		Pod::Usage->import();
+	    };
 	    $problem = <<eod if $@
 The help command is not available because Pod::Usage could not be
 loaded.
@@ -219,24 +240,23 @@ eod
 
     my $client_file;
 
-    sub help {
+    sub _cmd_help {
+	my ($what) = @_;
 	if ($problem) {
 	    print $problem
 	} else {
 	    my @args = (-verbose => 2, -exitval => 'NOEXIT');
-	    if (@_) {
-		if ($_[0] eq 'client') {
-		    push @args, -input => ($client_file ||=
-			do {(my $x = 'Astro::SIMBAD::Client') =~ s|::|/|g;
-			    $x .= '.pm';
-			    $x
-			});
-		}
+	    if (defined $what && $what eq 'client') {
+		push @args, -input => ($client_file ||=
+		    do {(my $x = 'Astro::SIMBAD::Client') =~ s|::|/|g;
+			$x .= '.pm';
+			$x
+		    });
 	    }
 	    Pod::Usage::pod2usage (@args);
 	}
 
-	undef;
+	return;
     }
 
 }	# End of local symbol block.
@@ -281,12 +301,13 @@ is formatted as 'set' commands.
 
 =cut
 
-sub show {
+sub _cmd_show {
+    my @args = @_;
+    @args or @args = $object->attributes();
     my @verb = ('set');
     unshift @verb, 'static' unless ref $object;
-    @_ = $object->attributes () unless @_;
     my @rslt;
-    foreach my $name (@_) {
+    foreach my $name (@args) {
 	my $val = $object->get ($name);
 	if (ref $val eq 'HASH') {
 	    foreach my $key (sort keys %$val) {
@@ -299,7 +320,7 @@ sub show {
     }
     my $rslt = join '', @rslt;
     chomp $rslt;
-    $rslt;
+    return $rslt;
 }
 
 =item static
@@ -333,7 +354,7 @@ sub _heredoc {
 	last if $buffer eq $lbl;
 	push @inf, $buffer . "\n";
     }
-    join '', @inf;
+    return join '', @inf;
 }
 
 #	$output = _quote (@input)
@@ -345,9 +366,10 @@ sub _heredoc {
 #	escaped. Anything else is left alone.
 
 sub _quote {
+    my @args = @_;
     my @rslt;
     my @append;
-    foreach (@_) {
+    foreach (@args) {
 	if (m/\n/m) {
 	    chomp;
 	    push @append, "$_\neod\n";
@@ -358,7 +380,7 @@ sub _quote {
 	}
 	push @rslt, $_;
     }
-    "@rslt\n@append";
+    return "@rslt\n@append";
 }
 
 #	$input = _readline ($prompt)
@@ -369,7 +391,7 @@ sub _quote {
 
 sub _readline {
     my $prompt = (shift || 'Simbadc') . '> ';
-    $rl ? $rl->readline ($prompt) : <$fh>
+    return $rl ? $rl->readline ($prompt) : <$fh>
 }
 
 __END__

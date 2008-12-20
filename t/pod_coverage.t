@@ -1,15 +1,23 @@
+package main;
+
 use strict;
 use warnings;
 
 my $ok;
 BEGIN {
-    eval "use Test::More";
+    eval {
+	require Test::More;
+	Test::More->import();
+    };
     if ($@) {
 	print "1..0 # skip Test::More required to test pod coverage.\n";
 	exit;
     }
-##    eval "use Test::Pod::Coverage 1.00";
-    eval "use Test::Pod::Coverage 1.00 tests => 1";
+    eval {
+	require Test::Pod::Coverage;
+	Test::Pod::Coverage->VERSION(1.00);
+	Test::Pod::Coverage->import(tests => 1);
+    };
     if ($@) {
 	print <<eod;
 1..0 # skip Test::Pod::Coverage 1.00 or greater required.
@@ -26,3 +34,5 @@ pod_coverage_ok ('Astro::SIMBAD::Client', {
 # for coverage, since it was (mostly) generated from the WSDL anyway.
 # The actual service routines are documented in Astro::SIMBAD::Client,
 # but there seems to be no way to tell Test::Pod::Coverage this.
+
+1;
