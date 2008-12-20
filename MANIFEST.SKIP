@@ -17,7 +17,9 @@ CVS/
 ^test_environment$
 \.old$
 \.swp$
-^t/pod_spelling.t$
+^t/critic\.t$
+^t/perlcriticrc$
+^t/pod_spelling\.t$
 ^_build/
 \.tar\.gz$
 ^TODO$
