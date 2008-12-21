@@ -7,25 +7,37 @@ use Module::Build;
 use Config;
 use FileHandle;
 
-our $VERSION = '0.007_01';
+our $VERSION = '0.007_02';
 
-my $bldr = Module::Build->new (
-	dist_author => 'Tom Wyant (wyant at cpan dot org)',
-	dist_abstract => 'Fetch astronomical data from SIMBAD 4.',
-	module_name => 'Astro::SIMBAD::Client',
-	requires => {
-	    perl => 5.006,	# for 'our'.
-	    'HTML::Entities' => 0,
-	    'LWP::UserAgent' => 0,
-	    'SOAP::Lite' => 0,
-	    'Scalar::Util' => 1.01,	# Not in Perl 5.6
-	    'URI::Escape' => 0,
-	    'XML::DoubleEncodedEntities' => 1.0,
-	},
-#	dist_version_from => 'ECI.pm',
-	dynamic_config => 1,
-	license => 'perl',
-	);
+(my $mbv = Module::Build->VERSION) =~ s/_//g;
+
+my %attr = (
+    dist_author => 'Tom Wyant (wyant at cpan dot org)',
+    dist_abstract => 'Fetch astronomical data from SIMBAD 4.',
+    module_name => 'Astro::SIMBAD::Client',
+    build_requires => {
+####	'Test::More' => 0.40,
+    },
+    requires => {
+	perl => 5.008,	# SOAP::Lite dependencies
+	'HTML::Entities' => 0,
+	'LWP::UserAgent' => 0,
+	'SOAP::Lite' => 0,
+	'Scalar::Util' => 1.01,	# Not in Perl 5.6
+	'URI::Escape' => 0,
+	'XML::DoubleEncodedEntities' => 1.0,
+    },
+    dynamic_config => 1,
+    license => 'perl',
+);
+
+$mbv >= 0.28 and $attr{meta_merge} = {
+    no_index => {
+	directory => [qw{inc t}],
+    },
+};
+
+my $bldr = Module::Build->new (%attr);
 
 my (@exe_files, @clean_files);
 
