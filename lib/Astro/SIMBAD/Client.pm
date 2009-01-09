@@ -72,7 +72,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.017_01';
+our $VERSION = '0.017_02';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -1048,10 +1048,7 @@ sub _get_parser {
 	my  ($module) = @_;
 	exists $error{$module} and croak $error{$module};
 	exists $rslt{$module} and return $rslt{$module};
-	# I'm not sure I want to tackle the duplication of the bareword
-	# semantics since the un-deprecation of .pmc files, and I'm not
-	# sure any of the published modules duplicates this either. So:
-	$rslt{$module} = eval "require $module";	## no critic ProhibitStringyEval
+	$rslt{$module} = eval "require $module";
 	$@ and croak ($error{$module} = $@);
 	return $rslt{$module};
     }

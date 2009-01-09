@@ -149,14 +149,7 @@ sub test {
 	    $skip = @args > 1 ? ("Can not load any of " . join (', ', @args)) :
 		@args ? "Can not load @args" : '';
 	    foreach (@args) {
-		# Perl::Critic does not like string evals, but this is
-		# a test and needs to be relatively lightweight.
-		# Duplicating the semantics of a bareword require wasn't
-		# too bad before .pmc got un-deprecated, but any code
-		# rendering the bareword module name into a string would
-		# need to respond correctly to these semantic changes
-		# under different versions of perl.
-		eval "require $_";	## no critic ProhibitStringyEval
+		eval "require $_";
 		$@ or do {
 		    $skip = '';
 		    $loaded{$_} = 1;
