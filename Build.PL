@@ -17,6 +17,7 @@ my %attr = (
     build_requires => {
 ####	'Test::More' => 0.40,
     },
+    get_options => {y => {}, n => {}},
     requires => {
 	perl => 5.008,	# SOAP::Lite dependencies
 	'HTML::Entities' => 0,
@@ -38,6 +39,8 @@ $mbv >= 0.28 and $attr{meta_merge} = {
 
 my $bldr = Module::Build->new (%attr);
 
+my %opt = $bldr->args();
+
 my (@exe_files, @clean_files);
 
 print <<eod;
@@ -47,9 +50,22 @@ may be used interactively or as a Unix filter.
 
 eod
 
-foreach my $exe (qw{simbadc}) {
-    $bldr->prompt ("Do you want to install $exe?", 'n') =~ m/^y/i
-	and push @exe_files, $exe;
+if ($opt{n}) {
+    print "Because you have asserted -n, simbadc will not be installed.\n";
+} elsif ($opt{y}) {
+    print "Because you have asserted -y, simbadc will be installed.\n";
+    push @exe_files, 'simbadc';
+} else {
+    print <<eod;
+To supress the following prompt, run Build.PL with the -y option to
+install the script, or with the -n option to not install the script.
+Setting environment variable PERL_MM_USE_DEFAULT true, or running non-
+interactively without data on STDIN will also cause the script not to
+be installed.
+
+eod
+    $bldr->prompt ("Do you want to install simbadc?", 'n') =~ m/^y/i
+	and push @exe_files, 'simbadc';
 }
 
 if ($^O eq 'MSWin32') {
