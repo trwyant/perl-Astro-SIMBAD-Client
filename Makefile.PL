@@ -5,10 +5,20 @@ use warnings;
 
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
+use Getopt::Std;
 
 our $VERSION = '0.008_02';
 
 my $vers = '';
+
+my %opt;
+getopts('ny', \%opt) or die <<eod;
+The only legal options are
+  -n = answer all questions 'no'.
+  -y = answer all questions 'yes'.
+You may not assert both of these at once - it's too confusing.
+eod
+
 
 my (@exe_files, @clean_files);
 
@@ -19,9 +29,23 @@ may be used interactively or as a Unix filter.
 
 eod
 
-foreach my $exe (qw{simbadc}) {
-    prompt ("Do you want to install $exe?", 'n') =~ m/^y/i
-	and push @exe_files, $exe;
+if ($opt{n}) {
+    print "Because you have asserted -n, simbadc will not be installed.\n";
+} elsif ($opt{y}) {
+    print "Because you have asserted -y, simbadc will be installed.\n";
+    push @exe_files, 'simbadc';
+} else {
+    print <<eod;
+To supress the following prompt, run Makefile.PL with the -y option to
+install the script, or with the -n option not to install the script.
+Setting environment variable PERL_MM_USE_DEFAULT true, or running non-
+interactively without data on STDIN will also cause the script not to be
+installed.
+
+eod
+    
+    prompt ("Do you want to install simbadc?", 'n') =~ m/^y/i
+	and push @exe_files, 'simbadc';
 }
 
 if ($^O eq 'MSWin32') {
