@@ -72,11 +72,11 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.017_02';
+our $VERSION = '0.017_03';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
-use constant FORMAT_TXT_SIMPLE_BASIC => <<'eod';	## no critic ProhibitConstantPragma
+use constant FORMAT_TXT_SIMPLE_BASIC => <<'eod';
 ---\n
 name: %IDLIST(NAME|1)\n
 type: %OTYPE\n
@@ -94,7 +94,7 @@ vmag: %FLUXLIST(V)[%flux(F)]\n
 ident: %IDLIST[%*,]
 eod
 
-use constant FORMAT_TXT_YAML_BASIC => <<'eod';	## no critic ProhibitConstantPragma
+use constant FORMAT_TXT_YAML_BASIC => <<'eod';
 ---\n
 name: '%IDLIST(NAME|1)'\n
 type: '%OTYPE'\n
@@ -122,8 +122,7 @@ eod
 #	     Q = quality? Yields 'C' for Arcturus
 #	     S = spectral type
 
-use constant FORMAT_VO_BASIC =>	## no critic ProhibitConstantPragma
-join ',', qw{
+use constant FORMAT_VO_BASIC => join ',', qw{
     id(NAME|1) otype ra(d) dec(d) plx_value pmra pmdec rv_value z_value
     sp_type flux(B) flux(V)};
     # Note that idlist was documented at one point as being the
@@ -162,7 +161,7 @@ passed to the set() method once the object is instantiated.
 # The set() method does the unpacking. CAVEAT: do _NOT_ modify the
 # contents of @_, as this will be seen by the caller. Modifying @_
 # itself is fine.
-sub new {	## no critic RequireArgUnpacking
+sub new {	## no critic (RequireArgUnpacking)
     my $class = shift;
     $class = ref $class if ref $class;
     my $self = bless {}, $class;
@@ -586,8 +585,7 @@ See the query() documentation for more information.
 
 =cut
 
-# This sub just delegates to query() which does the unpacking.
-sub queryObjectByBib {		## no critic RequireArgUnpacking
+sub queryObjectByBib {
     my $self = shift;
     return $self->query (bib => @_);
 }
@@ -602,8 +600,7 @@ See the query() documentation for more information.
 
 =cut
 
-# This sub just delegates to query() which does the unpacking.
-sub queryObjectByCoord {	## no critic RequireArgUnpacking
+sub queryObjectByCoord {
     my $self = shift;
     return $self->query (coo => @_);
 }
@@ -618,8 +615,7 @@ See the query() documentation for more information.
 
 =cut
 
-# This sub just delegates to query() which does the unpacking.
-sub queryObjectById {	## no critic RequireArgUnpacking
+sub queryObjectById {
     my $self = shift;
     return $self->query (id => @_);
 }
@@ -939,7 +935,7 @@ onto the end of the URL and a GET is done.
     # unfriendly error message. CAVEAT: do NOT modify the contents
     # of @_, since this will be seen by the caller. Modifying @_
     # itself is fine.
-    sub url_query {	## no critic RequireArgUnpacking
+    sub url_query {	## no critic (RequireArgUnpacking)
 	@_ % 2 and croak <<eod;
 Error - url_query needs an even number of arguments after the query
         type.

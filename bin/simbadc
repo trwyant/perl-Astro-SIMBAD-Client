@@ -10,16 +10,14 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.002_03';
+my $VERSION = '0.002_04';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
 my $object;
 
 my $rl;
-# Perl::Critic likes IO::Interactive::is_interactive, but that messes
-# with STDOUT and ARGV also, which we do not want.
--t STDIN	## no critic ProhibitInteractiveTest
+-t STDIN
     and $rl = Term::ReadLine->new ('Fetch data from SIMBAD 4');
 my $fh = *STDIN;
 
@@ -42,7 +40,7 @@ while (defined (my $buffer = _readline ())) {
     # Conway's objection to this is relevant to autoflushing. Perl::
     # critic extends this, but offers no alternative when changing
     # stdout.
-    select STDOUT;	## no critic ProhibitOneArgSelect
+    select STDOUT;	## no critic (ProhibitOneArgSelect)
 
     chomp $buffer;
     $buffer =~ s/^\s+//;
@@ -61,7 +59,7 @@ while (defined (my $buffer = _readline ())) {
 	m/^(>{1,2})(.+)/ ? do {
 	    # We intend to use this handle as standard out, so it needs
 	    # to hang around for a while.
-	    open (my $fh, $1, $2) or die <<eod;	## no critic RequireBriefOpen
+	    open (my $fh, $1, $2) or die <<eod;	## no critic (RequireBriefOpen)
 Error - Failed to open $2
         $!
 eod
@@ -70,7 +68,7 @@ eod
 	    # argument select. But I'm using it to designate the
 	    # handle for standard output, which Perl::Critic's docs
 	    # ignore.
-	    select $fh;	## no critic ProhibitOneArgSelect
+	    select $fh;	## no critic (ProhibitOneArgSelect)
 	    ()
 	} : $_ }
 	parse_line ('\s+', 0, $buffer)

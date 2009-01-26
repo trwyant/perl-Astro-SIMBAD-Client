@@ -8,7 +8,7 @@ package Astro::SIMBAD::Client::WSQueryInterfaceService;
 use strict;
 use warnings;
 
-our $VERSION = '0.016_01';
+our $VERSION = '0.016_02';
 ## TRW ^^^^
 
 my %methods = (
@@ -129,8 +129,7 @@ $self->serializer->register_ns("http://schemas.xmlsoap.org/wsdl/soap/","wsdlsoap
 }
 
 sub BEGIN {
-  # TRW Bunging code into a namespace requires no strict qw{refs}.
-  no strict 'refs';	## no critic ProhibitNoStrict
+  no strict 'refs';
   for my $method (qw(want_som)) {
     my $field = '_' . $method;
     *$method = sub {
@@ -140,8 +139,7 @@ sub BEGIN {
   }
 }
 
-# TRW Bunging code into a namespace requires no strict qw{refs}.
-no strict 'refs';	## no critic ProhibitNoStrict
+no strict 'refs';
 for my $method (@EXPORT_OK) {
   my %method = %{$methods{$method}};
   *$method = sub {

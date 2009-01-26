@@ -137,7 +137,7 @@ sub test {
 		# following needs to load arbitrary data dumped with
 		# Data::Dumper. I could switch to YAML, but that is
 		# not a core module.
-		$canned = eval scalar <$fh>;	## no critic ProhibitStringyEval
+		$canned = eval scalar <$fh>;	## no critic (ProhibitStringyEval)
 		$@ and die $@;
 		close $fh;
 	    } else {
@@ -228,10 +228,7 @@ sub groom {
     return "'$thing'"
 }
 
-# Perl::Critic always wants @_ unpacked, but that seems overkill for a
-# one-liner. CAVEAT: do NOT modify the contents of @_, as the modification
-# will be visible to the caller. Modifying @_ itself is fine.
-sub numberp {	## no critic RequireArgUnpacking
+sub numberp {
     return ($_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/);
 }
 
