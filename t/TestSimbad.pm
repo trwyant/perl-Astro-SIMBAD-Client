@@ -162,7 +162,7 @@ sub test {
 	    foreach ($want, $got) {
 		ref $_ and next;
 		chomp $_;
-		m/(.+?)\s+$/ and numberp ($1) and $_ = $1;
+		m/(.+?)\s+$/ and numberp ($1 . '') and $_ = $1;
 	    }
 	    print <<eod;
 #
