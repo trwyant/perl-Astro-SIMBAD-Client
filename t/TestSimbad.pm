@@ -85,7 +85,9 @@ sub test {
 	    } elsif (ref $got eq 'ARRAY') {
 		$got = @$got;
 	    } else {
-		die "Error - \$got does not refer to a list.\n";
+		warn "Error - \$got is $got, not a list reference.\n";
+		$got = undef;
+##		die "Error - \$got does not refer to a list.\n";
 	    }
 	} elsif ($verb eq 'deref' || $verb eq 'deref_curr') {
 	    $got = $ref unless $verb eq 'deref_curr';
