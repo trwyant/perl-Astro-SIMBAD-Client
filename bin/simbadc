@@ -10,7 +10,7 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.002_04';
+my $VERSION = '0.002_05';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
@@ -248,7 +248,7 @@ eod
 		push @args, -input => ($client_file ||=
 		    do {(my $x = 'Astro::SIMBAD::Client') =~ s|::|/|g;
 			$x .= '.pm';
-			$x
+			$INC{$x};
 		    });
 	    }
 	    Pod::Usage::pod2usage (@args);
