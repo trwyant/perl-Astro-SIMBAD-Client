@@ -6,7 +6,7 @@ use warnings;
 use Module::Build;
 use Config;
 
-our $VERSION = '0.007_03';
+our $VERSION = '0.018';
 
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 

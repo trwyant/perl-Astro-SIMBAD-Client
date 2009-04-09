@@ -10,7 +10,7 @@ use Text::ParseWords;
 
 local $Data::Dumper::Terse = 1;
 
-my $VERSION = '0.002_06';
+my $VERSION = '0.018';
 
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();

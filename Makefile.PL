@@ -7,7 +7,7 @@ use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 use Getopt::Std;
 
-our $VERSION = '0.008_02';
+our $VERSION = '0.018';
 
 my $vers = '';
 
