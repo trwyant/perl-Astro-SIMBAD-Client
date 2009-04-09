@@ -147,8 +147,10 @@ deref_curr value
 # As of about SIMBAD4 1.005 the default became sexagesimal
 # As of 1.069 (probably much earlier) you can set coodisp1=d to display
 # in decimal. But this seems not to work for VOTable output.
-want_load arcturus ra_hms
-# want_load arcturus ra
+# As of 1.117 (April 9 2009) votable output went back to decimal. The
+# coodisp option still seems not to affect it, though.
+# want_load arcturus ra_hms
+want_load arcturus ra
 test url_query id Arcturus (vo) - right ascension
 
 deref 0 data 0
@@ -158,8 +160,10 @@ deref_curr value
 # As of about SIMBAD4 1.005 the default became sexigesimal
 # As of 1.069 (probably much earlier) you can set coodisp1=d to display
 # in decimal. But this seems not to work for VOTable output.
-want_load arcturus dec_dms
-# want_load arcturus dec
+# As of 1.117 (April 9 2009) votable output went back to decimal. The
+# coodisp option still seems not to affect it, though.
+# want_load arcturus dec_dms
+want_load arcturus dec
 test url_uery id Arcturus (vo) - declination
 
 deref 0 data 0
