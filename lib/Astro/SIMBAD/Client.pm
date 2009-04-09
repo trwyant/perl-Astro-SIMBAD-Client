@@ -8,6 +8,17 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
  my $simbad = Astro::SIMBAD::Client->new ();
  print $simbad->query (id => 'Arcturus');
 
+=head1 NOTICE
+
+As of SIMBAD4 1.117 (April 9 2009), the URL query service returns
+coordinates in decimal degrees when VOTable output is requested, rather
+than degrees minutes and seconds. Format control seems still not to work
+on VOTable output.
+
+In terms of this package, this means that if the C<type> attribute is
+set to 'vo', the url_query() method will return positions in decimal
+degrees.
+
 =head1 DESCRIPTION
 
 This package implements several query interfaces to version 4 of the
@@ -72,7 +83,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.017_03';
+our $VERSION = '0.017_04';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -1346,8 +1357,8 @@ Thomas R. Wyant, III (F<wyant at cpan dot org>)
 
 =head1 COPYRIGHT
 
-Copyright 2006, 2007, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot
-org>).  All rights reserved.
+Copyright 2006, 2007, 2008, 2009 by Thomas R. Wyant, III (F<wyant at
+cpan dot org>).  All rights reserved.
 
 =head1 LICENSE
  
