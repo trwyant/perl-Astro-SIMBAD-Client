@@ -75,3 +75,13 @@
   Revise tests to deal more gracefully with 5xx errors.
 0.017
   Fix test failure when YAML::Syck installed but YAML not.
+0.018
+  Distribute developer tests, but only run if DEVELOPER_TEST is set.
+  Comply with Perl::Critic using profile t/perlcriticrc.
+  Criticize code as part of developer testing.
+  Drop unneeded 'use FileHandle' from Build.PL.
+  Have Build.PL and Makefile.PL handle -y and -n to supress prompt and
+    install or not install simbadc respectively.
+  Correct 'help client' in bin/simbadc
+  Update t/vo.t to track the fact that the SIMBAD4 URL query has gone
+    back to decimal degrees for position.
