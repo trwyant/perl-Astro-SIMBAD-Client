@@ -6,7 +6,7 @@ use warnings;
 use Module::Build;
 use Config;
 
-our $VERSION = '0.018';
+our $VERSION = '0.018_01';
 
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 
@@ -34,6 +34,9 @@ my %attr = (
 $mbv >= 0.28 and $attr{meta_merge} = {
     no_index => {
 	directory => [qw{inc t}],
+    },
+    resources => {
+	bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',
     },
 };
 

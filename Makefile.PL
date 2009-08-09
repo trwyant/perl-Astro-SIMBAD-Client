@@ -7,7 +7,7 @@ use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 use Getopt::Std;
 
-our $VERSION = '0.018';
+our $VERSION = '0.018_01';
 
 my $vers = '';
 
@@ -95,6 +95,7 @@ $mmv >= 6.4501 and $attr{META_MERGE} = {
 ####	'Test::More' => 0.40,
     },
     resources => {
+	bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',
 	license => 'http://dev.perl.org/licenses/',
     },
 };
