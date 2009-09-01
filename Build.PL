@@ -6,7 +6,7 @@ use warnings;
 use Module::Build;
 use Config;
 
-our $VERSION = '0.018_01';
+our $VERSION = '0.018_02';
 
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 
@@ -39,6 +39,9 @@ $mbv >= 0.28 and $attr{meta_merge} = {
 	bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',
     },
 };
+
+$mbv >= 0.34
+    and $attr{auto_configure_requires} = 0;	# Don't require Module::Build
 
 my $bldr = Module::Build->new (%attr);
 
