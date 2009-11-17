@@ -3,6 +3,9 @@ use 5.008;
 use strict;
 use warnings;
 
+use lib qw{ inc };
+
+use Astro::SIMBAD::Client::Build;
 use Module::Build;
 use Config;
 
@@ -43,7 +46,7 @@ $mbv >= 0.28 and $attr{meta_merge} = {
 $mbv >= 0.34
     and $attr{auto_configure_requires} = 0;	# Don't require Module::Build
 
-my $bldr = Module::Build->new (%attr);
+my $bldr = Astro::SIMBAD::Client::Build->new (%attr);
 
 my %opt = $bldr->args();
 

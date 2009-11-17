@@ -1,4 +1,4 @@
-package t::TestSimbad;
+package Astro::SIMBAD::Client::Test;
 
 use strict;
 use warnings;

@@ -3,9 +3,11 @@ package main;
 use strict;
 use warnings;
 
-use t::TestSimbad;
+use lib qw{ inc };
 
-t::TestSimbad::test (*DATA);
+use Astro::SIMBAD::Client::Test;
+
+Astro::SIMBAD::Client::Test::test (*DATA);
 
 1;
 __END__

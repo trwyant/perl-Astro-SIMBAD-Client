@@ -8,6 +8,8 @@ eg/README
 eg/script
 eg/votable
 eg/votree
+inc/Astro/SIMBAD/Client/Build.pm
+inc/Astro/SIMBAD/Client/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
 Makefile.PL
@@ -26,6 +28,5 @@ t/pod_coverage.t
 t/release.t
 t/services.t
 t/simple.t
-t/TestSimbad.pm
 t/vo.t
 t/yaml.t

@@ -3,14 +3,16 @@ package main;
 use strict;
 use warnings;
 
-use t::TestSimbad;
+use lib qw{ inc };
+
+use Astro::SIMBAD::Client::Test;
 
 unless ($ENV{DEVELOPER_TEST}) {
     print "1..0 # skip Environment variable DEVELOPER_TEST not set.\n";
     exit;
 }
 
-t::TestSimbad::test (*DATA);
+Astro::SIMBAD::Client::Test::test (*DATA);
 
 1;
 __END__
