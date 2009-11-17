@@ -18,9 +18,6 @@ CVS/
 \.old$
 \.svn/
 \.swp$
-^t/critic\.t$
-^t/perlcriticrc$
-^t/pod_spelling\.t$
 ^_build/
 \.tar\.gz$
 ^TODO$

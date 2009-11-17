@@ -14,6 +14,7 @@ lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
 Makefile.PL
 MANIFEST			This list of files
+MANIFEST.SKIP
 META.yml
 README
 t/arcturus.simple
@@ -21,12 +22,15 @@ t/arcturus.vo
 t/arcturus.yaml
 t/basic.t
 t/canned.data
-t/executable.t
-t/manifest.t
-t/pod.t
-t/pod_coverage.t
 t/release.t
 t/services.t
 t/simple.t
 t/vo.t
 t/yaml.t
+xt/critic.t
+xt/executable.t
+xt/manifest.t
+xt/perlcriticrc
+xt/pod.t
+xt/pod_coverage.t
+xt/pod_spelling.t
