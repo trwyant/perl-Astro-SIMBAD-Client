@@ -60,12 +60,62 @@ sub parse_csv {
     }
     return wantarray ? @data : \@data;
 }
+
 __END__
 
-Copyright 2006, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
-All rights reserved.
+=head1 TITLE
 
-This script is free software; you can use it, redistribute it
-and/or modify it under the same terms as Perl itself. Please see
-L<http://perldoc.perl.org/index-licence.html> for the current licenses.
+csv - Download SIMBAD data in CSV format
 
+=head1 SYNOPSIS
+
+ csv Arcturus >arcturus.csv
+ csv -help
+
+=head1 OPTIONS
+
+=over
+
+=item -help
+
+This option displays documentation and then exits.
+
+=item -parse
+
+This option causes a display of the raw data in
+L<Data::Dumper|Data::Dumper> format, rather than as CSV.
+
+=back
+
+=head1 DETAILS
+
+This script takes as its arguments the names of objects to be looked up
+in the SIMBAD database, and copies the obtained information to standard
+output as comma-separated values, one line per object. The individual
+fields are:
+
+ object name
+ right ascension (in decimal degrees)
+ declination (in decimal degrees)
+ distance
+ proper motion in right ascension
+ proper motion in declination
+ velocity in recession
+
+=head1 AUTHOR
+
+Thomas R. Wyant, III F<wyant at cpan dot org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2006, 2008, 2010 by Thomas R. Wyant, III
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl 5.10.0. For more details, see the full text
+of the licenses in the directory LICENSES.
+
+This program is distributed in the hope that it will be useful, but
+without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.
+
+# ex: set textwidth=72 :
