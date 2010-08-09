@@ -25,7 +25,6 @@ t/arcturus.yaml
 t/basic.t
 t/canned.data
 t/release.t
-t/services.t
 t/simple.t
 t/vo.t
 t/yaml.t
@@ -36,3 +35,4 @@ xt/perlcriticrc
 xt/pod.t
 xt/pod_coverage.t
 xt/pod_spelling.t
+xt/services.t

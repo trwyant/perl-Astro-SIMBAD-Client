@@ -7,11 +7,6 @@ use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Test;
 
-unless ($ENV{DEVELOPER_TEST}) {
-    print "1..0 # skip Environment variable DEVELOPER_TEST not set.\n";
-    exit;
-}
-
 Astro::SIMBAD::Client::Test::test (*DATA);
 
 1;
