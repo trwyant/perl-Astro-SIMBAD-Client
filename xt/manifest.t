@@ -10,11 +10,11 @@ unless ($ENV{DEVELOPER_TEST}) {
     exit;
 }
 
-eval {
+my $skip = eval {
     require ExtUtils::Manifest;
     ExtUtils::Manifest->import (qw{manicheck filecheck});
-};
-my $skip = $@ ? 'Can not load ExtUtils::Manifest' : '';
+    1;
+} ? '' : 'Can not load ExtUtils::Manifest';
 
 plan tests => 2;
 my $test = 0;

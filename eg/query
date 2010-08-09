@@ -23,8 +23,8 @@ my $simbad = Astro::SIMBAD::Client->new (
 foreach my $obj (@ARGV) {
     eval {
 	print $simbad->query (id => $obj), "\n";
-    };
-    print $@ if $@;
+	1;
+    } or print ( $@ || 'An unknown error occurred' );
 }
 __END__
 

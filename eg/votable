@@ -35,24 +35,25 @@ my %opt;
 my $simbad = Astro::SIMBAD::Client->new (type => 'vo');
 
 my @dump_as;
+
 if ($opt{dumper}) {
     eval {
 	require Data::Dumper;
 	push @dump_as, ['Data::Dumper::Dumper', Data::Dumper->can('Dumper')];
-    };
-    $@ and die $@;
+	1;
+    } or die ( $@ || 'Unable to load Data::Dumper for unknown reason' );
 }
+
 if ($opt{yaml}) {
     eval {
 	require YAML;
 	push @dump_as, ['YAML::Dump', YAML->can('Dump')];
 	1;
-    } || eval {
+    } or eval {
 	require YAML::Syck;
 	push @dump_as, ['YAML::Syck::Dump', YAML::Syck->can('Dump')];
 	1;
-    };
-    $@ and die $@;
+    } or die ( $@ || 'Unable to load YAML or YAML::Syck for unknown reason' );
 }
 
 $simbad->set (parser => {vo => 'Parse_VO_Table'}) if @dump_as;
@@ -73,9 +74,10 @@ eod
 	print $rslt;
     }
 }
+
 __END__
 
-Copyright 2006, 2008 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
+Copyright 2006, 2008, 2010 by Thomas R. Wyant, III (F<wyant at cpan dot org>).
 All rights reserved.
 
 This script is free software; you can use it, redistribute it

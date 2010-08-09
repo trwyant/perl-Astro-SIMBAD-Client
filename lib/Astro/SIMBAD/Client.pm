@@ -76,10 +76,10 @@ use Astro::SIMBAD::Client::WSQueryInterfaceService;
 
 my $have_time_hires;
 BEGIN {
-    eval {
+    $have_time_hires = eval {
 	require Time::HiRes;
 	Time::HiRes->import (qw{time sleep});
-	$have_time_hires = 1;
+	1;
     }
 }
 
@@ -332,8 +332,7 @@ parser for 'vo'-type queries:
     my $xml_parser;
     
     foreach (qw{XML::Parser XML::Parser::Lite}) {
-	eval {_load_module ($_)};
-	next if $@;
+	eval { _load_module( $_ ); 1 } or next;
 	$xml_parser = $_;
 	last;
     }

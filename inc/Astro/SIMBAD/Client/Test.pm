@@ -151,8 +151,7 @@ sub test {
 	    $skip = @args > 1 ? ("Can not load any of " . join (', ', @args)) :
 		@args ? "Can not load @args" : '';
 	    foreach (@args) {
-		eval "require $_";
-		$@ or do {
+		eval "require $_; 1" and do {
 		    $skip = '';
 		    $loaded{$_} = 1;
 		    last

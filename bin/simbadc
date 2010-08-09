@@ -228,8 +228,8 @@ eod
 	    eval {
 		require Pod::Usage;
 		Pod::Usage->import();
-	    };
-	    $problem = <<eod if $@
+		1;
+	    } or $problem = <<eod;
 The help command is not available because Pod::Usage could not be
 loaded.
 eod

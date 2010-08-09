@@ -7,8 +7,10 @@ use Test;
 
 my $rslt;
 BEGIN {
-    eval {require Astro::SIMBAD::Client};
-    $rslt = $@;
+    $rslt = eval {
+	require Astro::SIMBAD::Client;
+	1;
+    } ? undef : ( $@ || 'unrecorded error' );
     plan tests => $rslt ? 1 : 4;
     print <<eod;
 # Test 1 - Load Astro::SIMBAD::Client

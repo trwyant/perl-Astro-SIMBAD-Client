@@ -46,8 +46,8 @@ my @rslt;
 foreach my $obj (@ARGV) {
     eval {
 	push @rslt, $simbad->query (id => $obj);
-    };
-    print $@ if $@;
+	1;
+    } or print ( $@ || 'An unknown error occurred' );
 }
 
 print $opt{parse} ? Dumper (\@rslt) : @rslt;
