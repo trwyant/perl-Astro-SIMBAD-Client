@@ -3,7 +3,6 @@ package main;
 use strict;
 use warnings;
 
-my $skip;
 BEGIN {
     eval {
 	require Test::Spelling;

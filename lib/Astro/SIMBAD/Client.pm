@@ -710,7 +710,7 @@ to the caller.
 
     sub script {
 	my $self = shift;
-	my $debug = $self->get ('debug');
+###	my $debug = $self->get ('debug');
 	my $script = shift;
 
 	$escaper ||= URI::Escape->can ('uri_escape_utf8') ||
@@ -951,7 +951,7 @@ Error - url_query needs an even number of arguments after the query
         type.
 eod
 	my ($self, $query, %args) = @_;
-	my $debug = $self->get ('debug');
+###	my $debug = $self->get ('debug');
 	my $url = 'http://' . $self->get ('server') . '/simbad/sim-' .
 	    $query;
 	my $dflt = $self->get ('url_args');

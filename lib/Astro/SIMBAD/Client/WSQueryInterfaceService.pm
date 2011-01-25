@@ -80,7 +80,8 @@ sub _call {
   foreach my $param (@parm) {	## TRW
     if (@templates) {
       my $template = shift @templates;
-      my ($prefix,$typename) = SOAP::Utils::splitqname($template->type);
+## TRW      my ($prefix,$typename) = SOAP::Utils::splitqname($template->type);
+      my (undef,$typename) = SOAP::Utils::splitqname($template->type); ## TRW
       my $method = 'as_'.$typename;
       # TODO - if can('as_'.$typename) {...}
       my $result = $self->serializer->$method($param, $template->name, $template->type, $template->attr);
@@ -141,7 +142,7 @@ sub BEGIN {
 
 no strict 'refs';
 for my $method (@EXPORT_OK) {
-  my %method = %{$methods{$method}};
+## TRW  my %method = %{$methods{$method}};
   *$method = sub {
     ## TRW vvvv
     ## my $self = UNIVERSAL::isa($_[0] => __PACKAGE__) 

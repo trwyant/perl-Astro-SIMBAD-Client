@@ -9,8 +9,6 @@ use Getopt::Std;
 
 our $VERSION = '0.018_01';
 
-my $vers = '';
-
 my %opt;
 getopts('ny', \%opt) or die <<eod;
 The only legal options are
