@@ -7,7 +7,7 @@ use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 use Getopt::Std;
 
-our $VERSION = '0.018_01';
+our $VERSION = '0.019';
 
 my %opt;
 getopts('ny', \%opt) or die <<eod;

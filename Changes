@@ -1,3 +1,10 @@
+0.019		03-Mar-2011	T. R. Wyant
+  Convert to Perl Foundation-recommended license.
+  Reorganize author tests to run on separate Build.PL tag, not a magic
+    environment variable.
+  Module::Build is no longer required for configuration since you can
+    use ExtUtils::MakeMaker if you wish.
+
 0.018		09-Apr-2009	T. R. Wyant
   Distribute developer tests, but only run if DEVELOPER_TEST is set.
   Comply with Perl::Critic using profile t/perlcriticrc.
