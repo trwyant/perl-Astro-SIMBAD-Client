@@ -1,48 +1,39 @@
-0.001
-  Initial release
-0.002
-  Modified Build.PL and Makefile.PL to ask if simbadc is to be installed.
-  Modified vo tests to follow change of VOTable coordinate format
-    to sexagesimal about SIMBAD4 1.005 January 26 2007.
-  Corrected Astro::SIMBAD::Client documentation.
-  Corrected simbadc documentation.
-0.003
-  Have Makefile.PL generate LICENSE tag if supported by the version of
-    ExtUtils::MakeMaker in use.
-  Make Astro::SIMBAD::Client work with SOAP::Lite 0.55, which is what
-    ships with ActivePerl.
-0.004
-  Explicitly load URI::Escape.
-  Add HTML::Entities and URI::Escape as required by this class.
-0.005
-  Fall back to uri_escape if uri_escape_utf8 is not available.
-0.006
-  Use XML::DoubleEncodedEntities to deal with occasional double
-    encoding of VOTable data.
-0.007
-  Change FORMAT_VO_BASIC to return decimal degrees for right ascension
-    and declination. This was always the intent, but could not be tested
-    until 'vo' web service queries started working.
-  Document change in status of web service 'vo' queries.
-0.008
-  Add release() method, to return SIMBAD release number.
-0.009
-  Add 'post' attribute.
-  Mark url_query VOTable tests todo, since they stopped working
-    15-Oct-2007. Document this under 'NOTICES' in the code.
-  Clean up the POD tests.
-  Remove shebang lines where not warranted.
-0.010
-  Specify minimum Perl version of 5.006 in Build.PL and Makefile.PL.
-  Change url_query VOTable tests from todo back to test, since they
-    now work as of 18-Oct-2007.
-  Corrected the code used to escape URLs in the centralized requester
-    (use URL::Escape, not HTML::Entities).
-0.011
-  Modify parse module loader to use 'eval "require $module"' rather
-    than generating .pm file name, to work with .pmc modules when and
-    if they appear.
-0.012
+0.018		09-Apr-2009	T. R. Wyant
+  Distribute developer tests, but only run if DEVELOPER_TEST is set.
+  Comply with Perl::Critic using profile t/perlcriticrc.
+  Criticize code as part of developer testing.
+  Drop unneeded 'use FileHandle' from Build.PL.
+  Have Build.PL and Makefile.PL handle -y and -n to supress prompt and
+    install or not install simbadc respectively.
+  Correct 'help client' in bin/simbadc
+  Update t/vo.t to track the fact that the SIMBAD4 URL query has gone
+    back to decimal degrees for position.
+
+0.017		29-Nov-2008	T. R. Wyant
+  Fix test failure when YAML::Syck installed but YAML not.
+
+0.016		17-Nov-2008	T. R. Wyant
+  Eliminate calls to UNIVERSAL::isa as a function.
+  Revise tests to deal more gracefully with 5xx errors.
+
+0.015		29-Oct-2008	T. R. Wyant
+  Split Astro::SIMBAD::Client::WSQueryInterfaceService into its own file
+    for bookkeeping purposes.
+
+0.014		30-Aug-2008	T. R. Wyant
+  Astro::SIMBAD::Client, Makefile.PL, Build.PL
+    Require Perl 5.008, because MailTools does, and SOAP::Lite requires
+      MailTools, and we require SOAP::Lite.
+    Fix TAP emitted by t::TestSimbad, so that we get useful output when
+      the server is unreachable or unresponsive.
+
+0.013		24-Jul-2008	T. R. Wyant
+  Astro::SIMBAD::Client
+    Add =head1 LICENSE (CPANTS game)
+  t/canned.data
+    Track change in data returned by %OTYPE in SIMBAD4 1.092 21-Jul-2008
+
+0.012		21-Feb-2008	T. R. Wyant
   Astro::SIMBAD::Client
     Add url_args attribute to provide default arguments to the url_query
       method.
@@ -56,32 +47,58 @@
   bin/simbadc
     Parse <filename as replacing the token with the contents of the file.
     Update copyright.
-0.013
-  Astro::SIMBAD::Client
-    Add =head1 LICENSE (CPANTS game)
-  t/canned.data
-    Track change in data returned by %OTYPE in SIMBAD4 1.092 21-Jul-2008
-0.014
-  Astro::SIMBAD::Client, Makefile.PL, Build.PL
-    Require Perl 5.008, because MailTools does, and SOAP::Lite requires
-      MailTools, and we require SOAP::Lite.
-    Fix TAP emitted by t::TestSimbad, so that we get useful output when
-      the server is unreachable or unresponsive.
-0.015
-  Split Astro::SIMBAD::Client::WSQueryInterfaceService into its own file
-    for bookkeeping purposes.
-0.016
-  Eliminate calls to UNIVERSAL::isa as a function.
-  Revise tests to deal more gracefully with 5xx errors.
-0.017
-  Fix test failure when YAML::Syck installed but YAML not.
-0.018
-  Distribute developer tests, but only run if DEVELOPER_TEST is set.
-  Comply with Perl::Critic using profile t/perlcriticrc.
-  Criticize code as part of developer testing.
-  Drop unneeded 'use FileHandle' from Build.PL.
-  Have Build.PL and Makefile.PL handle -y and -n to supress prompt and
-    install or not install simbadc respectively.
-  Correct 'help client' in bin/simbadc
-  Update t/vo.t to track the fact that the SIMBAD4 URL query has gone
-    back to decimal degrees for position.
+
+0.011		12-Nov-2007	T. R. Wyant
+  Modify parse module loader to use 'eval "require $module"' rather
+    than generating .pm file name, to work with .pmc modules when and
+    if they appear.
+
+0.010		18-Oct-2007	T. R. Wyant
+  Specify minimum Perl version of 5.006 in Build.PL and Makefile.PL.
+  Change url_query VOTable tests from todo back to test, since they
+    now work as of 18-Oct-2007.
+  Corrected the code used to escape URLs in the centralized requester
+    (use URL::Escape, not HTML::Entities).
+
+0.009		17-Oct-2007	T. R. Wyant
+  Add 'post' attribute.
+  Mark url_query VOTable tests todo, since they stopped working
+    15-Oct-2007. Document this under 'NOTICES' in the code.
+  Clean up the POD tests.
+  Remove shebang lines where not warranted.
+
+0.008		30-Aug-2007	T. R. Wyant
+  Add release() method, to return SIMBAD release number.
+
+0.007		26-Mar-2007	T. R. Wyant
+  Change FORMAT_VO_BASIC to return decimal degrees for right ascension
+    and declination. This was always the intent, but could not be tested
+    until 'vo' web service queries started working.
+  Document change in status of web service 'vo' queries.
+
+0.006		20-Mar-2007	T. R. Wyant
+  Use XML::DoubleEncodedEntities to deal with occasional double
+    encoding of VOTable data.
+
+0.005		02-Mar-2007	T. R. Wyant
+  Fall back to uri_escape if uri_escape_utf8 is not available.
+
+0.004		22-Feb-2007	T. R. Wyant
+  Explicitly load URI::Escape.
+  Add HTML::Entities and URI::Escape as required by this class.
+
+0.003		12-Feb-2007	T. R. Wyant
+  Have Makefile.PL generate LICENSE tag if supported by the version of
+    ExtUtils::MakeMaker in use.
+  Make Astro::SIMBAD::Client work with SOAP::Lite 0.55, which is what
+    ships with ActivePerl.
+
+0.002		26-Jan-2007	T. R. Wyant
+  Modified Build.PL and Makefile.PL to ask if simbadc is to be installed.
+  Modified vo tests to follow change of VOTable coordinate format
+    to sexagesimal about SIMBAD4 1.005 January 26 2007.
+  Corrected Astro::SIMBAD::Client documentation.
+  Corrected simbadc documentation.
+
+0.001		13-Dec-2006	T. R. Wyant
+  Initial release
