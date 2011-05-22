@@ -1,3 +1,7 @@
+0.020		22-May-2011	T. R. Wyant
+  Update the canned positions of Arcturus to match those actually
+    retrieved from SIMBAD, which changed on or about May 18 2011.
+
 0.019		03-Mar-2011	T. R. Wyant
   Convert to Perl Foundation-recommended license.
   Reorganize author tests to run on separate Build.PL tag, not a magic
