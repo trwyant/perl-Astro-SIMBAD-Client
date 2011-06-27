@@ -9,8 +9,6 @@ use Astro::SIMBAD::Client::Build;
 use Module::Build;
 use Config;
 
-our $VERSION = '0.019';
-
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 
 my %attr = (
