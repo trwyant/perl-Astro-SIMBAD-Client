@@ -1,5 +1,10 @@
+0.022		26-Jul-2011	T. R. Wyant
+  Update the canned recession velocity of Arcturus (used for testing) to
+    match those retrieved from SIMBAD, which changed on or about July 25
+    2011.
+
 0.021		27-Jun-2011	T. R. Wyant
-  Update the canned positions of Arcturus (usef for testing) to match
+  Update the canned positions of Arcturus (used for testing) to match
     those retrieved from SIMBAD, which changed on or about June 27 2011.
 
 0.020		22-May-2011	T. R. Wyant
