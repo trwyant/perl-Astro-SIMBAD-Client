@@ -189,6 +189,9 @@ test url_query id Arcturus (vo) - proper motion in declination
 deref 0 data 0
 find meta 1 name oRV:RVel
 deref_curr value
-want_load arcturus radial
+# Velocity in recession retrieved by every method but this changed on or
+# about July 25 2011 to -5.19.
+# want_load arcturus radial
+want -5.2
 test url_query id Arcturus (vo) - radial velocity
 
