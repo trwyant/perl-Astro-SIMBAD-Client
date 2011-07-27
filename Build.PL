@@ -16,7 +16,7 @@ my %attr = (
     dist_abstract => 'Fetch astronomical data from SIMBAD 4.',
     module_name => 'Astro::SIMBAD::Client',
     build_requires => {
-####	'Test::More' => 0.40,
+	'Test::More' => 0.52,
     },
     get_options => {y => {}, n => {}},
     requires => {

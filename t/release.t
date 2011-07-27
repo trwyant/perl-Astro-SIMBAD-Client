@@ -7,17 +7,16 @@ use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Test;
 
-Astro::SIMBAD::Client::Test::test (*DATA);
+access;
+
+call 'release';
+test qr{ \A SIMBAD4 \b }smxi, 'Scalar release()';
+
+call_a 'release';
+deref 0;
+test 4, 'Major version number';
+
+end;
+
 
 1;
-__END__
-
-access
-
-release
-want_re (?i:^SIMBAD4\b)
-test Scalar release()
-
-release[0]
-want 4
-test Major version number

@@ -94,7 +94,7 @@ $mmv >= 6.4501 and $attr{META_ADD} = {
 
 $mmv >= 6.4501 and $attr{META_MERGE} = {
     build_requires => {
-####	'Test::More' => 0.40,
+	'Test::More' => 0.52,
     },
     resources => {
 	bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',

@@ -3,52 +3,23 @@ package main;
 use strict;
 use warnings;
 
-use Test;
+use Test::More 0.52;
 
-my $rslt;
-BEGIN {
-    $rslt = eval {
-	require Astro::SIMBAD::Client;
-	1;
-    } ? undef : ( $@ || 'unrecorded error' );
-    plan tests => $rslt ? 1 : 4;
-    print <<eod;
-# Test 1 - Load Astro::SIMBAD::Client
-#     Expect: no error
-#        Got: @{[$rslt || 'no error']}
-eod
-    ok (!$rslt);
-    $rslt and die "Failed to load Astro::SIMBAD::Client. Can not continue.\n";
-}
+require_ok 'Astro::SIMBAD::Client'
+    or BAIL_OUT q{Can't do much testing if can't load module};
+
 
 my $smb = Astro::SIMBAD::Client->new ();
-print <<eod;
-# Test 2 - Astro::SIMBAD::Client->new ();
-#     Expect: new object
-#        Got: @{[$smb ? 'new object' : 'nothing']}
-eod
-ok ($smb);
 
-my $test = 2;
-foreach ([get => debug => 0], [set => debug => 1], [get => debug => 1]) {
-    my ($method, @args) = @$_;
-    if ($method eq 'get') {
-	$test++;
-	my $want = pop @args;
-	$rslt = $smb->$method (@args);
-	print <<eod;
-# Test $test - \$smb->$method (@{[join ', ', map {"'$_'"} @args]})
-#     Expect: $want
-#        Got: $rslt
-eod
-	if ($want =~ m/\d+/) {
-	    ok ($want == $rslt);
-	} else {
-	    ok ($want eq $rslt);
-	}
-    } else {
-	$smb->$method (@args);
-    }
-}
+ok $smb, 'Instantiate Astro::SIMBAD::Client'
+    or BAIL_OUT "Test aborted: $@";
+
+is $smb->get( 'debug' ), 0, 'Initial debug setting is 0';
+
+$smb->set( debug => 1 );
+
+is $smb->get( 'debug' ), 1, 'Able to set debug to 1';
+
+done_testing;
 
 1;

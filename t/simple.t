@@ -7,141 +7,131 @@ use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Test;
 
-Astro::SIMBAD::Client::Test::test (*DATA);
+access;
 
-1;
-__END__
+call set => type => 'txt';
+call set => format => 'txt=FORMAT_TXT_SIMPLE_BASIC';
+call set => parser => 'txt=Parse_TXT_Simple';
 
-access
+load_data 't/canned.data';
 
-set type txt
-set format txt=FORMAT_TXT_SIMPLE_BASIC
-set parser txt=Parse_TXT_Simple
+echo <<'EOD';
 
-load t/canned.data
-
-echo <<eod
+Test the handling of simple text
 
 The following tests use the query (SOAP) interface
-eod
+EOD
 
-query id Arcturus
+call query => id => 'Arcturus';
+count;
+test 1, 'query id Arcturus (txt) - number of objects returned';
 
-count
-want 1
-test query id Arcturus (txt) - number of objects returned
+deref 0, 'name';
+test canned( arcturus => 'name' ), 'query id Arcturus (txt) - name';
 
-deref 0 name
-want_load arcturus name
-test query id Arcturus (txt) - name
+deref 0, 'ra';
+test canned( arcturus => 'ra' ), 'query id Arcturus (txt) - right ascension';
 
-deref 0 ra
-want_load arcturus ra
-test query id Arcturus (txt) - right ascension
+deref 0, 'dec';
+test canned( arcturus => 'dec' ), 'query id Arcturus (txt) - declination';
 
-deref 0 dec
-want_load arcturus dec
-test query id Arcturus (txt) - declination
+deref 0, 'plx';
+test canned( arcturus => 'plx' ), 'query id Arcturus (txt) - parallax';
 
-deref 0 plx
-want_load arcturus plx
-test query id Arcturus (txt) - parallax
+deref 0, 'pmra';
+test canned( arcturus => 'pmra' ),
+    'query id Arcturus (txt) - proper motion in right ascension';
 
-deref 0 pmra
-want_load arcturus pmra
-test query id Arcturus (txt) - proper motion in right ascension
+deref 0, 'pmdec';
+test canned( arcturus => 'pmdec' ),
+    'query id Arcturus (txt) - proper motion in declination';
 
-deref 0 pmdec
-want_load arcturus pmdec
-test query id Arcturus (txt) - proper motion in declination
+deref 0, 'radial';
+test canned( arcturus => 'radial' ),
+    'query id Arcturus (txt) - radial velocity in recession';
 
-deref 0 radial
-want_load arcturus radial
-test query id Arcturus (txt) - radial velocity in recession
 
-clear
-noskip
-set parser script=Parse_TXT_Simple
+clear;
+call set => parser => 'script=Parse_TXT_Simple';
 
-echo <<eod
+echo <<'EOD';
 
 The following tests use the script interface
-eod
+EOD
 
-script <<eod
+call script => <<'EOD';
 format obj "---\nname: %idlist(NAME|1)\ntype: %otype\nlong: %otypelist\nra: %coord(d;A)\ndec: %coord(d;D)\nplx: %plx(V)\npmra: %pm(A)\npmdec: %pm(D)\nradial: %rv(V)\nredshift: %rv(Z)\nspec: %sptype(S)\nbmag: %fluxlist(B)[%flux(F)]\nvmag: %fluxlist(V)[%flux(F)]\nident: %idlist[%*,]\n"
 query id arcturus
-eod
+EOD
 
-count
-want 1
-test script 'query id arcturus' - number of objects returned
+count;
+test 1, q{script 'query id arcturus' - number of objects returned};
 
-deref 0 name
-want_load arcturus name
-test script 'query id arcturus' - name
+deref 0, 'name';
+test canned( arcturus => 'name' ), q{script 'query id arcturus' - name};
 
-deref 0 ra
-want_load arcturus ra
-test script 'query id arcturus' - right ascension
+deref 0, 'ra';
+test canned( arcturus => 'ra' ),
+    q{script 'query id arcturus' - right ascension};
 
-deref 0 dec
-want_load arcturus dec
-test script 'query id arcturus' - declination
+deref 0, 'dec';
+test canned( arcturus => 'dec' ),
+    q{script 'query id arcturus' - declination};
 
-deref 0 plx
-want_load arcturus plx
-test script 'query id arcturus' - parallax
+deref 0, 'plx';
+test canned( arcturus => 'plx' ), q{script 'query id arcturus' - parallax};
 
-deref 0 pmra
-want_load arcturus pmra
-test script 'query id arcturus' - proper motion in right ascension
+deref 0, 'pmra';
+test canned( arcturus => 'pmra' ),
+    q{script 'query id arcturus' - proper motion in right ascension};
 
-deref 0 pmdec
-want_load arcturus pmdec
-test script 'query id arcturus' - proper motion in declination
+deref 0, 'pmdec';
+test canned( arcturus => 'pmdec' ),
+    q{script 'query id arcturus' - proper motion in declination};
 
-deref 0 radial
-want_load arcturus radial
-test script 'query id arcturus' - radial velocity in recession
+deref 0, 'radial';
+test canned( arcturus => 'radial' ),
+    q{script 'query id arcturus' - radial velocity in recession};
 
-clear
 
-echo <<eod
+clear;
+echo <<'EOD';
 
 The following tests use the script_file interface
-eod
+EOD
 
-script_file t/arcturus.simple
+call script_file => 't/arcturus.simple';
 
-count
-want 1
-test script_file t/arcturus.simple - number of objects returned
+count;
+test 1, 'script_file t/arcturus.simple - number of objects returned';
 
-deref 0 name
-want_load arcturus name
-test script_file t/arcturus.simple - name
+deref 0, 'name';
+test canned( arcturus => 'name' ), 'script_file t/arcturus.simple - name';
 
-deref 0 ra
-want_load arcturus ra
-test script_file t/arcturus.simple - right ascension
+deref 0, 'ra';
+test canned( arcturus => 'ra' ),
+    'script_file t/arcturus.simple - right ascension';
 
-deref 0 dec
-want_load arcturus dec
-test script_file t/arcturus.simple - declination
+deref 0, 'dec';
+test canned( arcturus => 'dec' ),
+    'script_file t/arcturus.simple - declination';
 
-deref 0 plx
-want_load arcturus plx
-test script_file t/arcturus.simple - parallax
+deref 0, 'plx';
+test canned( arcturus => 'plx' ), 'script_file t/arcturus.simple - parallax';
 
-deref 0 pmra
-want_load arcturus pmra
-test script_file t/arcturus.simple - proper motion in right ascension
+deref 0, 'pmra';
+test canned( arcturus => 'pmra' ),
+    'script_file t/arcturus.simple - proper motion in right ascension';
 
-deref 0 pmdec
-want_load arcturus pmdec
-test script_file t/arcturus.simple - proper motion in declination
+deref 0, 'pmdec';
+test canned( arcturus => 'pmdec' ),
+    'script_file t/arcturus.simple - proper motion in declination';
 
-deref 0 radial
-want_load arcturus radial
-test script_file t/arcturus.simple - radial velocity in recession
+deref 0, 'radial';
+test canned( arcturus => 'radial' ),
+    'script_file t/arcturus.simple - radial velocity in recession';
+
+
+end;
+
+1;
