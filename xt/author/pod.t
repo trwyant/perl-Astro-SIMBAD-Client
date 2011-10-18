@@ -6,6 +6,7 @@ use warnings;
 BEGIN {
     eval {
 	require Test::More;
+	Test::More->VERSION( 0.88 );
 	Test::More->import();
 	1;
     } or do {

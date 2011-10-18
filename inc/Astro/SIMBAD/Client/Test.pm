@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Astro::SIMBAD::Client;
-use Test::More 0.52;
+use Test::More 0.88;
 
 use base qw{ Exporter };
 

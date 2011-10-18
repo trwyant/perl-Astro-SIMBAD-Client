@@ -3,7 +3,7 @@ package main;
 use strict;
 use warnings;
 
-use Test::More 0.52;
+use Test::More 0.88;
 
 require_ok 'Astro::SIMBAD::Client'
     or BAIL_OUT q{Can't do much testing if can't load module};
