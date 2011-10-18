@@ -1,3 +1,9 @@
+0.022_01	18-Oct-2011	T. R. Wyant
+  Update dependencies.
+  Rewrite tests to use Test::More 0.88, and update build_requires for this.
+  Comment tweaks to avoid a bug in Module::ExtractUse (i.e., play the
+    CPANTS game).
+
 0.022		26-Jul-2011	T. R. Wyant
   Update the canned recession velocity of Arcturus (used for testing) to
     match those retrieved from SIMBAD, which changed on or about July 25
