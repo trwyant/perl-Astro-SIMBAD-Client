@@ -59,8 +59,10 @@ The following methods should be considered public:
 
 package Astro::SIMBAD::Client;
 
-use 5.008;	# Because of MailTools, used by SOAP::Lite.
-		# Otherwise it would be 5.006 because of 'our'.
+# We require Perl 5.008 because of MailTools, used by SOAP::Lite.
+# Otherwise it would be 5.006 because of 'our'.
+
+use 5.008;
 
 use strict;
 use warnings;
