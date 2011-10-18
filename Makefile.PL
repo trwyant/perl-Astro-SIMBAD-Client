@@ -3,6 +3,9 @@ use 5.008;
 use strict;
 use warnings;
 
+use lib qw{ inc };
+
+use Astro::SIMBAD::Client::Meta;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 use Getopt::Std;
@@ -65,17 +68,12 @@ if ($^O eq 'MSWin32') {
 
 (my $mmv = ExtUtils::MakeMaker->VERSION) =~ s/_//g;
 
+my $meta = Astro::SIMBAD::Client::Meta->new();
+
 my %attr = (
     NAME => 'Astro::SIMBAD::Client',
     VERSION_FROM => 'lib/Astro/SIMBAD/Client.pm',
-    PREREQ_PM => {
-	'HTML::Entities'	=> 0,
-	'LWP::UserAgent'	=> 0,
-	'Scalar::Util'	=> 1.01,	# Not in Perl 5.6.
-	'SOAP::Lite'	=> 0,
-	'URI::Escape'	=> 0,
-	'XML::DoubleEncodedEntities' => 1.0,
-    },
+    PREREQ_PM => $meta->requires(),
     PL_FILES => {},	# Prevent old MakeMaker from running Build.PL
     EXE_FILES => \@exe_files,
     realclean => {FILES => join ' ', @clean_files},
@@ -93,14 +91,18 @@ $mmv >= 6.4501 and $attr{META_ADD} = {
 };
 
 $mmv >= 6.4501 and $attr{META_MERGE} = {
-    build_requires => {
-	'Test::More' => 0.52,
-    },
     resources => {
 	bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',
 	license => 'http://dev.perl.org/licenses/',
     },
 };
+
+$mmv >= 6.4701 and $attr{MIN_PERL_VERSION} = $meta->requires_perl();
+
+$mmv >= 6.5501
+    and $attr{BUILD_REQUIRES} = $meta->build_requires()
+    or $mmv >= 6.4501
+    and $attr{META_MERGE}{build_requires} = $meta->build_requires();
 
 WriteMakefile (%attr);
 

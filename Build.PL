@@ -6,28 +6,23 @@ use warnings;
 use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Build;
+use Astro::SIMBAD::Client::Meta;
 use Module::Build;
 use Config;
 
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 
+my $meta = Astro::SIMBAD::Client::Meta->new();
+
 my %attr = (
     dist_author => 'Tom Wyant (wyant at cpan dot org)',
     dist_abstract => 'Fetch astronomical data from SIMBAD 4.',
     module_name => 'Astro::SIMBAD::Client',
-    build_requires => {
-	'Test::More' => 0.52,
-    },
+    build_requires => $meta->build_requires(),
     get_options => {y => {}, n => {}},
-    requires => {
-	perl => 5.008,	# SOAP::Lite dependencies
-	'HTML::Entities' => 0,
-	'LWP::UserAgent' => 0,
-	'SOAP::Lite' => 0,
-	'Scalar::Util' => 1.01,	# Not in Perl 5.6
-	'URI::Escape' => 0,
-	'XML::DoubleEncodedEntities' => 1.0,
-    },
+    requires => $meta->requires(
+	perl => $meta->requires_perl(),
+    ),
     dynamic_config => 1,
     license => 'perl',
 );

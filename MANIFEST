@@ -9,6 +9,7 @@ eg/script
 eg/votable
 eg/votree
 inc/Astro/SIMBAD/Client/Build.pm
+inc/Astro/SIMBAD/Client/Meta.pm
 inc/Astro/SIMBAD/Client/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
