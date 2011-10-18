@@ -67,12 +67,12 @@ use 5.008;
 use strict;
 use warnings;
 
-use Carp;				# Standard
-use LWP::UserAgent;			# Comes with libwww-perl
-use HTTP::Request::Common qw{POST};	# Comes with libwww-perl
-use Scalar::Util qw{looks_like_number};
+use Carp;
+use LWP::UserAgent;
+use HTTP::Request::Common qw{POST};
+use Scalar::Util 1.01 qw{looks_like_number};
 use SOAP::Lite;
-use URI::Escape;			# Comes with libwww-perl
+use URI::Escape;
 use XML::DoubleEncodedEntities;
 use Astro::SIMBAD::Client::WSQueryInterfaceService;
 
