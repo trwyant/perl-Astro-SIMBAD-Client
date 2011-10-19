@@ -3,6 +3,7 @@
   Rewrite tests to use Test::More 0.88, and update build_requires for this.
   Comment tweaks to avoid a bug in Module::ExtractUse (i.e., play the
     CPANTS game).
+  Correct t/vo.t radial velocity test.
 
 0.022		26-Jul-2011	T. R. Wyant
   Update the canned recession velocity of Arcturus (used for testing) to

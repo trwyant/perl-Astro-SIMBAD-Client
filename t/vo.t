@@ -168,27 +168,11 @@ deref_curr 'value';
 test canned( arcturus => 'pmdec' ),
     'url_query id Arcturus (vo) - proper motion in declination';
 
-=begin comment
-
-The following is what I want to release, but for internal testing I want
-to test what is already released, to see if it changes. So what comes
-after the comment is what is used for the nonce.
-
 deref 0, data => 0;
 find meta => 1, name => 'RV_VALUE';
 deref_curr 'value';
 test canned( arcturus => 'radial' ),
     'url_query id Arcturus (vo) - radial velocity';
-
-=end comment
-
-=cut
-
-deref 0, data => 0;
-find meta => 1, name => 'oRV:RVel';
-deref_curr 'value';
-test -5.2, 'url_query id Arcturus (vo) - radial velocity';
-
 
 end;
 
