@@ -17,6 +17,7 @@ our @EXPORT_OK = qw{
     count
     deref
     deref_curr
+    diag
     dumper
     echo
     end
@@ -24,6 +25,7 @@ our @EXPORT_OK = qw{
     load_data
     load_module
     module_loaded
+    returned_value
     test
 };
 our @EXPORT = @EXPORT_OK;	## no critic (ProhibitAutomaticExportation)
@@ -221,6 +223,10 @@ sub module_loaded (@) {		## no critic (ProhibitSubroutinePrototypes,RequireArgUn
     goto &$code;
 }
 
+sub returned_value () { ## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
+    return $got;
+}
+
 sub test ($$) {		## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
     my ( $want, $title ) = @_;
     $got = 'undef' unless defined $got;
@@ -394,6 +400,11 @@ subroutines, and subsequent arguments are arguments for the named
 subroutine. If the named module has not been loaded, nothing happens. If
 the named module has been loaded, the named subroutine is called (as a
 co-routine), with the given arguments.
+
+=head2 returned_value
+
+This subroutine dumps the value returned by the last call as a scalar.
+It is intended for diagnostics only.
 
 =head2 test
 
