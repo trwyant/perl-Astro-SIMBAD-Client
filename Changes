@@ -1,3 +1,10 @@
+0.022_02	23-Oct-2011	T. R. Wyant
+  Have the Astro::SIMBAD::Client script_file() method post the file to
+    field 'scriptFile', not 'CriteriaFile', to match the current HTML
+    form being emulated.
+  Add debug output to t/yaml.t to try to track down why there are so
+    test failures in script_file( 't/arcturus.t' ).
+
 0.022_01	18-Oct-2011	T. R. Wyant
   Update dependencies.
   Rewrite tests to use Test::More 0.88, and update build_requires for this.
