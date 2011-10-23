@@ -112,6 +112,11 @@ The following tests use the script_file interface
 EOD
 
 call script_file => 't/arcturus.yaml';
+{
+    my $rtn = returned_value;
+    $rtn = defined $rtn ? "'$rtn'" : 'undef';
+    diag "Debug - script_file( 't/arcturus.yaml' ) returned $rtn";
+}
 count;
 test 1, 'script_file t/arcturus.yaml - number of objects returned';
 
