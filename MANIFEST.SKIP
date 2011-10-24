@@ -24,3 +24,4 @@ CVS/
 \.tar\.gz$
 ^TODO$
 ^wsdl$
+^xt/author/optionals/
