@@ -10,6 +10,13 @@ use Astro::SIMBAD::Client::Test;
 
 access;
 
+# If I choose to try more of the possible YAML modules, I need to do
+# three things:
+# * Add the possible modules to load_module, below
+# * Add the appropriate module_loaded wherever needed below.
+# * Add the possible modules to the @hide array in
+#   inc/Astro/SIMBAD/Client/Build.pm
+
 load_module qw{ YAML YAML::Syck };
 
 call set => type => 'txt';
@@ -160,3 +167,5 @@ end;
 
 
 1;
+
+# ex: set textwidth=72 :
