@@ -1,5 +1,8 @@
+0.023		01-Nov-2011	T. R. Wyant
+  No changes from 0.022_03, other than version.
+
 0.022_03	23-Oct-2011	T. R. Wyant
-  Correct the t/yaml.t scrip so that the script_file( 't/arcturus.yaml' )
+  Correct the t/yaml.t script so that the script_file( 't/arcturus.yaml' )
     tests are skipped if neither YAML nor YAML::Syck can be loaded.
   Add optional modules tests to the author tests, to be sure the above
     is fixed, and stays that way.
@@ -10,7 +13,7 @@
     field 'scriptFile', not 'CriteriaFile', to match the current HTML
     form being emulated.
   Add debug output to t/yaml.t to try to track down why there are so
-    test failures in script_file( 't/arcturus.yaml' ).
+    many test failures in script_file( 't/arcturus.yaml' ).
 
 0.022_01	18-Oct-2011	T. R. Wyant
   Update dependencies.
