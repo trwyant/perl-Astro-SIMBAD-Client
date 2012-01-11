@@ -4,33 +4,17 @@ use strict;
 use warnings;
 
 use Astro::SIMBAD::Client;
-use Getopt::Long;
+use Getopt::Long 2.33;
+use Pod::Usage;
 
-my $usage = <<eod;
-
-Query Simbad 4 for a list of objects in VOTable format.
-
-usage: votable [options] object ...
-
-where the valid options are:
-  -dumper
-    causes the result to be parsed by Parse_VO_Table and then dumped by
-    Data::Dumper::Dumper;
-  -help
-    displays this text;
-  -url_query
-    performs a query by URL, rather than a SOAP query;
-  -yaml
-    causes the result to be parsed by Parse_VO_Table and then dumped by
-    YAML::Dump;
-eod
+our $VERSION = 0.025;
 
 my %opt;
 
-(GetOptions (\%opt,
-    help => sub {print $usage; exit},
-    qw{dumper url_query yaml}) && @ARGV)
-    or die $usage;
+GetOptions (\%opt,
+    help => sub { pod2usage( { -verbose => 2 } ) },
+    qw{ dumper! json! url_query! yaml! } ) and @ARGV
+    or pod2usage( { -verbose => 0 } );
 
 my $simbad = Astro::SIMBAD::Client->new (type => 'vo');
 
@@ -44,16 +28,21 @@ if ($opt{dumper}) {
     } or die ( $@ || 'Unable to load Data::Dumper for unknown reason' );
 }
 
+if ( $opt{json} ) {
+    eval {
+	require JSON;
+	push @dump_as, [ 'JSON', sub { JSON::to_json( $_[0], { pretty =>
+			1 } ) } ];
+	1;
+    } or die ( $@ || 'Unable to load JSON for unknown reason' );
+}
+
 if ($opt{yaml}) {
     eval {
-	require YAML;
-	push @dump_as, ['YAML::Dump', YAML->can('Dump')];
+	require YAML::Any;
+	push @dump_as, ['YAML::Any::Dump', YAML::Any->can('Dump')];
 	1;
-    } or eval {
-	require YAML::Syck;
-	push @dump_as, ['YAML::Syck::Dump', YAML::Syck->can('Dump')];
-	1;
-    } or die ( $@ || 'Unable to load YAML or YAML::Syck for unknown reason' );
+    } or die ( $@ || 'Unable to load YAML::Any for unknown reason' );
 }
 
 $simbad->set (parser => {vo => 'Parse_VO_Table'}) if @dump_as;
@@ -63,9 +52,9 @@ foreach my $obj (@ARGV) {
 	$simbad->url_query (id => Ident => $obj) :
 	$simbad->query (id => $obj);
     if (!$rslt) {
-	warn <<eod;
+	warn <<"EOD";
 Warning - Object $obj not found.
-eod
+EOD
     } elsif (@dump_as) {
 	foreach (@dump_as) {
 	    print "\n$_->[0] output:\n", $_->[1]->($rslt);
@@ -99,15 +88,24 @@ L<Data::Dumper|Data::Dumper>.
 
 This option displays documentation and then exits.
 
+=item -json
+
+This option causes the result to be parsed, and displayed by
+L<JSON|JSON>.
+
 =item -url_query
 
 This option causes SIMBAD to be queried using a URL query rather than a
 SOAP query.
 
+=item -version
+
+This option displays the version and then exits.
+
 =item -yaml
 
-This option causes the result to be parsed, and displayed by either
-L<YAML|YAML> or L<YAML::Syck|YAML::Syck>.
+This option causes the result to be parsed, and displayed by
+L<YAML::Any|YAML::Any>.
 
 =back
 
