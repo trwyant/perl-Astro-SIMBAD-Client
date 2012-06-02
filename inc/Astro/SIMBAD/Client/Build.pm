@@ -13,11 +13,11 @@ my @optionals_dir = qw{ xt author optionals };
 
 # The hidden modules are as follows:
 # * Time::HiRes is optional to Astro::SIMBAD::Client
-# * The YAML::Any module is used by t/yaml.t, which contains logic to
+# * The YAML module is used by t/yaml.t, which contains logic to
 #   skip tests if it can be loaded.
 my @hide = qw{
     Time::HiRes
-    YAML::Any
+    YAML
 };
 
 {

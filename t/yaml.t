@@ -17,10 +17,10 @@ access;
 # * Add the possible modules to the @hide array in
 #   inc/Astro/SIMBAD/Client/Build.pm
 
-load_module qw{ YAML::Any };
+load_module qw{ YAML };
 
 call set => type => 'txt';
-module_loaded 'YAML::Any', call => set => parser => 'txt=YAML::Any::Load';
+module_loaded 'YAML', call => set => parser => 'txt=YAML::Load';
 call set => format => 'txt=FORMAT_TXT_YAML_BASIC';
 
 load_data 't/canned.data';
@@ -66,8 +66,8 @@ test canned( arcturus => 'radial' ),
 # skipping because of missing modules.
 
 clear;
-load_module qw{ YAML::Any };
-module_loaded 'YAML::Any', call => set => parser => 'script=YAML::Any::Load';
+load_module qw{ YAML };
+module_loaded 'YAML', call => set => parser => 'script=YAML::Load';
 
 echo <<'EOD';
 
@@ -115,8 +115,8 @@ test canned( arcturus => 'radial' ),
 # skipping because of missing modules.
 
 clear;
-load_module qw{ YAML::Any };
-module_loaded 'YAML::Any', call => set => parser => 'script=YAML::Any::Load';
+load_module qw{ YAML };
+module_loaded 'YAML', call => set => parser => 'script=YAML::Load';
 
 echo <<'EOD';
 

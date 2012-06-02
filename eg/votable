@@ -39,10 +39,10 @@ if ( $opt{json} ) {
 
 if ($opt{yaml}) {
     eval {
-	require YAML::Any;
-	push @dump_as, ['YAML::Any::Dump', YAML::Any->can('Dump')];
+	require YAML;
+	push @dump_as, ['YAML::Dump', YAML->can('Dump')];
 	1;
-    } or die ( $@ || 'Unable to load YAML::Any for unknown reason' );
+    } or die ( $@ || 'Unable to load YAML for unknown reason' );
 }
 
 $simbad->set (parser => {vo => 'Parse_VO_Table'}) if @dump_as;
@@ -105,7 +105,7 @@ This option displays the version and then exits.
 =item -yaml
 
 This option causes the result to be parsed, and displayed by
-L<YAML::Any|YAML::Any>.
+L<YAML|YAML>.
 
 =back
 
