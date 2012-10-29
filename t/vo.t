@@ -15,50 +15,50 @@ load_data 't/canned.data';
 call set => type => 'vo';
 call set => parser => 'vo=Parse_VO_Table';
 
-echo <<'EOD';
+TODO: {
+    local $TODO = 'SOAP vo queries hosed on server side';
+
+    echo <<'EOD';
 
 Test the handling of VO Table data
 
 The following tests use the query (SOAP) interface
 EOD
 
-call query => id => 'Arcturus';
+    call query => id => 'Arcturus';
 
-count;
-test 1, 'query id Arcturus (vo) - count of tables';
+    count;
+    test 1, 'query id Arcturus (vo) - count of tables';
 
-# For a long time the following did not work. Because the problem
-# appeared to be on the SIMBAD end, they were 'todo'.
+    deref 0, 'data';
+    count;
+    test 1, 'query id arcturus (vo) - count of rows';
 
-deref 0, 'data';
-count;
-test 1, 'query id arcturus (vo) - count of rows';
+    deref 0, data => 0, 0, 'value';
+    test canned( arcturus => 'name' ), 'query id Arcturus (vo) - name';
 
-deref 0, data => 0, 0, 'value';
-test canned( arcturus => 'name' ), 'query id Arcturus (vo) - name';
+    deref 0, data => 0, 2, 'value';
+    test canned( arcturus => 'ra' ), 'query id Arcturus (vo) - right ascension';
 
-deref 0, data => 0, 2, 'value';
-test canned( arcturus => 'ra' ), 'query id Arcturus (vo) - right ascension';
+    deref 0, data => 0, 3, 'value';
+    test canned( arcturus => 'dec' ), 'query id Arcturus (vo) - declination';
 
-deref 0, data => 0, 3, 'value';
-test canned( arcturus => 'dec' ), 'query id Arcturus (vo) - declination';
+    deref 0, data => 0, 4, 'value';
+    test canned( arcturus => 'plx' ), 'query id Arcturus (vo) - parallax';
 
-deref 0, data => 0, 4, 'value';
-test canned( arcturus => 'plx' ), 'query id Arcturus (vo) - parallax';
+    deref 0, data => 0, 5, 'value';
+    test canned( arcturus => 'pmra' ),
+	'query id Arcturus (vo) - proper motion in right ascension';
 
-deref 0, data => 0, 5, 'value';
-test canned( arcturus => 'pmra' ),
-    'query id Arcturus (vo) - proper motion in right ascension';
+    deref 0, data => 0, 6, 'value';
+    test canned( arcturus => 'pmdec' ),
+	'query id Arcturus (vo) - proper motion in declination';
 
-deref 0, data => 0, 6, 'value';
-test canned( arcturus => 'pmdec' ),
-    'query id Arcturus (vo) - proper motion in declination';
+    deref 0, data => 0, 7, 'value';
+    test canned( arcturus => 'radial' ),
+	'query id Arcturus (vo) - radial velocity';
 
-deref 0, data => 0, 7, 'value';
-test canned( arcturus => 'radial' ),
-    'query id Arcturus (vo) - radial velocity';
-
-# For a long time the previous was 'todo'
+}
 
 echo <<'EOD';
 

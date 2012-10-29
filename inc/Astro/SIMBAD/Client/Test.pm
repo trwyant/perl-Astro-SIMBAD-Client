@@ -27,6 +27,8 @@ our @EXPORT_OK = qw{
     module_loaded
     returned_value
     test
+    test_false
+    $TODO
 };
 our @EXPORT = @EXPORT_OK;	## no critic (ProhibitAutomaticExportation)
 
@@ -228,7 +230,18 @@ sub returned_value () { ## no critic (ProhibitSubroutinePrototypes,RequireArgUnp
 }
 
 sub test ($$) {		## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
-    my ( $want, $title ) = @_;
+    $_[2] = 1;
+    goto &_test;
+}
+
+sub test_false ($$) {	## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
+    $_[2] = 0;
+    goto &_test;
+}
+
+
+sub _test {		## no critic (RequireArgUnpacking)
+    my ( $want, $title, $type ) = @_;
     $got = 'undef' unless defined $got;
     foreach ($want, $got) {
 	ref $_ and next;
@@ -241,13 +254,13 @@ sub test ($$) {		## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
 	}
     } elsif (ref $want eq 'Regexp') {
 	@_ = ( $got, $want, $title );
-	goto &like;
+	goto $type ? \&like : \&unlike;
     } elsif (_numberp ($want) && _numberp ($got)) {
-	@_ = ( $got, '==', $want, $title );
+	@_ = ( $got, ( $type ? '==' : '!=' ), $want, $title );
 	goto &cmp_ok;
     } else {
 	@_ = ( $got, $want, $title );
-	goto &is;
+	goto $type ? \&is : \&isnt;
     }
     return;
 }
