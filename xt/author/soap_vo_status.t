@@ -12,8 +12,11 @@ use Astro::SIMBAD::Client::Test;
 access;
 
 diag <<'EOD';
+
+
 If this test succeeds, it means that SOAP 'vo'-format queries are still
 broken.
+
 EOD
 
 load_module qw{ XML::Parser XML::Parser::Lite };

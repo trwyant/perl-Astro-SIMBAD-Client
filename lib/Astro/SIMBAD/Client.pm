@@ -10,14 +10,22 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-As of SIMBAD4 1.117 (April 9 2009), the URL query service returns
-coordinates in decimal degrees when VOTable output is requested, rather
-than degrees minutes and seconds. Format control seems still not to work
-on VOTable output.
+About October 24 2012 the C<query*()> methods began failing when C<type>
+attribute was set to C<'vo'>. A look at the SOAP packets (particularly
+the response packet, which appears to indicate a Java error on the
+server) seems to say the problem is in the server side. I have informed
+the University of Strasbourg of my findings, but so far have no
+response. They may have other fish to fry, since between that date and
+October 30 the server version has gone from 1.199 to 1.201.
 
-In terms of this package, this means that if the C<type> attribute is
-set to 'vo', the url_query() method will return positions in decimal
-degrees.
+Calls to C<query*()> methods with the C<type> attribute set to some
+other value than C<'vo'> still work, as do C<'vo'> queries by other
+mechanisms, specifically the C<script*()> methods and the C<url_query()>
+method.
+
+Since I have, to my knowledge, no control over this, I have marked the
+corresponding tests C<TODO>, to prevent installation failures.
+B<Caveat user>.
 
 =head1 DESCRIPTION
 
