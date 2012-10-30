@@ -1,3 +1,12 @@
+0.026		2012-10-30	T. R. Wyant
+  Methods query*() with 'type' attribute 'vo' (in other words, SOAP
+    VOTable queries) started failing October 24 2012. Since I think this
+    is a server-side problem (famous last words!) I have made the
+    relevant tests TODO and put a NOTICE in the Astro::SIMBAD::Client
+    POD.
+  Replace code that feels around for a working YAML module with code
+    that just uses YAML itself.
+
 0.025		2012-01-05	T. R. Wyant
   Bring Changes file into compliance with Test::CPAN::Changes, and add
     xt/author/changes.t to make sure it stays that way.
