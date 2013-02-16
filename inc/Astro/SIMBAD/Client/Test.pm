@@ -25,6 +25,7 @@ our @EXPORT_OK = qw{
     load_data
     load_module
     module_loaded
+    plan
     returned_value
     test
     test_false

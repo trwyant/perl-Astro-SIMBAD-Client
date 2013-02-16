@@ -9,6 +9,8 @@ use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Test;
 
+plan skip_all => q{Not needed, since vo-format SOAP queries work.};
+
 access;
 
 diag <<'EOD';
