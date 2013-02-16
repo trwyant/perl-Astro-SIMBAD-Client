@@ -35,6 +35,7 @@ namespace
 namespaces
 obj
 parsers
+Parsers
 Oct
 preprocessed
 queryObjectByBib
@@ -51,6 +52,7 @@ txt
 vo
 vohash
 votable
-votables
+VOTable
+VOTables
 Wyant
 YAML
