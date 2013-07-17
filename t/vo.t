@@ -16,7 +16,7 @@ call set => type => 'vo';
 call set => parser => 'vo=Parse_VO_Table';
 
 TODO: {
-    local $TODO = 'SOAP vo queries hosed on server side';
+#   local $TODO = 'SOAP vo queries hosed on server side';
 
     echo <<'EOD';
 
