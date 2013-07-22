@@ -97,7 +97,15 @@ our $VERSION = '0.026';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
-use constant FORMAT_TXT_SIMPLE_BASIC => <<'eod';
+# TODO replace this with s///r if we ever get to the point where we
+# require Perl 5.13.2 or greater.
+sub _strip_returns {
+    my ( $data ) = @_;
+    $data =~ s/ \n //smxg;
+    return $data;
+}
+
+use constant FORMAT_TXT_SIMPLE_BASIC => _strip_returns( <<'EOD' );
 ---\n
 name: %IDLIST(NAME|1)\n
 type: %OTYPE\n
@@ -113,9 +121,9 @@ spec: %SP(S)\n
 bmag: %FLUXLIST(B)[%flux(F)]\n
 vmag: %FLUXLIST(V)[%flux(F)]\n
 ident: %IDLIST[%*,]
-eod
+EOD
 
-use constant FORMAT_TXT_YAML_BASIC => <<'eod';
+use constant FORMAT_TXT_YAML_BASIC => _strip_returns( <<'EOD' );
 ---\n
 name: '%IDLIST(NAME|1)'\n
 type: '%OTYPE'\n
@@ -132,7 +140,7 @@ spec: %SP(S)\n
 bmag: %FLUXLIST(B)[%flux(F)]\n
 vmag: %FLUXLIST(V)[%flux(F)]\n
 ident:\n%IDLIST[  - '%*'\n]
-eod
+EOD
 
 #	Documentation errors/omissions:
 #	%PLX:
@@ -1275,8 +1283,8 @@ The default specifies formats for output types 'txt' and 'vo'. The
 'txt' default is FORMAT_TXT_YAML_BASIC; the 'vo' default is
 FORMAT_VO_BASIC.
 
-There is no way to specify a default format for the 'script' or
-'script_file' methods.
+There is no way to specify a default format for the 'script_file'
+method.
 
 =for html <a name="parser"></a>
 
