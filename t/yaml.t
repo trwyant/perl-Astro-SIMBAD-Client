@@ -78,8 +78,8 @@ echo <<'EOD';
 The following tests use the script interface
 EOD
 
-call script => <<'EOD';
-format obj "---\nname: '%idlist(NAME|1)'\ntype: '%otype'\nlong: '%otypelist'\nra: %coord(d;A)\ndec: %coord(d;D)\nplx: %plx(V)\npm:\n  - %pm(A)\n  - %pm(D)\nradial: %rv(V)\nredshift: %rv(Z)\nspec: %sptype(S)\nbmag: %fluxlist(B)[%flux(F)]\nvmag: %fluxlist(V)[%flux(F)]\nident:\n%idlist[  - '%*'\n]"
+call script => <<"EOD";
+format obj "@{[ Astro::SIMBAD::Client->FORMAT_TXT_YAML_BASIC ]}"
 query id arcturus
 EOD
 
