@@ -1,3 +1,12 @@
+0.026_01	2013-07-22	T. R. Wyant
+  Make use of the relevant FORMAT_* constants in t/simple.t and
+    t/yaml.t.
+  Make SOAP::Lite and XML::Parser optional. Especially the former.
+  Strip the literal newlines from the FORMAT_TXT_* canned formats.
+  Remove (well, rename) author test that fails when SOAP VO queries
+    start working, and remove TODO for SOAP in t/vo.t, on receiving
+    letter saying that the problem is fixed.
+
 0.026		2012-10-30	T. R. Wyant
   Methods query*() with 'type' attribute 'vo' (in other words, SOAP
     VOTable queries) started failing October 24 2012. Since I think this

@@ -10,7 +10,7 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-As of release [%% next_version %%], the L<SOAP::Lite|SOAP::Lite> module
+As of release 0.026_01, the L<SOAP::Lite|SOAP::Lite> module
 is optional. If it is not installed, though, the C<query()> method will
 not work.
 
@@ -46,7 +46,7 @@ takes a file name.
 - Queries may be made using the web services (SOAP) interface. The
 query() method implements this, and queryObjectByBib,
 queryObjectByCoord, and queryObjectById have been provided as
-convenience methods. As of version [%% next_version %%], the
+convenience methods. As of version 0.026_01, the
 L<SOAP::Lite|SOAP::Lite> module, which this functionality needs, is no
 longer required; you will need to install it separately to use this
 portion of the functionality.
@@ -94,7 +94,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '0.026';
+our $VERSION = '0.026_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
@@ -303,7 +303,7 @@ the full spec (see L<http://www.ivoa.net/Documents/latest/VOT.html>).
 It is oriented toward returning E<lt>TABLEDATAE<gt> contents, and the
 metadata that can reasonably be associated with those contents.
 
-B<NOTE> that as of version [%% next_version %%], the requisite modules
+B<NOTE> that as of version 0.026_01, the requisite modules
 to support VO format are B<not> required. If you need VO format you will
 need to install either L<XML::Parser|XML::Parser> or
 C<XML::Parser::Lite>, which comes with L<SOAP::Lite|SOAP::Lite>.
@@ -532,7 +532,7 @@ so the caller will need to be prepared to deal with malformed data.
 Otherwise, the result of the query is returned as-is.
 
 B<NOTE> that this functionality makes use of the
-L<SOAP::Lite|SOAP::Lite> module. As of version [%% next_version %%] of
+L<SOAP::Lite|SOAP::Lite> module. As of version 0.026_01 of
 C<Astro::SIMBAD::Client>, L<SOAP::Lite|SOAP::Lite> is not a prerequisite
 of this module. If you wish to use the C<query()> method, you will have
 to install L<SOAP::Lite|SOAP::Lite> separately. This can be done after
