@@ -7,12 +7,15 @@ use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Build;
 use Astro::SIMBAD::Client::Meta;
+use Astro::SIMBAD::Client::Recommend;
 use Module::Build;
 use Config;
 
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 
 my $meta = Astro::SIMBAD::Client::Meta->new();
+
+Astro::SIMBAD::Client::Recommend->recommend();
 
 my %attr = (
     dist_author => 'Tom Wyant (wyant at cpan dot org)',

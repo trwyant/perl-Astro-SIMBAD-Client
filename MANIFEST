@@ -10,6 +10,7 @@ eg/votable
 eg/votree
 inc/Astro/SIMBAD/Client/Build.pm
 inc/Astro/SIMBAD/Client/Meta.pm
+inc/Astro/SIMBAD/Client/Recommend.pm
 inc/Astro/SIMBAD/Client/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
@@ -29,6 +30,7 @@ t/release.t
 t/simple.t
 t/vo.t
 t/yaml.t
+xt/author/basic.t
 xt/author/changes.t
 xt/author/critic.t
 xt/author/executable.t

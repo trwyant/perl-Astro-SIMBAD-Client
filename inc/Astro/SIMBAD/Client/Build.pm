@@ -12,11 +12,18 @@ use Carp;
 my @optionals_dir = qw{ xt author optionals };
 
 # The hidden modules are as follows:
+# * SOAP::Lite is optional, but is used by the query() method
 # * Time::HiRes is optional to Astro::SIMBAD::Client
+# * XML::Parser is optional, but is used to process VO queries
+# * XML::Parser::Lite is optional, but used if XML::Parser is not
+#   available
 # * The YAML module is used by t/yaml.t, which contains logic to
 #   skip tests if it can be loaded.
 my @hide = qw{
+    SOAP::Lite
     Time::HiRes
+    XML::Parser
+    XML::Parser::Lite
     YAML
 };
 

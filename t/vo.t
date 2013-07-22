@@ -9,7 +9,8 @@ use Astro::SIMBAD::Client::Test;
 
 access;
 
-load_module qw{ XML::Parser XML::Parser::Lite };
+load_module_or_skip_all qw{ XML::Parser XML::Parser::Lite };
+load_module qw{ SOAP::Lite };
 load_data 't/canned.data';
 
 call set => type => 'vo';
@@ -25,7 +26,9 @@ Test the handling of VO Table data
 The following tests use the query (SOAP) interface
 EOD
 
+    silent hidden 'SOAP::Lite';
     call query => id => 'Arcturus';
+    silent 0;
 
     count;
     test 1, 'query id Arcturus (vo) - count of tables';
@@ -66,7 +69,6 @@ The following tests use the script_file interface
 EOD
 
 clear;
-load_module qw{ XML::Parser XML::Parser::Lite };
 call set => parser => 'script=Parse_VO_Table';
 
 call script_file => 't/arcturus.vo';
@@ -109,7 +111,6 @@ The following tests use the url_query interface
 EOD
 
 clear;
-load_module qw{ XML::Parser XML::Parser::Lite };
 call set => url_args => 'coodisp1=d';
 
 call url_query => id => Ident => 'Arcturus';

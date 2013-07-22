@@ -22,11 +22,14 @@ our @EXPORT_OK = qw{
     echo
     end
     find
+    hidden
     load_data
     load_module
+    load_module_or_skip_all
     module_loaded
     plan
     returned_value
+    silent
     test
     test_false
     $TODO
@@ -39,6 +42,7 @@ my %loaded;	# Record of the results of attempting to load modules.
 my $obj;	# The object to be tested.
 my $ref;	# Reference to result of method call, if it is a reference.
 my $skip;	# True to skip tests.
+my $silent;	# True to silence exceptions if $skip is true.
 
 sub access () {	## no critic (ProhibitSubroutinePrototypes)
     eval {
@@ -59,8 +63,8 @@ sub call (@) {	## no critic (ProhibitSubroutinePrototypes)
 	$got = $obj->$method( @args );
 	1;
     } or do {
-	diag "$method failed: $@";
-	$got = $_;
+	_method_failure( $method );
+	$got = $@;
     };
     $ref = ref $got ? $got : undef;
     return;
@@ -73,8 +77,8 @@ sub call_a (@) {	## no critic (ProhibitSubroutinePrototypes)
 	$got = [ $obj->$method( @args ) ];
 	1;
     } or do {
-	diag "$method failed: $@";
-	$got = $_;
+	_method_failure( $method );
+	$got = $@;
     };
     $ref = ref $got ? $got : undef;
     return;
@@ -101,6 +105,7 @@ sub canned (@) {	## no critic (ProhibitSubroutinePrototypes)
 sub clear (@) {	## no critic (ProhibitSubroutinePrototypes)
     $got = $ref = undef;	# clear
     $skip = undef;		# noskip
+    $silent = undef;		# Not silent.
     return;
 }
 
@@ -175,6 +180,13 @@ sub find (@) {	## no critic (ProhibitSubroutinePrototypes)
     return;
 }
 
+sub hidden ($) {
+    my ( $module ) = @_;
+    my $code = Test::Without::Module->can( 'get_forbidden_list' )
+	or return 0;
+    return exists $code->()->{$module} || 0;
+}
+
 sub load_data ($) {	## no critic (ProhibitSubroutinePrototypes)
     my ( @args ) = @_;
     if ( @args ) {
@@ -196,23 +208,35 @@ sub load_data ($) {	## no critic (ProhibitSubroutinePrototypes)
 
 sub load_module (@) {	## no critic (ProhibitSubroutinePrototypes)
     my @args = @_;
-    $skip = @args > 1 ? ("Can not load any of " . join (', ', @args)) :
+    my $prob = @args > 1 ?
+	("Can not load any of " . join (', ', @args)) :
 	@args ? "Can not load @args" : '';
     foreach ( @args ) {
 	if ( exists $loaded{$_} ) {
 	    $loaded{$_} and do {
-		$skip = '';
+		$prob = undef;
 		last;
 	    };
 	} else {
 	    $loaded{$_} = undef;
 	    eval "require $_; 1" and do {
-		$skip = '';
+		$prob = undef;
 		$loaded{$_} = 1;
 		last;
 	    };
 	}
     }
+    defined $prob
+	and not $skip
+	and $skip = $prob;
+    return;
+}
+
+sub load_module_or_skip_all (@) {
+    my @args = @_;
+    load_module( @args );
+    $skip
+	and plan skip_all => $skip;
     return;
 }
 
@@ -228,6 +252,14 @@ sub module_loaded (@) {		## no critic (ProhibitSubroutinePrototypes,RequireArgUn
 
 sub returned_value () { ## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
     return $got;
+}
+
+sub silent (;$) { ## no critic (ProhibitSubroutinePrototypes)
+    my ( $arg ) = @_;
+    defined $arg
+	or $arg = ! $silent;
+    $silent = $arg;
+    return;
 }
 
 sub test ($$) {		## no critic (ProhibitSubroutinePrototypes,RequireArgUnpacking)
@@ -267,6 +299,16 @@ sub _test {		## no critic (RequireArgUnpacking)
 }
 
 ##################################################################
+
+sub _method_failure {
+    my ( $method ) = @_;
+    $skip
+	and $silent
+	and return;
+    my $msg = $skip ? ' ($skip set)' : '';
+    diag "$method failed$msg: $@";
+    return;
+}
 
 sub _numberp {
     return ($_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/);
@@ -391,6 +433,12 @@ and testing whether the desired value is found. If it is, the array
 element in which it is found becomes the value available for testing.
 Otherwise C<undef> becomes available for testing.
 
+=head2 hidden
+
+This subroutine returns true if its argument is the name of a module
+hidden by L<Test::Without::Module|Test::Without::Module>. Otherwise it
+returns false.
+
 =head2 load_data
 
 This subroutine takes as its argument a file containing data to be
@@ -419,6 +467,16 @@ co-routine), with the given arguments.
 
 This subroutine dumps the value returned by the last call as a scalar.
 It is intended for diagnostics only.
+
+=head2 silent
+
+This subroutine causes exception diagnostics displayed by C<call()> and
+C<call_a()> to be silenced if skipping is in effect. The argument is
+interpreted as a Perl boolean, and defaults to the negation of the
+current setting. If skipping is not in effect, diagnostics will be
+issued regardless of whether C<silence 1> is in effect.
+
+This is cleared by C<clear>.
 
 =head2 test
 

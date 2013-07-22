@@ -17,7 +17,8 @@ access;
 # * Add the possible modules to the @hide array in
 #   inc/Astro/SIMBAD/Client/Build.pm
 
-load_module qw{ YAML };
+load_module_or_skip_all qw{ YAML };
+load_module qw{ SOAP::Lite };
 
 call set => type => 'txt';
 module_loaded 'YAML', call => set => parser => 'txt=YAML::Load';
@@ -32,7 +33,10 @@ Test the formatting and handling of YAML
 The following tests use the query (SOAP) interface
 EOD
 
+silent hidden 'SOAP::Lite';
 call query => id => 'Arcturus';
+silent 0;
+
 count;
 test 1, 'query id Arcturus (txt) - number of objects returned';
 

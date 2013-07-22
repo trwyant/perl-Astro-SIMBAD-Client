@@ -6,6 +6,7 @@ use warnings;
 use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Meta;
+use Astro::SIMBAD::Client::Recommend;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 use Getopt::Std;
@@ -18,6 +19,7 @@ The only legal options are
 You may not assert both of these at once - it's too confusing.
 eod
 
+Astro::SIMBAD::Client::Recommend->recommend();
 
 my (@exe_files, @clean_files);
 

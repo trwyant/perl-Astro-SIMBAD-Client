@@ -13,6 +13,7 @@ call set => type => 'txt';
 call set => format => 'txt=FORMAT_TXT_SIMPLE_BASIC';
 call set => parser => 'txt=Parse_TXT_Simple';
 
+load_module 'SOAP::Lite';
 load_data 't/canned.data';
 
 echo <<'EOD';
@@ -22,7 +23,9 @@ Test the handling of simple text
 The following tests use the query (SOAP) interface
 EOD
 
+silent hidden 'SOAP::Lite';
 call query => id => 'Arcturus';
+silent 0;
 count;
 test 1, 'query id Arcturus (txt) - number of objects returned';
 
