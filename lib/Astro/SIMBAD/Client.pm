@@ -736,20 +736,25 @@ to the caller.
     my $escaper;
 
     sub script {
-	my $self = shift;
+	my ( $self, $script ) = @_;
 ###	my $debug = $self->get ('debug');
-	my $script = shift;
+	my $server = $self->get ('server');
+
+	# Note that at least one difference between doing it this way
+	# (which works) and just using URI->new() (which does not) is
+	# that the latter trims leading and trailing white space, and I
+	# think we need the trailing white space in this case.
 
 	$escaper ||= URI::Escape->can ('uri_escape_utf8') ||
-	    URI::Escape->can ('uri_escape') || croak <<eod;
+	    URI::Escape->can ('uri_escape') || croak <<"EOD";
 Error - URI::Escape does not implement uri_escape_utf8() or
         uri_escape(). Please upgrade.
-eod
+EOD
 	$script = $escaper->($script);
 
-	my $server = $self->get ('server');
 	my $url = "http://$server/simbad/sim-script?" .
 	    'submit=submit+script&script=' . $script;
+
 	my $resp = $self->_retrieve ($url);
 
 	$resp->is_success or croak $resp->status_line;
@@ -784,8 +789,7 @@ output.
 
 
 sub script_file {
-    my $self = shift;
-    my $file = shift;
+    my ( $self, $file ) = @_;
 
     my $server = $self->get ('server');
     my $url = "http://$server/simbad/sim-script";
