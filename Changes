@@ -1,3 +1,6 @@
+0.027		2013-07-28	T. R. Wyant
+  No substantive changes since 0.026_01.
+
 0.026_01	2013-07-22	T. R. Wyant
   Make use of the relevant FORMAT_* constants in t/simple.t and
     t/yaml.t.
