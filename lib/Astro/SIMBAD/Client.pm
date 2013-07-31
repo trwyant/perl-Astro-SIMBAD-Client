@@ -81,7 +81,7 @@ use LWP::UserAgent;
 use HTTP::Request::Common qw{POST};
 use Scalar::Util 1.01 qw{looks_like_number};
 # use SOAP::Lite;
-use URI::Escape;
+use URI::Escape ();
 use XML::DoubleEncodedEntities;
 # use Astro::SIMBAD::Client::WSQueryInterfaceService;
 
@@ -91,7 +91,11 @@ BEGIN {
 	require Time::HiRes;
 	Time::HiRes->import (qw{time sleep});
 	1;
-    }
+    };
+
+    *_escape_uri = URI::Escape->can( 'uri_escape_utf8' )
+	|| URI::Escape->can( 'uri_escape' )
+	|| sub { return $_[0] };
 }
 
 our $VERSION = '0.027';
@@ -731,47 +735,31 @@ to the caller.
 
 =cut
 
-{
+sub script {
+    my ( $self, $script ) = @_;
+    my $server = $self->get ('server');
 
-    my $escaper;
+    my $url = "http://$server/simbad/sim-script";
 
-    sub script {
-	my ( $self, $script ) = @_;
-###	my $debug = $self->get ('debug');
-	my $server = $self->get ('server');
+    my $resp = $self->_retrieve( $url, {
+	    submit	=> 'submit+script',
+	    script	=> $script,
+	},
+    );
 
-	# Note that at least one difference between doing it this way
-	# (which works) and just using URI->new() (which does not) is
-	# that the latter trims leading and trailing white space, and I
-	# think we need the trailing white space in this case.
+    $resp->is_success or croak $resp->status_line;
 
-	$escaper ||= URI::Escape->can ('uri_escape_utf8') ||
-	    URI::Escape->can ('uri_escape') || croak <<"EOD";
-Error - URI::Escape does not implement uri_escape_utf8() or
-        uri_escape(). Please upgrade.
-EOD
-	$script = $escaper->($script);
-
-	my $url = "http://$server/simbad/sim-script?" .
-	    'submit=submit+script&script=' . $script;
-
-	my $resp = $self->_retrieve ($url);
-
-	$resp->is_success or croak $resp->status_line;
-
-	my $rslt = $resp->content or return;
-	unless ($self->get ('verbatim')) {
-	    $rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
-	}
-	$rslt = XML::DoubleEncodedEntities::decode ($rslt);
-	if (my $parser = $self->_get_parser ('script')) {
+    my $rslt = $resp->content or return;
+    unless ($self->get ('verbatim')) {
+	$rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
+    }
+    $rslt = XML::DoubleEncodedEntities::decode ($rslt);
+    if (my $parser = $self->_get_parser ('script')) {
 ##	$rslt =~ s/.*?::data:+.?$//sm or croak $rslt;
-	    my @rslt = $parser->($rslt);
-	    return wantarray ? @rslt : \@rslt;
-	} else {
-	    return $rslt;
-	}
-
+	my @rslt = $parser->($rslt);
+	return wantarray ? @rslt : \@rslt;
+    } else {
+	return $rslt;
     }
 
 }
@@ -1168,8 +1156,8 @@ sub _retrieve {
     } else {
 	my $join = '?';
 	foreach my $key (sort keys %$args) {
-	    $url .= $join . uri_escape ($key) .  '=' . uri_escape (
-		$args->{$key});
+	    $url .= $join . _escape_uri( $key ) .  '=' . _escape_uri (
+		$args->{$key} );
 	    $join = '&';
 	}
 	if ($debug) {
