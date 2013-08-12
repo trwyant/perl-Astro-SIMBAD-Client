@@ -1004,6 +1004,23 @@ eod
 #	Utility routines
 #
 
+#	_callers_caller();
+#
+#	Returns the name of the subroutine that called the caller.
+#	Results undefined if not called from a subroutine nested at
+#	least two deep.
+
+sub _callers_caller {
+    my $inx = 1;
+    my $caller;
+    foreach ( 1 .. 2 ) {
+	do {
+	    $caller = ( caller $inx++ )[3]
+	} while '(eval)' eq $caller;
+    }
+    return $caller;
+}
+
 #	$self->_delay
 #
 #	Delays the desired amount of time before issuing the next
@@ -1126,28 +1143,38 @@ eod
     return wantarray ? ($pkg, $code) : $pkg;
 }
 
+#	my $resp = $self->_retrieve( $url, \%args );
+#
+#	Retrieve the data from the given URL. The \%args argument is
+#	optional. The return is an HTTP::Response object.
+#
+#	The details depend on the arguments and the state of the
+#	invocant as follows:
+#
+#	If $url is an HTTP::Request object, it is executed and the
+#	response returned. Otherwise
+#
+#	If \%args is present and not empty, and the 'post' attribute is
+#	true, an HTTP post() request is done to the URL, sending the
+#	data. Otherwise
+#
+#	If there are arguments they are appended to the URL, and an HTTP
+#	get() is done to the URL.
+
 sub _retrieve {
     my ($self, $url, $args) = @_;
     $args ||= {};
     my $debug = $self->get ('debug');
-    my $inx = 1;
-    my $caller;
     my $ua = _get_user_agent ();
     $self->_delay ();
     if (eval {$url->isa('HTTP::Request')}) {
-	if ($debug) {
-	    do {
-		$caller = (caller ($inx++))[3];
-	    } while $caller eq '(eval)';
-	    print "Debug $caller executing ", $url->as_string, "\n";
-	}
+	$debug
+	    and print 'Debug ', _callers_caller(), 'executing ',
+		$url->as_string, "\n";
 	return $ua->request ($url);
     } elsif ($self->get ('post') && %$args) {
 	if ($debug) {
-	    do {
-		$caller = (caller ($inx++))[3];
-	    } while $caller eq '(eval)';
-	    print "Debug $caller posting to $url\n";
+	    print 'Debug ', _callers_caller(), " posting to $url\n";
 	    foreach my $key (sort keys %$args) {
 		print "    $key => $args->{$key}\n";
 	    }
@@ -1160,13 +1187,9 @@ sub _retrieve {
 		$args->{$key} );
 	    $join = '&';
 	}
-	if ($debug) {
-	    do {
-		$caller = (caller ($inx++))[3];
-	    } while $caller eq '(eval)';
-	    print "Debug $caller getting from $url\n";
-	}
-	return $ua->get ($url);
+	$debug
+	    and print 'Debug ', _callers_caller(), " getting from $url\n";
+	return $ua->get( $url );
     }
 }
 
