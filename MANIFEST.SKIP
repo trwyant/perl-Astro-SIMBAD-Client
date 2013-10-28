@@ -8,6 +8,8 @@
 CVS/
 \.DS_Store$
 ^foo/
+^\.git/
+^\.gitignore$
 ^ivoa.vo$
 ^Makefile$
 ^MANIFEST\.

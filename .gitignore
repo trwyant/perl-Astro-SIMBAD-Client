@@ -1,0 +1,14 @@
+/blib
+/Build
+/_build
+/cover_db
+/Debian_CPANTS.txt
+/Makefile
+/MANIFEST.bak
+/META.json
+/META.yml
+/MYMETA.json
+/MYMETA.yml
+/nytprof*
+/ref
+/xt/author/optionals/
