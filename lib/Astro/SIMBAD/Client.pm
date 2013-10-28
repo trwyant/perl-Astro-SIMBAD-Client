@@ -10,7 +10,7 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-As of release [% next_version %] the SOAP interface is deprecated. The
+As of release 0.027_01 the SOAP interface is deprecated. The
 University of Strasbourg has announced that this interface will not be
 supported after April 1 2014.
 
@@ -60,7 +60,7 @@ takes a file name.
 - Queries may be made using the web services (SOAP) interface. The
 query() method implements this, and queryObjectByBib,
 queryObjectByCoord, and queryObjectById have been provided as
-convenience methods. As of version [% next_version %], SOAP queries are
+convenience methods. As of version 0.027_01, SOAP queries are
 deprecated. See the L<NOTICE|/NOTICE> section above for the deprecation
 schedule.
 
@@ -110,7 +110,7 @@ BEGIN {
 	|| sub { return $_[0] };
 }
 
-our $VERSION = '0.027';
+our $VERSION = '0.027_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
