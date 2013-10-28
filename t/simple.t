@@ -16,42 +16,47 @@ call set => parser => 'txt=Parse_TXT_Simple';
 load_module 'SOAP::Lite';
 load_data 't/canned.data';
 
-echo <<'EOD';
+TODO: {
+    local $TODO = 'SOAP vo queries are deprecated';
+    local $SIG{__WARN__} = sub {};	# Ignore warnings.
+
+    echo <<'EOD';
 
 Test the handling of simple text
 
 The following tests use the query (SOAP) interface
 EOD
 
-silent hidden 'SOAP::Lite';
-call query => id => 'Arcturus';
-silent 0;
-count;
-test 1, 'query id Arcturus (txt) - number of objects returned';
+    silent hidden 'SOAP::Lite';
+    call query => id => 'Arcturus';
+    silent 0;
+    count;
+    test 1, 'query id Arcturus (txt) - number of objects returned';
 
-deref 0, 'name';
-test canned( arcturus => 'name' ), 'query id Arcturus (txt) - name';
+    deref 0, 'name';
+    test canned( arcturus => 'name' ), 'query id Arcturus (txt) - name';
 
-deref 0, 'ra';
-test canned( arcturus => 'ra' ), 'query id Arcturus (txt) - right ascension';
+    deref 0, 'ra';
+    test canned( arcturus => 'ra' ), 'query id Arcturus (txt) - right ascension';
 
-deref 0, 'dec';
-test canned( arcturus => 'dec' ), 'query id Arcturus (txt) - declination';
+    deref 0, 'dec';
+    test canned( arcturus => 'dec' ), 'query id Arcturus (txt) - declination';
 
-deref 0, 'plx';
-test canned( arcturus => 'plx' ), 'query id Arcturus (txt) - parallax';
+    deref 0, 'plx';
+    test canned( arcturus => 'plx' ), 'query id Arcturus (txt) - parallax';
 
-deref 0, 'pmra';
-test canned( arcturus => 'pmra' ),
-    'query id Arcturus (txt) - proper motion in right ascension';
+    deref 0, 'pmra';
+    test canned( arcturus => 'pmra' ),
+	'query id Arcturus (txt) - proper motion in right ascension';
 
-deref 0, 'pmdec';
-test canned( arcturus => 'pmdec' ),
-    'query id Arcturus (txt) - proper motion in declination';
+    deref 0, 'pmdec';
+    test canned( arcturus => 'pmdec' ),
+	'query id Arcturus (txt) - proper motion in declination';
 
-deref 0, 'radial';
-test canned( arcturus => 'radial' ),
-    'query id Arcturus (txt) - radial velocity in recession';
+    deref 0, 'radial';
+    test canned( arcturus => 'radial' ),
+	'query id Arcturus (txt) - radial velocity in recession';
+}
 
 
 clear;

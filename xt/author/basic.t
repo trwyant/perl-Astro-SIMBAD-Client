@@ -15,7 +15,7 @@ require_ok 'Time::HiRes';
 
 require_ok 'XML::Parser';
 
-require_ok 'XML::Parser::Lite';
+# require_ok 'XML::Parser::Lite';
 
 require_ok 'YAML';
 
