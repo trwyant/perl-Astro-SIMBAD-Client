@@ -1,3 +1,6 @@
+0.028		2013-11-08	T. R. Wyant
+  No changes since 0.027_01.
+
 0.027_01	2013-10-28	T. R. Wyant
   Deprecate the use of SOAP. This includes the query() method and all
     methods that use it.

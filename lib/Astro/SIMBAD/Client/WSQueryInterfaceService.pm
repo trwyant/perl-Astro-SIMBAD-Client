@@ -9,7 +9,7 @@ package Astro::SIMBAD::Client::WSQueryInterfaceService;
 use strict;
 use warnings;
 
-our $VERSION = '0.027_01';
+our $VERSION = '0.028';
 ## TRW ^^^^
 
 my %methods = (
