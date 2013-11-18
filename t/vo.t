@@ -6,6 +6,10 @@ use warnings;
 use lib qw{ inc };
 
 use Astro::SIMBAD::Client::Test;
+use Data::Dumper;
+
+local $Data::Dumper::Terse = 1;
+local $Data::Dumper::Sortkeys = 1;
 
 access;
 
@@ -128,7 +132,7 @@ deref_curr 'value';
 test canned( arcturus => 'name' ), 'url_query id Arcturus (vo) - name';
 
 deref 0, data => 0;
-find meta => 1, name => 'RA';
+find meta => 1, name => 'RA_d';
 deref_curr 'value';
 # want 213.9153
 # As of about SIMBAD4 1.005 the default became sexagesimal
@@ -137,11 +141,15 @@ deref_curr 'value';
 # As of 1.117 (April 9 2009) votable output went back to decimal. The
 # coodisp option still seems not to affect it, though.
 # want_load arcturus ra_hms
+# On November 18 2013 (Monday) the 'RA' tag became 'RA_d'. Maybe it's
+# finally paying attention to 'coodisp1=d'. Version 1.215 was the 15th
+# (Friday), but 'RA' was working on the 17th.
 test canned( arcturus => 'ra' ),
-    'url_query id Arcturus (vo) - right ascension';
+    'url_query id Arcturus (vo) - right ascension'
+    or diag Dumper( returned_value() );
 
 deref 0, data => 0;
-find meta => 1, name => 'DEC';
+find meta => 1, name => 'DEC_d';
 deref_curr 'value';
 # want +19.18241027778
 # As of about SIMBAD4 1.005 the default became sexigesimal
@@ -150,8 +158,12 @@ deref_curr 'value';
 # As of 1.117 (April 9 2009) votable output went back to decimal. The
 # coodisp option still seems not to affect it, though.
 # want_load arcturus dec_dms
+# On November 18 2013 (Monday) the 'DEC' tag became 'DEC_d'. Maybe it's
+# finally paying attention to 'coodisp1=d'. Version 1.215 was the 15th
+# (Friday), but 'DEC' was working on the 17th.
 test canned( arcturus => 'dec' ),
-    'url_query id Arcturus (vo) - declination';
+    'url_query id Arcturus (vo) - declination'
+    or diag Dumper( returned_value() );
 
 deref 0, data => 0;
 find meta => 1, name => 'PLX_VALUE';
