@@ -1,3 +1,9 @@
+0.029		2013-11-18	T. R. Wyant
+  Fix test failures due to SIMBAD metadata changes
+    The VO-format url_query data has started returning keys 'RA_d' and
+    'DEC_d' for decimal right ascension and declination, rather than
+    'RA' and 'DEC'.
+
 0.028		2013-11-08	T. R. Wyant
   No changes since 0.027_01.
 
