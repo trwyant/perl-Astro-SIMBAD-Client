@@ -18,11 +18,7 @@ The deprecation schedule for this module is as follows:
 
 =over
 
-=item Immediately
-
-The first use of the SOAP interface will generate a deprecation warning.
-
-=item First release of 2014
+=item First release of 2014 ([%% next_version %%])
 
 Every use of the SOAP interface will generate a warning.
 
@@ -1085,7 +1081,7 @@ sub _callers_caller {
 
     my %deprecate = (
 	method	=> {
-	    query	=> 1,
+	    query	=> 2,
 	},
     );
 
