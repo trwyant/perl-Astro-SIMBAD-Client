@@ -18,7 +18,7 @@ The deprecation schedule for this module is as follows:
 
 =over
 
-=item First release of 2014 ([%% next_version %%])
+=item First release of 2014 (0.030)
 
 Every use of the SOAP interface will generate a warning.
 
@@ -106,7 +106,7 @@ BEGIN {
 	|| sub { return $_[0] };
 }
 
-our $VERSION = '0.029';
+our $VERSION = '0.030';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
