@@ -1,3 +1,15 @@
+0.031		2014-02-05	T. R. Wyant
+  Have installer scripts Build.PL and Makefile.PL notify of my intent to
+    remove the 'install simbadc?' question and simply install it by
+    default. The command-line options -y and -n will remain available.
+    This is schedued for the first release after September 1 2014.
+  Mark VO url query 'name' test TODO
+    This started failing Feb 3 (returning '* alf Boo' rather than 'NAME
+    Arcturus'). I found parameters that seem to influence the MAIN_iD
+    returned by the text query, but not the VO query. So the test has been
+    marked TODO, pending a response (if any) to the note I sent SIMBAD Feb 5
+    2014. Script-based queries seem unaffected.
+
 0.030		2014-01-01	T. R. Wyant
   Further deprecate the use of SOAP. The query() method (and methods
     that use it) now warns on every use. These will become fatal the
