@@ -126,10 +126,24 @@ deref 0, 'data';
 count;
 test 1, 'url_query id arcturus (vo) - count of rows';
 
-deref 0, data => 0;
-find meta => 1, name => 'MAIN_ID';
-deref_curr 'value';
-test canned( arcturus => 'name' ), 'url_query id Arcturus (vo) - name';
+TODO: {
+
+    local $TODO = 'Return changed Feb 3 2014. Unable to influence.';
+    # As I read the documentatin I should do the following to ensure the
+    # return of the common name:
+    #   set url_args list.idopt=CATLIST
+    #   set url_args list.idcat=NAME
+    # and this in fact influences the behavior of text-format and
+    # script-based VO-format querues (I used catalog LFT, picked at
+    # random). But the VO-format URL query seems insensitive to this. I
+    # sent a note to SIMBAD on February 5 2014, and made this a TODO.
+
+    deref 0, data => 0;
+    find meta => 1, name => 'MAIN_ID';
+    deref_curr 'value';
+    test canned( arcturus => 'name' ), 'url_query id Arcturus (vo) - name';
+
+}
 
 deref 0, data => 0;
 find meta => 1, name => 'RA_d';
