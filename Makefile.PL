@@ -28,6 +28,13 @@ print <<eod;
 The simbadc script is a simple wrapper for Astro::SIMBAD::Client, which
 may be used interactively or as a Unix filter.
 
+>>>> NOTE <<<<\a\a\a
+
+In the first release after September 1 2014 I intend to remove the
+interactive question about whether the simbadc script should be
+installed, and install it by default. The -y and -n command-line options
+will remain available.
+
 eod
 
 if ($opt{n}) {
