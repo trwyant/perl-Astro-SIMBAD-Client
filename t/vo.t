@@ -126,6 +126,16 @@ deref 0, 'data';
 count;
 test 1, 'url_query id arcturus (vo) - count of rows';
 
+note <<'EOD';
+
+We do not test for the MAIN_ID when using the url interface. A note from
+SIMBAD support on February 6 2014 says that there is no way to influence
+what SIMBAD returns in a url VO-format query.
+
+EOD
+
+=begin comment
+
 TODO: {
 
     local $TODO = 'Return changed Feb 3 2014. Unable to influence.';
@@ -137,6 +147,10 @@ TODO: {
     # script-based VO-format querues (I used catalog LFT, picked at
     # random). But the VO-format URL query seems insensitive to this. I
     # sent a note to SIMBAD on February 5 2014, and made this a TODO.
+    #
+    # The above-mentioned note says the most recent change in the data
+    # for Arcturus was February 4 2014, which of course does not rule
+    # out a change on the 3rd.
 
     deref 0, data => 0;
     find meta => 1, name => 'MAIN_ID';
@@ -144,6 +158,10 @@ TODO: {
     test canned( arcturus => 'name' ), 'url_query id Arcturus (vo) - name';
 
 }
+
+=end comment
+
+=cut
 
 deref 0, data => 0;
 find meta => 1, name => 'RA_d';

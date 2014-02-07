@@ -27,6 +27,7 @@ our @EXPORT_OK = qw{
     load_module
     load_module_or_skip_all
     module_loaded
+    note
     plan
     returned_value
     silent
