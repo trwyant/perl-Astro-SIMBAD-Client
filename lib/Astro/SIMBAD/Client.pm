@@ -977,10 +977,7 @@ onto the end of the URL and a GET is done.
 	txt	=> 'ASCII',
 	vo	=> 'VOTable',
     );
-    my %type_unmap;
-    while (my ($key, $value) = each %type_map) {
-	$type_unmap{$value} = $key;
-    }
+    my %type_unmap = reverse %type_map;
 
     # Perl::Critic objects to the use of @_ (rather than values 
     # unpacked from it) but the parity check lets me give a less
