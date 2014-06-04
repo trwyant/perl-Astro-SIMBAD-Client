@@ -166,7 +166,43 @@ deref 0, 'radial';
 test canned( arcturus => 'radial' ),
     'script_file t/arcturus.yaml - radial velocity in recession';
 
+clear;
+module_loaded 'YAML', call => set => parser => 'txt=YAML::Load';
+call set => emulate_soap_queries => 1;
 
+echo <<'EOD';
+
+The following tests use the script interface, but emulate SOAP.
+EOD
+
+call query => id => 'Arcturus';
+
+count;
+test 1, 'query id Arcturus (txt) - number of objects returned';
+
+deref 0, 'name';
+test canned( arcturus => 'name' ), 'query id Arcturus (txt) - name';
+
+deref 0, 'ra';
+test canned( arcturus => 'ra' ), 'query id Arcturus (txt) - right ascension';
+
+deref 0, 'dec';
+test canned( arcturus => 'dec' ), 'query id Arcturus (txt) - declination';
+
+deref 0, 'plx';
+test canned( arcturus => 'plx' ), 'query id Arcturus (txt) - parallax';
+
+deref 0, 'pm', 0;
+test canned( arcturus => 'pmra' ),
+    'query id Arcturus (txt) - proper motion in right ascension';
+
+deref 0, 'pm', 1;
+test canned( arcturus => 'pmdec' ),
+    'query id Arcturus (txt) - proper motion in declination';
+
+deref 0, 'radial';
+test canned( arcturus => 'radial' ),
+    'query id Arcturus (txt) - radial velocity in recession';
 
 end;
 

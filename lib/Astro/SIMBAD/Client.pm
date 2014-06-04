@@ -14,26 +14,30 @@ As of release 0.027_01 the SOAP interface is deprecated. The
 University of Strasbourg has announced that this interface will not be
 supported after April 1 2014.
 
-The deprecation schedule for this module is as follows:
+Because the SOAP interface is still sort of functional (except for
+VO-format queries) as of June 4 2014, I have revised the transition plan
+announced with the release of 0.027_01 on October 28 2014.
 
-=over
+What I have done as of version [%% next_version %%] is to add attribute
+C<emulate_soap_queries>. This is false by default. If this attribute is
+true, the C<query()> method and friends, instead of issuing a SOAP
+request to the SIMBAD server, will instead construct an equivalent
+script query, and issue that. The deprecation warning will not be issued
+if C<emulate_soap_queries> is true, since the SOAP interface is not
+being used.
 
-=item First release of 2014 (0.030)
+I intend to make the default value of C<emulate_soap_queries> true in
+the first release on or after October 1 2014, assuming SOAP queries work
+for that long.
 
-Every use of the SOAP interface will generate a warning.
+When the SOAP servers go out of service (and I notice) SOAP queries will
+become fatal, and the default value of C<emulate_soap_queries> will
+become true if it is not already.
 
-=item First release after April 1 2014
-
-Every use of the SOAP interface will generate a fatal error.
-
-=item First release after July 1 2014
-
-SOAP code will be removed.
-
-=back
-
-Also effective immediately, all tests of the SOAP interface are marked
-TODO.
+Eventually the SOAP code will be removed. In the meantime all tests are
+marked TODO, and support of SOAP by this module will be on a best-effort
+basis; that is, if I can make it work without a huge amount of work I
+will -- otherwise SOAP will become unsupported.
 
 =head1 DESCRIPTION
 
@@ -175,6 +179,7 @@ my %static = (
     autoload => 1,
     debug => 0,
     delay => 3,
+    emulate_soap_queries	=> 0,
     format => {
 	txt => FORMAT_TXT_YAML_BASIC,
 	vo => FORMAT_VO_BASIC,
@@ -586,9 +591,41 @@ C<Astro::SIMBAD::Client> is installed.
 	},
     );
 
+    my %make_script = (
+	txt	=> sub {
+	    my ( $self, $query, @args ) = @_;
+	    return <<"EOD";
+format object "@{[ $transform{txt}->( $self->get( 'format' )->{txt} ) ]}"
+query $query @args
+EOD
+	},
+	vo	=> sub {
+	    my ( $self, $query, @args ) = @_;
+	    return <<"EOD";
+votable myvo {
+@{[ $transform{vo}->( $self->get( 'format' )->{vo} ) ]}
+}
+votable open myvo
+query $query @args
+votable close myvo
+EOD
+	},
+    );
 
     sub query {
-	my ($self, $query, @args) = @_;
+	my ( $self, $query, @args ) = @_;
+	if ( $self->get( 'emulate_soap_queries' ) ) {
+	    my $type = $self->get( 'type' );
+	    my $code = $make_script{$type} || sub {
+		my ( $self, $query, @args ) = @_;
+		return "query $query @args\n";
+	    };
+	    return $self->_script(
+		parser	=> $type,
+		script	=> $code->( $self, $query, @args ),
+		verbatim	=> 0,
+	    );
+	}
 	$self->_deprecation_notice( method => 'query', 'a non-SOAP method' );
 	eval { _load_module( 'SOAP::Lite' ); 1 }
 	    or croak 'Error - query() requires SOAP::Lite';
@@ -626,6 +663,7 @@ C<Astro::SIMBAD::Client> is installed.
     }
 
 }	# End local symbol block.
+
 
 =item $value = $simbad->queryObjectByBib ($bibcode, $format, $type);
 
@@ -760,31 +798,79 @@ to the caller.
 
 sub script {
     my ( $self, $script ) = @_;
-    my $server = $self->get ('server');
+    return $self->_script(
+	parser	=> 'script',
+	script	=> $script,
+	verbatim	=> $self->get( 'verbatim' ),
+    );
+}
 
-    my $url = "http://$server/simbad/sim-script";
-
-    my $resp = $self->_retrieve( $url, {
-	    submit	=> 'submit+script',
-	    script	=> $script,
+{
+    my %dflt = (
+	parser	=> sub { return 'script' },
+	script	=> sub {
+	    confess 'Programming error - script argument required';
+	},
+	verbatim	=> sub {
+	    my ( $self ) = @_;
+	    return $self->get( 'verbatim' );
 	},
     );
 
-    $resp->is_success or croak $resp->status_line;
+    sub _script {
+	my ( $self, %arg ) = @_;
 
-    my $rslt = $resp->content or return;
-    unless ($self->get ('verbatim')) {
-	$rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
-    }
-    $rslt = XML::DoubleEncodedEntities::decode ($rslt);
-    if (my $parser = $self->_get_parser ('script')) {
-##	$rslt =~ s/.*?::data:+.?$//sm or croak $rslt;
-	my @rslt = $parser->($rslt);
-	return wantarray ? @rslt : \@rslt;
-    } else {
-	return $rslt;
-    }
+	foreach my $key ( keys %dflt ) {
+	    defined $arg{$key}
+		or $arg{$key} = $dflt{$key}->( $self );
+	}
 
+	my $debug = $self->get( 'debug' );
+
+	my $server = $self->get ('server');
+
+	my $url = "http://$server/simbad/sim-script";
+
+	$debug
+	    and warn "Debug - script\n$arg{script} ";
+
+	my $resp = $self->_retrieve( $url, {
+		submit	=> 'submit+script',
+		script	=> $arg{script},
+	    },
+	);
+
+	$resp->is_success
+	    or croak $resp->status_line;
+
+	my $rslt = $resp->content
+	    or return;
+
+	unless ( $arg{verbatim} ) {
+	    $rslt =~ s/.*?::data:+\s*//sm or croak $rslt;
+	}
+
+	$debug
+	    and warn "Debug - result:\n$rslt ";
+
+	$rslt = XML::DoubleEncodedEntities::decode( $rslt );
+	if ( my $parser = $self->_get_parser( $arg{parser} ) ) {
+	    $debug
+		and warn "Debug - Parser $arg{parser}";
+	    ## $rslt =~ s/.*?::data:+.?$//sm or croak $rslt;
+	    my @rslt = $parser->($rslt);
+	    $debug
+		and eval {	## no critic (RequireCheckingReturnValueOfEval)
+		require YAML;
+		warn "Debug - Parsed to:\n", YAML::Dump( \@rslt ), ' ';
+	    };
+	    return wantarray ? @rslt : \@rslt;
+	} else {
+	    $debug
+		and warn "Debug - No parser for $arg{parser}";
+	    return $rslt;
+	}
+    }
 }
 
 
@@ -1319,6 +1405,8 @@ that the author makes no claim what will happen if it is non-zero.
 
 The default value is 0.
 
+=for html <a name="delay"></a>
+
 =item delay (integer)
 
 This attribute sets the minimum delay in seconds between requests, so as
@@ -1331,6 +1419,22 @@ which object issued the request. The delay can be set to 0, but not to a
 negative number.
 
 The default is 3.
+
+=for html <a name="emulate_soap_queries">
+
+=item emulate_soap_queries (boolean)
+
+If this attribute is true, the methods that would normally use the SOAP
+interface (that is, C<query()> and friends) use the script interface
+instead.
+
+The purpose of this attribute is to give the user a way to manage the
+deprecation and ultimate removal of the SOAP interface from the SIMBAD
+servers. It may go away once that interface disappears, but it will be
+put through a deprecation cycle.
+
+The default is false, but will become true once the University of
+Strasbourg shuts down its SOAP server.
 
 =for html <a name="format"></a>
 
