@@ -1,3 +1,14 @@
+0.031_01	2014-06-04	T. R. Wyant
+  Add attribute emulate_soap_queries. If true, this attribute causes the
+    query() method (and friends) to generate canned script queries
+    rather than SOAP queries. If we are not using SOAP, query() and
+    friends do not produce warnings.
+  Eliminate use of each() built-in.
+  Remove VO-format url_query test of MAIN_ID. A note from SIMBAD support
+    January 6 2014 says they do not support any way to change what is in
+    the MAIN_ID field in a url_query VO-format return. It _is_ supported
+    in the script queries.
+
 0.031		2014-02-05	T. R. Wyant
   Have installer scripts Build.PL and Makefile.PL notify of my intent to
     remove the 'install simbadc?' question and simply install it by

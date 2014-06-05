@@ -18,7 +18,7 @@ Because the SOAP interface is still sort of functional (except for
 VO-format queries) as of June 4 2014, I have revised the transition plan
 announced with the release of 0.027_01 on October 28 2014.
 
-What I have done as of version [%% next_version %%] is to add attribute
+What I have done as of version 0.031_01 is to add attribute
 C<emulate_soap_queries>. This is false by default. If this attribute is
 true, the C<query()> method and friends, instead of issuing a SOAP
 request to the SIMBAD server, will instead construct an equivalent
@@ -110,7 +110,7 @@ BEGIN {
 	|| sub { return $_[0] };
 }
 
-our $VERSION = '0.031';
+our $VERSION = '0.031_01';
 
 our @CARP_NOT = qw{Astro::SIMBAD::Client::WSQueryInterfaceService};
 
