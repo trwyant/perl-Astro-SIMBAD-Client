@@ -1,3 +1,6 @@
+0.032		2014-06-12	T. R. Wyant
+  No changes since version 0.031_01.
+
 0.031_01	2014-06-04	T. R. Wyant
   Add attribute emulate_soap_queries. If true, this attribute causes the
     query() method (and friends) to generate canned script queries
