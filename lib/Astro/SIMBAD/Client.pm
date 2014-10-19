@@ -580,14 +580,20 @@ C<Astro::SIMBAD::Client> is installed.
     );
 
     my %transform = (
-	txt => sub {local $_ = $_[0]; s/\n//gm; $_},
+	txt => sub {
+	    local $_ = $_[0];
+	    s/\n//gm;
+	    return $_
+	},
 	vo => sub {
 	    local $_ = ref $_[0] ? join (',', @{$_[0]}) : $_[0];
-	    s/\s+/,/gms;
-	    s/^,+//;
-	    s/,+$//;
-	    s/,+/,/g;
-	    $_
+	    if ( defined $_ ) {
+		s/\s+/,/gms;
+		s/^,+//;
+		s/,+$//;
+		s/,+/,/g;
+	    }
+	    return $_
 	},
     );
 
@@ -1322,11 +1328,12 @@ sub _retrieve {
     my $debug = $self->get ('debug');
     my $ua = _get_user_agent ();
     $self->_delay ();
+    my $resp;
     if (eval {$url->isa('HTTP::Request')}) {
 	$debug
 	    and print 'Debug ', _callers_caller(), 'executing ',
 		$url->as_string, "\n";
-	return $ua->request ($url);
+	$resp = $ua->request ($url);
     } elsif ($self->get ('post') && %$args) {
 	if ($debug) {
 	    print 'Debug ', _callers_caller(), " posting to $url\n";
@@ -1334,7 +1341,7 @@ sub _retrieve {
 		print "    $key => $args->{$key}\n";
 	    }
 	}
-	return $ua->post ($url, $args);
+	$resp = $ua->post ($url, $args);
     } else {
 	my $join = '?';
 	foreach my $key (sort keys %$args) {
@@ -1344,8 +1351,11 @@ sub _retrieve {
 	}
 	$debug
 	    and print 'Debug ', _callers_caller(), " getting from $url\n";
-	return $ua->get( $url );
+	$resp = $ua->get( $url );
     }
+    $debug
+	and print 'Debug - request: ', $resp->request()->as_string(), "\n";
+    return $resp;
 }
 
 1;
