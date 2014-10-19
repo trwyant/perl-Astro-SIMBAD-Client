@@ -30,7 +30,7 @@ may be used interactively or as a Unix filter.
 
 >>>> NOTICE <<<<\a\a\a
 
-As of version [%% next_version %%] the simbadc script is installed by default. If
+As of version 0.032_01 the simbadc script is installed by default. If
 you do not wish it installed. run this script with the -n option. The -y
 option is still accepted for backward compatibility.
 

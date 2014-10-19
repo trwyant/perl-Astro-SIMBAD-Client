@@ -1,3 +1,9 @@
+0.032_01	2014-10-18	T. R. Wyant
+  Remove installer question. The simbadc script is now installed by
+    default. If you do not want it, run the installer with the -n
+    option.
+  Restructure data retrieval code to facilitate debugging.
+
 0.032		2014-06-12	T. R. Wyant
   No changes since version 0.031_01.
 
