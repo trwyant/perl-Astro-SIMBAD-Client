@@ -23,37 +23,23 @@ Astro::SIMBAD::Client::Recommend->recommend();
 
 my (@exe_files, @clean_files);
 
-print <<eod;
+print <<EOD;
 
 The simbadc script is a simple wrapper for Astro::SIMBAD::Client, which
 may be used interactively or as a Unix filter.
 
->>>> NOTE <<<<\a\a\a
+>>>> NOTICE <<<<\a\a\a
 
-In the first release after September 1 2014 I intend to remove the
-interactive question about whether the simbadc script should be
-installed, and install it by default. The -y and -n command-line options
-will remain available.
+As of version [%% next_version %%] the simbadc script is installed by default. If
+you do not wish it installed. run this script with the -n option. The -y
+option is still accepted for backward compatibility.
 
-eod
+EOD
 
-if ($opt{n}) {
+if ( $opt{n} ) {
     print "Because you have asserted -n, simbadc will not be installed.\n";
-} elsif ($opt{y}) {
-    print "Because you have asserted -y, simbadc will be installed.\n";
-    push @exe_files, 'simbadc';
 } else {
-    print <<eod;
-To supress the following prompt, run Makefile.PL with the -y option to
-install the script, or with the -n option not to install the script.
-Setting environment variable PERL_MM_USE_DEFAULT true, or running non-
-interactively without data on STDIN will also cause the script not to be
-installed.
-
-eod
-    
-    prompt ("Do you want to install simbadc?", 'n') =~ m/^y/i
-	and push @exe_files, 'simbadc';
+    push @exe_files, 'simbadc';
 }
 
 if ($^O eq 'MSWin32') {
@@ -115,3 +101,4 @@ $mmv >= 6.5501
 
 WriteMakefile (%attr);
 
+# ex: set textwidth=72 :
