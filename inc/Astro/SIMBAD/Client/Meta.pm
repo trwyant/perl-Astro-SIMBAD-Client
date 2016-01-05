@@ -37,7 +37,10 @@ sub meta_merge {
 	    directory => [ qw{ inc t xt } ],
 	},
 	resources => {
-	    bugtracker	=> 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',
+	    bugtracker	=> {
+		web	=> 'https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client',
+                mailto  => 'wyant@cpan.org',
+            },
 	    license	=> 'http://dev.perl.org/licenses/',
 	    repository	=> {
 		type	=> 'git',
