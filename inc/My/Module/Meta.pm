@@ -1,4 +1,4 @@
-package Astro::SIMBAD::Client::Meta;
+package My::Module::Meta;
 
 use 5.006002;
 
@@ -77,13 +77,13 @@ __END__
 
 =head1 NAME
 
-Astro::SIMBAD::Client::Meta - Information needed to build Astro::SIMBAD::Client
+My::Module::Meta - Information needed to build Astro::SIMBAD::Client
 
 =head1 SYNOPSIS
 
  use lib qw{ inc };
- use Astro::SIMBAD::Client::Meta;
- my $meta = Astro::SIMBAD::Client::Meta->new();
+ use My::Module::Meta;
+ my $meta = My::Module::Meta->new();
  use YAML;
  print "Required modules:\n", Dump(
      $meta->requires() );
@@ -91,7 +91,7 @@ Astro::SIMBAD::Client::Meta - Information needed to build Astro::SIMBAD::Client
 =head1 DETAILS
 
 This module centralizes information needed to build
-C<Astro::SIMBAD::Client>. It is private to the C<Astro::SIMBAD::Client>
+C<Astro::SIMBAD::Client>. It is private to the C<Astro-SIMBAD-Client>
 package, and may be changed or retracted without notice.
 
 =head1 METHODS
@@ -100,7 +100,7 @@ This class supports the following public methods:
 
 =head2 new
 
- my $meta = Astro::Simbad::Client::Meta->new();
+ my $meta = My::Module::Meta->new();
 
 This method instantiates the class.
 

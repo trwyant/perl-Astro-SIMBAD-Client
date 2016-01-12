@@ -5,8 +5,8 @@ use warnings;
 
 use lib qw{ inc };
 
-use Astro::SIMBAD::Client::Meta;
-use Astro::SIMBAD::Client::Recommend;
+use My::Module::Meta;
+use My::Module::Recommend;
 use Config;
 use ExtUtils::MakeMaker qw{WriteMakefile prompt};
 use Getopt::Std;
@@ -19,7 +19,7 @@ The only legal options are
 You may not assert both of these at once - it's too confusing.
 eod
 
-Astro::SIMBAD::Client::Recommend->recommend();
+My::Module::Recommend->recommend();
 
 my (@exe_files, @clean_files);
 
@@ -63,7 +63,7 @@ if ($^O eq 'MSWin32') {
 
 (my $mmv = ExtUtils::MakeMaker->VERSION) =~ s/_//g;
 
-my $meta = Astro::SIMBAD::Client::Meta->new();
+my $meta = My::Module::Meta->new();
 
 my %attr = (
     NAME => 'Astro::SIMBAD::Client',

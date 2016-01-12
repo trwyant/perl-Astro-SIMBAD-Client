@@ -5,7 +5,7 @@ use warnings;
 
 use lib qw{ inc };
 
-use Astro::SIMBAD::Client::Test;
+use My::Module::Test;
 
 access;
 

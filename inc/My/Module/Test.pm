@@ -1,4 +1,4 @@
-package Astro::SIMBAD::Client::Test;
+package My::Module::Test;
 
 use strict;
 use warnings;
@@ -321,12 +321,12 @@ __END__
 
 =head1 NAME
 
-Astro::SIMBAD::Client::Test - Provide test harness for Astro::SIMBAD::Client
+My::Module::Test - Provide test harness for Astro::SIMBAD::Client
 
 =head1 SYNOPSIS
 
  use lib qw{ inc };
- use Astro::SIMBAD::Client::Test;
+ use My::Module::Test;
  
  access;	# Check access to SIMBAD web site.
 
@@ -458,7 +458,7 @@ Load status is cached, so only one C<eval> is done per module.
 =head2 module_loaded
 
 This subroutine takes as its first argument the name of a module. The
-second argument is the name of one of the C<Astro::SIMBAD::Client::Test>
+second argument is the name of one of the C<My::Module::Test>
 subroutines, and subsequent arguments are arguments for the named
 subroutine. If the named module has not been loaded, nothing happens. If
 the named module has been loaded, the named subroutine is called (as a

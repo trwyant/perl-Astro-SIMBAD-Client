@@ -5,17 +5,17 @@ use warnings;
 
 use lib qw{ inc };
 
-use Astro::SIMBAD::Client::Build;
-use Astro::SIMBAD::Client::Meta;
-use Astro::SIMBAD::Client::Recommend;
+use My::Module::Build;
+use My::Module::Meta;
+use My::Module::Recommend;
 use Module::Build;
 use Config;
 
 (my $mbv = Module::Build->VERSION) =~ s/_//g;
 
-my $meta = Astro::SIMBAD::Client::Meta->new();
+my $meta = My::Module::Meta->new();
 
-Astro::SIMBAD::Client::Recommend->recommend();
+My::Module::Recommend->recommend();
 
 my %attr = (
     dist_author => 'Tom Wyant (wyant at cpan dot org)',
@@ -37,7 +37,7 @@ $mbv >= 0.28
 $mbv >= 0.34
     and $attr{auto_configure_requires} = 0;	# Don't require Module::Build
 
-my $bldr = Astro::SIMBAD::Client::Build->new (%attr);
+my $bldr = My::Module::Build->new (%attr);
 
 my %opt = $bldr->args();
 

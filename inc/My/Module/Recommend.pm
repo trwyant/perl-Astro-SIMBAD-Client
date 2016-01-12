@@ -1,4 +1,4 @@
-package Astro::SIMBAD::Client::Recommend;
+package My::Module::Recommend;
 
 use strict;
 use warnings;
@@ -67,13 +67,13 @@ EOD
 
 =head1 NAME
 
-Astro::SIMBAD::Client::Recommend - Recommend modules to install. 
+My::Module::Recommend - Recommend modules to install. 
 
 =head1 SYNOPSIS
 
  use lib qw{ inc };
- use Astro::SIMBAD::Client::Recommend;
- Astro::SIMBAD::Client::Recommend->recommend();
+ use My::Module::Recommend;
+ My::Module::Recommend->recommend();
 
 =head1 DETAILS
 
@@ -87,7 +87,7 @@ This class supports the following public methods:
 
 =head2 recommend
 
- Astro::SIMBAD::Client::Recommend->recommend();
+ My::Module::Recommend->recommend();
 
 This static method examines the current Perl to see which optional
 modules are installed. If any are not installed, a message is printed to

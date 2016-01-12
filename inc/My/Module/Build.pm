@@ -1,4 +1,4 @@
-package Astro::SIMBAD::Client::Build;
+package My::Module::Build;
 
 use strict;
 use warnings;
@@ -165,7 +165,7 @@ __END__
 
 =head1 NAME
 
-Astro::SIMBAD::Client::Build - Extend Module::Build for PPIx::Regexp
+My::Module::Build - Extend Module::Build for Astro::SIMBAD::Client
 
 =head1 SYNOPSIS
 

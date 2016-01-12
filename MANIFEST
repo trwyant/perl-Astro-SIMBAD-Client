@@ -8,10 +8,10 @@ eg/README
 eg/script
 eg/votable
 eg/votree
-inc/Astro/SIMBAD/Client/Build.pm
-inc/Astro/SIMBAD/Client/Meta.pm
-inc/Astro/SIMBAD/Client/Recommend.pm
-inc/Astro/SIMBAD/Client/Test.pm
+inc/My/Module/Build.pm
+inc/My/Module/Meta.pm
+inc/My/Module/Recommend.pm
+inc/My/Module/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
 LICENSES/Artistic
