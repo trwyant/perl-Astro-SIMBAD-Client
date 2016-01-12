@@ -623,7 +623,7 @@ EOD
 	if ( $self->get( 'emulate_soap_queries' ) ) {
 	    my $type = $self->get( 'type' );
 	    my $code = $make_script{$type} || sub {
-		my ( $self, $query, @args ) = @_;
+		my ( undef, $query, @args ) = @_;	# Invocant unused
 		return "query $query @args\n";
 	    };
 	    return $self->_script(
@@ -949,7 +949,8 @@ it sets the default value of the attribute.
 	    $ckpn :
 	    sub {+sprintf '%d', $ckpn->(@_) + .5}),
 	format => sub {
-	    my ($self, $name, $val, $key) = @_;
+##	    my ( $self, $name, $val, $key ) = @_;
+	    my ( $self, undef, $val ) = @_;	# Name and key unused
 	    if ($val !~ m/\W/ && (my $code = eval {
 			$self->_get_coderef ($val)})) {
 		$val = $code->();
@@ -957,7 +958,8 @@ it sets the default value of the attribute.
 	    $val;
 	},
 	parser => sub {
-	    my ($self, $name, $val, $key) = @_;
+##	    my ( $self, $name, $val, $key ) = @_;
+	    my ( $self, undef, $val ) = @_;	# Name and key unused
 	    if (!ref $val) {
 		unless ($val =~ m/::/) {
 		    my $pkg = $self->_parse_subroutine_name ($val);
@@ -1175,7 +1177,7 @@ sub _callers_caller {
     );
 
     sub _deprecation_notice {
-	my ( $self, $type, $name, $repl ) = @_;
+	my ( undef, $type, $name, $repl ) = @_;	# Invocant unused
 	$deprecate{$type} or return;
 	$deprecate{$type}{$name} or return;
 	my $msg = sprintf 'The %s %s is %s', $name, $type,
@@ -1192,7 +1194,7 @@ sub _callers_caller {
     }
 
     sub _deprecation_in_progress {
-	my ( $self, $type, $name ) = @_;
+	my ( undef, $type, $name ) = @_;	# Invocant unused
 	$deprecate{$type} or return;
 	return defined $deprecate{$type}{$name};
     }
