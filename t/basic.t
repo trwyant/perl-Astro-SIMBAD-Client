@@ -20,6 +20,10 @@ $smb->set( debug => 1 );
 
 is $smb->get( 'debug' ), 1, 'Able to set debug to 1';
 
+$smb->set( debug => 0 );
+
+diag scalar $smb->release();
+
 done_testing;
 
 1;
