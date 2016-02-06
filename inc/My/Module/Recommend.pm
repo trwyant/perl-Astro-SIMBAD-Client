@@ -4,17 +4,6 @@ use strict;
 use warnings;
 
 use Carp;
-use Config;
-
-my ( $is_5_010, $is_5_012 );
-
-eval {
-    require 5.012;
-    $is_5_012 = $is_5_010 = 1;
-} or eval {
-    require 5.010;
-    $is_5_010 = 1;
-};
 
 sub recommend {
     my @recommend;
