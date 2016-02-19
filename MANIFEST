@@ -11,6 +11,8 @@ eg/votree
 inc/My/Module/Build.pm
 inc/My/Module/Meta.pm
 inc/My/Module/Recommend.pm
+inc/My/Module/Recommend/Any.pm
+inc/My/Module/Recommend/None.pm
 inc/My/Module/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm

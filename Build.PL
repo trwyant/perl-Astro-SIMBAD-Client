@@ -26,7 +26,7 @@ my %attr = (
     requires => $meta->requires(
 	perl => $meta->requires_perl(),
     ),
-    add_to_cleanup => [ qw{ xt/author/optionals } ],
+    add_to_cleanup => [ qw{ cover_db xt/author/optionals } ],
     dynamic_config => 1,
     license => 'perl',
 );
