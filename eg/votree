@@ -126,7 +126,7 @@ sub _strip_empty {
 #	As things stand, this is unused code. But since this is an
 #	example, I left it in.
 
-sub _find_first {
+sub _find_first {	## no critic (ProhibitUnusedPrivateSubroutines)
     my ($tree, @want) = @_;
     TAG_LOOP:
     foreach my $tag (@want) {

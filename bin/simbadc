@@ -178,7 +178,8 @@ values.
 
 =cut
 
-sub _cmd_default {
+# Called by reference obtained by __PACKAGE__->can( '_cmd_' . $verb )
+sub _cmd_default {	## no critic (ProhibitUnusedPrivateSubroutines)
     my @args = @_;
     @args or @args = $simbad->attributes();
     foreach my $name (@args) {
@@ -189,7 +190,8 @@ sub _cmd_default {
     return $simbad;
 }
 
-###sub _cmd_dump {
+# Called by reference obtained by __PACKAGE__->can( '_cmd_' . $verb )
+###sub _cmd_dump {	## no critic (ProhibitUnusedPrivateSubroutines)
 ###    Dumper ($simbad);
 ###}
 
@@ -200,7 +202,8 @@ CORE::exit. End-of-file also works.
 
 =cut
 
-sub _cmd_exit {
+# Called by reference obtained by __PACKAGE__->can( '_cmd_' . $verb )
+sub _cmd_exit {	## no critic (ProhibitUnusedPrivateSubroutines)
     CORE::exit;
     return;	# Should never get here.
 }
@@ -239,7 +242,8 @@ eod
 
     my $client_file;
 
-    sub _cmd_help {
+    # Called by reference obtained by __PACKAGE__->can( '_cmd_' . $verb )
+    sub _cmd_help {	## no critic (ProhibitUnusedPrivateSubroutines)
 	my ($what) = @_;
 	if ($problem) {
 	    print $problem
@@ -300,7 +304,8 @@ is formatted as 'set' commands.
 
 =cut
 
-sub _cmd_show {
+# Called by reference obtained by __PACKAGE__->can( '_cmd_' . $verb )
+sub _cmd_show {	## no critic (ProhibitUnusedPrivateSubroutines)
     my @args = @_;
     @args or @args = $object->attributes();
     my @verb = ('set');

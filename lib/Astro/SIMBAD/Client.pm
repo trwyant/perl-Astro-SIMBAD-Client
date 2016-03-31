@@ -1167,6 +1167,7 @@ sub _callers_caller {
 #
 #	This method returns true if the deprecation is in progress. In
 #	practice this means the %deprecate value is defined.
+#	This is currently unused and commented out
 
 {
 
@@ -1193,11 +1194,17 @@ sub _callers_caller {
 	return;
     }
 
+=begin comment
+
     sub _deprecation_in_progress {
 	my ( undef, $type, $name ) = @_;	# Invocant unused
 	$deprecate{$type} or return;
 	return defined $deprecate{$type}{$name};
     }
+
+=end comment
+
+=cut
 
 }
 
