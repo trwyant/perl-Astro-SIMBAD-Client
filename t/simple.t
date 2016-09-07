@@ -16,6 +16,8 @@ call set => parser => 'txt=Parse_TXT_Simple';
 load_module 'SOAP::Lite';
 load_data 't/canned.data';
 
+access;
+
 TODO: {
     local $TODO = 'SOAP vo queries are deprecated';
     local $SIG{__WARN__} = sub {};	# Ignore warnings.
