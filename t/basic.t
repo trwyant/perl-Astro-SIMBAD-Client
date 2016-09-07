@@ -23,9 +23,12 @@ is $smb->get( 'debug' ), 1, 'Able to set debug to 1';
 $smb->set( debug => 0 );
 
 eval {
-    diag scalar $smb->release();
+    diag join ': ', $smb->get( 'server' ), scalar $smb->release();
     1;
-} or diag $@;
+} or do {
+    my $err = $@;
+    diag join ': ', $smb->get( 'server' ), $err;
+};
 
 done_testing;
 

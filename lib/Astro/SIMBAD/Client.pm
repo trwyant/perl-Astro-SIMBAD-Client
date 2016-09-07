@@ -192,7 +192,8 @@ my %static = (
     },
     post => 1,
 ##    server => 'simweb.u-strasbg.fr',
-    server => 'simbad.u-strasbg.fr',
+##    server => 'simbad.u-strasbg.fr',
+    server => $ENV{ASTRO_SIMBAD_CLIENT_SERVER} || 'simbad.u-strasbg.fr',
     type => 'txt',
     url_args => {},
     verbatim => 0,
@@ -1539,7 +1540,9 @@ This attribute specifies the server to be used. As of January 26 2007,
 only 'simbad.u-strasbg.fr' is valid, since as of that date Harvard
 University has not yet converted their mirror to SIMBAD 4.
 
-The default is 'simbad.u-strasbg.fr'.
+The default is the value of environment variable
+ASTRO_SIMBAD_CLIENT_SERVER, or C<'simbad.u-strasbg.fr'> if the
+environment variable is not set.
 
 =for html <a name="type"></a>
 
@@ -1583,6 +1586,15 @@ passed to the parser or returned to the user unmodified.
 The default is 0 (i.e. false)
 
 =back
+
+=head1 ENVIRONMENT
+
+=head2 ASTRO_SIMBAD_CLIENT_SERVER
+
+If assigned a true value, this environment variable specifies the
+default for the C<'server'> attribute. It is read when the module is
+loaded. If you want to change the default after the module has been
+loaded, make a static call to C<set()>.
 
 =head1 AUTHOR
 
