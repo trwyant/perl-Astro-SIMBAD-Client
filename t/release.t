@@ -9,12 +9,18 @@ use My::Module::Test;
 
 access;
 
-call 'release';
-test qr{ \A SIMBAD4 \b }smxi, 'Scalar release()';
+TODO: {
 
-call_a 'release';
-deref 0;
-test 4, 'Major version number';
+    local $TODO = 'Release information missing as of September 6 2016';
+
+    call 'release';
+    test qr{ \A SIMBAD4 \b }smxi, 'Scalar release()';
+
+    call_a 'release';
+    deref 0;
+    test 4, 'Major version number';
+
+}
 
 end;
 

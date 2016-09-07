@@ -22,7 +22,10 @@ is $smb->get( 'debug' ), 1, 'Able to set debug to 1';
 
 $smb->set( debug => 0 );
 
-diag scalar $smb->release();
+eval {
+    diag scalar $smb->release();
+    1;
+} or diag $@;
 
 done_testing;
 
