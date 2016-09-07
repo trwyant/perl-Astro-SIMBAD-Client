@@ -5,7 +5,7 @@ use warnings;
 
 use base qw{ Module::Build };
 
-our $VERSION = '0.034';
+our $VERSION = '0.034_01';
 
 use Carp;
 

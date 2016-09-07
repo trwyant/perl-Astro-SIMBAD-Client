@@ -1,3 +1,15 @@
+0.034_01	2016-09-07	T. R. Wyant
+  Improve test for unavailable server
+
+  Default server attribute to environment variable
+    ASTRO_SIMBAD_CLIENT_SERVER if that has a true value.
+
+  Tests of the release() method are now TODO. What happened was that on
+    September 6 2016 the release information was omitted from the web
+    site. It is back on the 7th, but once bitten twice shy.
+
+  Have t/basic.t display SIMBAD server SW release
+
 0.034		2016-01-05	T. R. Wyant
   Add GitHub repository to metadata.
 
