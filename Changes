@@ -1,4 +1,4 @@
-0.034_01	2016-09-07	T. R. Wyant
+0.035		2016-09-14	T. R. Wyant
   Improve test for unavailable server
 
   Default server attribute to environment variable
