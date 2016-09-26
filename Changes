@@ -1,3 +1,7 @@
+0.036		2016-09-26	T. R. Wyant
+  SIMBAD now lists "Arcturus", not "ARCTURUS".
+    Change tests to reflect this.
+
 0.035		2016-09-14	T. R. Wyant
   Improve test for unavailable server
 
