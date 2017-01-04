@@ -6,7 +6,8 @@ use warnings;
 use Astro::SIMBAD::Client;
 use Test::More 0.88;
 
-use base qw{ Exporter };
+use Exporter ();
+our @ISA = qw{ Exporter };
 
 our @EXPORT_OK = qw{
     access
