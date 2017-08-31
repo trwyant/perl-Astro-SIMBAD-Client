@@ -65,7 +65,7 @@ sub call (@) {	## no critic (ProhibitSubroutinePrototypes)
 	$got = $obj->$method( @args );
 	1;
     } or do {
-	_method_failure( $method );
+	_method_failure( $method, @args );
 	$got = $@;
     };
     $ref = ref $got ? $got : undef;
@@ -79,7 +79,7 @@ sub call_a (@) {	## no critic (ProhibitSubroutinePrototypes)
 	$got = [ $obj->$method( @args ) ];
 	1;
     } or do {
-	_method_failure( $method );
+	_method_failure( $method. @args );
 	$got = $@;
     };
     $ref = ref $got ? $got : undef;
@@ -303,17 +303,28 @@ sub _test {		## no critic (RequireArgUnpacking)
 ##################################################################
 
 sub _method_failure {
-    my ( $method ) = @_;
+    my ( $method, @args ) = @_;
     $skip
 	and $silent
 	and return;
     my $msg = $skip ? ' ($skip set)' : '';
-    diag "$method failed$msg: $@";
+    @args = map { _quote() } @args;
+    local $" = ', ';
+    diag "$method( @args ) failed$msg: $@";
     return;
 }
 
 sub _numberp {
     return ($_[0] =~ m/^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/);
+}
+
+sub _quote {
+    defined $_
+	or return 'undef';
+    _numberp( $_ )
+	and return $_;
+    s/ ( ['\\] ) /\\$1/smx;
+    return "'$_'";
 }
 
 1;
