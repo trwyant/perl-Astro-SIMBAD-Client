@@ -9,6 +9,10 @@ use Test::More 0.88;
 use Exporter ();
 our @ISA = qw{ Exporter };
 
+use constant ARRAY_REF	=> ref [];
+use constant HASH_REF	=> ref {};
+use constant REGEXP_REF	=> ref qr{};
+
 our @EXPORT_OK = qw{
     access
     call
@@ -91,9 +95,9 @@ sub canned (@) {	## no critic (ProhibitSubroutinePrototypes)
     my $want = $canned;
     foreach my $key (@args) {
 	my $ref = ref $want;
-	if ($ref eq 'ARRAY') {
+	if ( ARRAY_REF eq $ref ) {
 	    $want = $want->[$key];
-	} elsif ($ref eq 'HASH') {
+	} elsif ( HASH_REF eq $ref ) {
 	    $want = $want->{$key};
 	} elsif ($ref) {
 	    die "Loaded data contains unexpected $ref reference for key $key\n";
@@ -112,7 +116,7 @@ sub clear (@) {	## no critic (ProhibitSubroutinePrototypes)
 }
 
 sub count () {	## no critic (ProhibitSubroutinePrototypes)
-    if ( 'ARRAY' eq ref $got ) {
+    if ( ARRAY_REF eq ref $got ) {
 	$got = @{ $got };
     } else {
 	$got = undef;
@@ -129,9 +133,9 @@ sub deref_curr (@) {	## no critic (ProhibitSubroutinePrototypes)
     my ( @args ) = @_;
     foreach my $key (@args) {
 	my $type = ref $got;
-	if ($type eq 'ARRAY') {
+	if ( ARRAY_REF eq $type ) {
 	    $got = $got->[$key];
-	} elsif ($type eq 'HASH') {
+	} elsif ($type eq HASH_REF) {
 	    $got = $got->{$key};
 	} else {
 	    $got = undef;
@@ -162,14 +166,14 @@ sub end () {	## no critic (ProhibitSubroutinePrototypes)
 sub find (@) {	## no critic (ProhibitSubroutinePrototypes)
     my ( @args ) = @_;
     my $target = pop @args;
-    if (ref $got eq 'ARRAY') {
+    if ( ARRAY_REF eq ref $got ) {
 	foreach my $item ( @{ $got } ) {
 	    my $test = $item;
 	    foreach my $key ( @args ) {
 		my $type = ref $test;
-		if ($type eq 'ARRAY') {
+		if ( ARRAY_REF eq $type ) {
 		    $test = $test->[$key];
-		} elsif ($type eq 'HASH') {
+		} elsif ( HASH_REF eq $type ) {
 		    $test = $test->{$key};
 		} else {
 		    $test = undef;
@@ -287,7 +291,7 @@ sub _test {		## no critic (RequireArgUnpacking)
 	SKIP: {
 	    skip $skip, 1;
 	}
-    } elsif (ref $want eq 'Regexp') {
+    } elsif ( REGEXP_REF eq ref $want ) {
 	@_ = ( $got, $want, $title );
 	goto $type ? \&like : \&unlike;
     } elsif (_numberp ($want) && _numberp ($got)) {

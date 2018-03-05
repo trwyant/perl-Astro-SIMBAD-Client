@@ -97,6 +97,9 @@ use URI::Escape ();
 use XML::DoubleEncodedEntities;
 # use Astro::SIMBAD::Client::WSQueryInterfaceService;
 
+use constant ARRAY_REF	=> ref [];
+use constant CODE_REF	=> ref sub {};
+
 my $have_time_hires;
 BEGIN {
     $have_time_hires = eval {
@@ -430,20 +433,20 @@ eod
 		    if ($element->[0] eq 'TABLE') {
 			my (@meta, @data, @descr);
 			foreach (@$element) {
-			    next unless ref $_ eq 'ARRAY';
+			    next unless ARRAY_REF eq ref $_;
 			    if ($_->[0] eq 'FIELD') {
 				push @meta, $_;
 				push @descr, $_;
 			    } elsif ($_->[0] eq 'DATA') {
 				foreach (@$_) {
-				    next unless ref $_ eq 'ARRAY';
+				    next unless ARRAY_REF eq ref $_;
 				    next unless $_->[0] eq 'TABLEDATA';
 				    foreach (@$_) {
-					next unless ref $_ eq 'ARRAY';
+					next unless ARRAY_REF eq ref $_;
 					next unless $_->[0] eq 'TR';
 					my @row;
 					foreach (@$_) {
-					    next unless ref $_ eq 'ARRAY';
+					    next unless ARRAY_REF eq ref $_;
 					    next unless $_->[0] eq 'TD';
 					    my @inf = grep {!ref $_} @$_;
 					    shift @inf;
@@ -502,7 +505,7 @@ sub _strip_empty {
     while (--$inx >= 0) {
 	my $val = $ref->[$inx];
 	my $typ = ref $val;
-	if ($typ eq 'ARRAY') {
+	if ( ARRAY_REF eq $typ ) {
 	    _strip_empty ($val);
 	} elsif (!$typ) {
 	    splice @$ref, $inx, 1 unless $val =~ m/\S/ms;
@@ -967,7 +970,7 @@ it sets the default value of the attribute.
 		    $val = $pkg . '::' . $val;
 		}
 		$self->_get_coderef ($val);	# Just to see if we can.
-	    } elsif (ref $val ne 'CODE') {
+	    } elsif ( CODE_REF ne ref $val ) {
 		croak "Error - $_[1] value must be scalar or code reference";
 	    }
 	    $val;

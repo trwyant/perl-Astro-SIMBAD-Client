@@ -13,6 +13,8 @@ local $Data::Dumper::Sortkeys = 1;
 
 my $VERSION = '0.018';
 
+use constant HASH_REF	=> ref {};
+
 my $class = 'Astro::SIMBAD::Client';
 my $simbad = $class->new ();
 my $object;
@@ -184,7 +186,7 @@ sub _cmd_default {	## no critic (ProhibitUnusedPrivateSubroutines)
     @args or @args = $simbad->attributes();
     foreach my $name (@args) {
 	my $val = $class->get ($name);
-	$val->{clear} = 1 if ref $val eq 'HASH';
+	$val->{clear} = 1 if HASH_REF eq ref $val;
 	$simbad->set ($name, $val);
     }
     return $simbad;
@@ -313,7 +315,7 @@ sub _cmd_show {	## no critic (ProhibitUnusedPrivateSubroutines)
     my @rslt;
     foreach my $name (@args) {
 	my $val = $object->get ($name);
-	if (ref $val eq 'HASH') {
+	if ( HASH_REF eq ref $val ) {
 	    foreach my $key (sort keys %$val) {
 		push @rslt, _quote (@verb, $name,
 		    defined $val->{$key} ? "$key=$val->{$key}" : "$key=");
