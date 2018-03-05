@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Astro::SIMBAD::Client;
-use XML::Parser::Lite;
+use XML::Parser;
 use Data::Dumper;
 $Data::Dumper::Terse = 1;
 
@@ -14,7 +14,7 @@ my $simbad = Astro::SIMBAD::Client->new (
 );
 
 foreach my $obj (@ARGV) {
-    print Dumper ($simbad->query (id => $obj));
+    print Dumper ($simbad->url_query( id => Ident => $obj ) );
 }
 
 #	The following parser returns an XML parse tree. It could be used
@@ -58,7 +58,7 @@ sub parse_vo_lite {
 #	End ($class, $tag)
 #	Final ($class)
 
-    my $psr = XML::Parser::Lite->new (
+    my $psr = XML::Parser->new (
 	Handlers => {
 	    Init => sub {
 		$root = [];
