@@ -89,7 +89,7 @@ If not, it is capable of generating an explanatory message.
 
 I am using this rather than the usual install tools' recommendation
 machinery for greater flexibility, and because I personally have found
-their output rather Draconian, and my correspondance indicates that my
+their output rather Draconian, and my correspondence indicates that my
 users do too.
 
 =head1 METHODS
@@ -144,7 +144,7 @@ modules are needed it returns nothing.
 =head1 SUPPORT
 
 Support is by the author. Please file bug reports at
-L<http://rt.cpan.org>, or in electronic mail to the author.
+L<http://rt.cpan.org/>, or in electronic mail to the author.
 
 =head1 AUTHOR
 

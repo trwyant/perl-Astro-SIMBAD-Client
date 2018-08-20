@@ -10,9 +10,11 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 =head1 NOTICE
 
-As of release 0.027_01 the SOAP interface is deprecated. The
-University of Strasbourg has announced that this interface will not be
-supported after April 1 2014.
+As of release 0.027_01 the SOAP interface is deprecated. The +University
+of Strasbourg has announced at
++L<http://cds.u-strasbg.fr/resources/doku.php?id=soap> that this
++interface will not be maintained after April 1 2014, and that +B<this
+interface will be stopped on December 31 2018>.
 
 Because the SOAP interface is still sort of functional (except for
 VO-format queries) as of June 4 2014, I have revised the transition plan
@@ -42,12 +44,12 @@ will -- otherwise SOAP will become unsupported.
 =head1 DESCRIPTION
 
 This package implements several query interfaces to version 4 of the
-SIMBAD on-line astronomical catalog, as documented at
+SIMBAD on-line astronomical database, as documented at
 L<http://simbad.u-strasbg.fr/simbad4.htx>. B<This package will not work
 with SIMBAD version 3.> Its primary purpose is to obtain SIMBAD data,
 though some rudimentary parsing functionality also exists.
 
-There are three ways to access this data.
+There are three ways to access these data.
 
 - URL queries are essentially page scrapers, but their use is
 documented, and output is available as HTML, text, or VOTable. URL
@@ -677,9 +679,9 @@ EOD
 
 =item $value = $simbad->queryObjectByBib ($bibcode, $format, $type);
 
-This method is B<deprecated>, and will cease to work in April 2014.
-Please choose a method that does not use SOAP. See the L<NOTICE|/NOTICE>
-above for details.
+This method is B<deprecated>, and will cease to work on December 31
+2018. Please choose a method that does not use SOAP. See the
+L<NOTICE|/NOTICE> above for details.
 
 This method is just a convenience wrapper for
 
@@ -696,9 +698,9 @@ sub queryObjectByBib {
 
 =item $value = $simbad->queryObjectByCoord ($coord, $radius, $format, $type);
 
-This method is B<deprecated>, and will cease to work in April 2014.
-Please choose a method that does not use SOAP. See the L<NOTICE|/NOTICE>
-above for details.
+This method is B<deprecated>, and will cease to work on December 31
+2018. Please choose a method that does not use SOAP. See the
+L<NOTICE|/NOTICE> above for details.
 
 This method is just a convenience wrapper for
 
@@ -715,9 +717,9 @@ sub queryObjectByCoord {
 
 =item $value = $simbad->queryObjectById ($id, $format, $type);
 
-This method is B<deprecated>, and will cease to work in April 2014.
-Please choose a method that does not use SOAP. See the L<NOTICE|/NOTICE>
-above for details.
+This method is B<deprecated>, and will cease to work on December 31
+2018. Please choose a method that does not use SOAP. See the
+L<NOTICE|/NOTICE> above for details.
 
 This method is just a convenience wrapper for
 
@@ -1539,9 +1541,8 @@ The default is 1 (i.e. true).
 
 =item server (string)
 
-This attribute specifies the server to be used. As of January 26 2007,
-only 'simbad.u-strasbg.fr' is valid, since as of that date Harvard
-University has not yet converted their mirror to SIMBAD 4.
+This attribute specifies the server to be used. As of March 10 2010,
+either C<'simbad.u-strasbg.fr'> or C<'simbad.cfa.harvard.edu'> is valid.
 
 The default is the value of environment variable
 ASTRO_SIMBAD_CLIENT_SERVER, or C<'simbad.u-strasbg.fr'> if the
@@ -1554,9 +1555,9 @@ environment variable is not set.
 This attribute specifies the default output type. Note that although
 SIMBAD only defined types 'txt' and 'vo', we do not validate this,
 since the SIMBAD web site hints at more types to come. SIMBAD appears
-to treat an unrecognized type as 'txt'.
+to treat an unrecognized type as C<'txt'>.
 
-The default is 'txt'.
+The default is C<'txt'>.
 
 =for html <a name="url_args"></a>
 
@@ -1586,7 +1587,7 @@ including the '::data:::::' line is removed before passing the output to
 the parser or returning it to the user. If true, the script output is
 passed to the parser or returned to the user unmodified.
 
-The default is 0 (i.e. false)
+The default is C<0> (i.e. false).
 
 =back
 
