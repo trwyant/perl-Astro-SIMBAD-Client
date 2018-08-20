@@ -55,8 +55,8 @@ sub access () {	## no critic (ProhibitSubroutinePrototypes)
 	require LWP::UserAgent;
 	1;
     } or plan skip_all => 'Can not load LWP::UserAgent';
-    my $svr = Astro::SIMBAD::Client->get ('server');
-    my $resp = LWP::UserAgent->new->get ("http://$svr/simbad/");
+    my $resp = LWP::UserAgent->new()->get(
+	Astro::SIMBAD::Client->__build_url( 'simbad/' ) );
     $resp->is_success
 	or plan skip_all => "@{[$resp->status_line]}";
     return;

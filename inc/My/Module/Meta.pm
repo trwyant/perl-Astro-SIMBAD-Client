@@ -70,6 +70,7 @@ sub requires {
 ##  }
     return +{
 	'HTTP::Request::Common'	=> 0,
+	'LWP::Protocol'	=> 0,	# Comes with LWP, but ...
 	'LWP::UserAgent' => 0,
 ##	'SOAP::Lite' => 0,
 	'Scalar::Util' => 1.01,	# Not in Perl 5.6

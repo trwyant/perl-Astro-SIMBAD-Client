@@ -67,8 +67,8 @@ deprecated. See the L<NOTICE|/NOTICE> section above for the deprecation
 schedule.
 
 Astro::SIMBAD::Client is object-oriented, with the object supplying not
-only the SIMBAD server name, but the default format and output type for
-URL and web service queries.
+only the URL scheme and SIMBAD server name, but the default format and
+output type for URL and web service queries.
 
 A simple command line client application is also provided, as are
 various examples in the F<eg> directory.
@@ -93,6 +93,7 @@ use warnings;
 
 use Carp;
 use LWP::UserAgent;
+use LWP::Protocol;
 use HTTP::Request::Common qw{POST};
 use Scalar::Util 1.01 qw{looks_like_number};
 use URI::Escape ();
@@ -196,13 +197,22 @@ my %static = (
 	script => '',
     },
     post => 1,
-##    server => 'simweb.u-strasbg.fr',
+    # lc(...) per https://tools.ietf.org/html/rfc3986#section-3.1
+    scheme => lc( $ENV{ASTRO_SIMBAD_CLIENT_SCHEME} || 'http' ),
 ##    server => 'simbad.u-strasbg.fr',
     server => $ENV{ASTRO_SIMBAD_CLIENT_SERVER} || 'simbad.u-strasbg.fr',
     type => 'txt',
     url_args => {},
     verbatim => 0,
 );
+
+if ( my $msg = _is_scheme_valid(
+	$static{scheme},
+	q<Unsupported ASTRO_SIMBAD_CLIENT_SCHEME '%s'; falling back to 'http'>,
+    ) ) {
+    carp $msg;
+    $static{scheme} = 'http';
+}
 
 =item $simbad = Astro::SIMBAD::Client->new ();
 
@@ -665,8 +675,8 @@ EOD
 	SOAP::Lite->import (+trace => $debug ? 'all' : '-all');
 	$self->_delay ();
 ##	$debug and SOAP::Trace->import ('all');
-	my $resp = Astro::SIMBAD::Client::WSQueryInterfaceService->$method (
-	    $self->get ('server'), @args);
+	my $resp = Astro::SIMBAD::Client::WSQueryInterfaceService->$method(
+	    $self, @args);
 	return unless defined $resp;
 	$resp = XML::DoubleEncodedEntities::decode ($resp);
 	return wantarray ? ($parser->($resp)) : [$parser->($resp)]
@@ -763,8 +773,7 @@ after 'Release:' (case-insensitive).
 
 sub release {
     my $self = shift;
-    my $rslt = $self->_retrieve ('http://' . $self->{server} . '/simbad/');
-    $rslt->is_success or croak "Error - ", $rslt->status_line;
+    my $rslt = $self->_retrieve( 'simbad/' );
     my ($rls) = $rslt->content =~
 	m{Release:.*?</td>.*?<td.*?>(.*?)</td>}sxi
 	or croak "Error - Release information not found";
@@ -839,21 +848,14 @@ sub script {
 
 	my $debug = $self->get( 'debug' );
 
-	my $server = $self->get ('server');
-
-	my $url = "http://$server/simbad/sim-script";
-
 	$debug
 	    and warn "Debug - script\n$arg{script} ";
 
-	my $resp = $self->_retrieve( $url, {
+	my $resp = $self->_retrieve( 'simbad/sim-script', {
 		submit	=> 'submit+script',
 		script	=> $arg{script},
 	    },
 	);
-
-	$resp->is_success
-	    or croak $resp->status_line;
 
 	my $rslt = $resp->content
 	    or return;
@@ -900,8 +902,7 @@ output.
 sub script_file {
     my ( $self, $file ) = @_;
 
-    my $server = $self->get ('server');
-    my $url = "http://$server/simbad/sim-script";
+    my $url = $self->__build_url( 'simbad/sim-script' );
     my $rqst = POST $url, 
 	Content_Type => 'form-data',
 	Content => [
@@ -909,9 +910,7 @@ sub script_file {
 	    scriptFile => [$file, undef],
     	    # May need to specify Content_Type => application/octet-stream.
 	];
-    my $resp = $self->_retrieve ($rqst);
-
-    $resp->is_success or croak $resp->status_line;
+    my $resp = $self->_retrieve( $rqst );
 
     my $rslt = $resp->content or return;
     unless ($self->get ('verbatim')) {
@@ -947,6 +946,7 @@ it sets the default value of the attribute.
     my %mutator = (
 	format => \&_set_hash,
 	parser => \&_set_hash,
+	scheme	=> \&_set_scheme,
 	url_args => \&_set_hash,
     );
 
@@ -1023,6 +1023,16 @@ it sets the default value of the attribute.
 	return;
     }
 
+    sub _set_scheme {
+	my ( $self, $name, $value ) = @_;
+	if ( my $msg = _is_scheme_valid( $value ) ) {
+	    croak $msg;
+	}
+	my $hash = ref $self ? $self : \%static;
+	$hash->{$name} = lc $value;
+	return;
+    }
+
 }	# End local symbol block.
 
 
@@ -1091,8 +1101,6 @@ Error - url_query needs an even number of arguments after the query
 eod
 	my ($self, $query, %args) = @_;
 ###	my $debug = $self->get ('debug');
-	my $url = 'http://' . $self->get ('server') . '/simbad/sim-' .
-	    $query;
 	my $dflt = $self->get ('url_args');
 	foreach my $key (keys %$dflt) {
 	    exists ($args{$key}) or $args{$key} = $dflt->{$key};
@@ -1101,9 +1109,8 @@ eod
 	    my $type = $self->get ('type');
 	    $args{'output.format'} = $type_map{$type} || $type;
 	}
-	my $resp = $self->_retrieve ($url, \%args);
+	my $resp = $self->_retrieve( "simbad/sim-$query", \%args );
 
-	$resp->is_success or croak $resp->status_line;
 	$resp = XML::DoubleEncodedEntities::decode ($resp->content);
 
 	my $parser;
@@ -1123,6 +1130,23 @@ eod
 #
 #	Utility routines
 #
+
+#	__build_url
+#
+#	Builds a URL based on the currently-set scheme and server, and
+#	the fragment provided as an argument. If the fragment is an
+#	HTTP::Request object it is simply returned.
+
+sub __build_url {
+    my ( $self, $fragment ) = @_;
+    defined $fragment
+	or $fragment = '';
+    eval { $fragment->isa( 'HTTP::Request' ) }
+	and return $fragment;
+    $fragment =~ s< \A / ><>smx;	# Defensive programming
+    return sprintf '%s://%s/%s', $self->get( 'scheme' ),
+	$self->get( 'server' ), $fragment;
+}
 
 #	_callers_caller();
 #
@@ -1252,6 +1276,31 @@ sub _get_parser {
     return $self->_get_coderef ($self->get ('parser')->{$type});
 }
 
+# Return false if the argument is a URI scheme we know how to deal with;
+# otherwise return an error message. The optional second argument is a
+# template for the message, with a single '%s' that gets the actual
+# value of the scheme.
+
+{
+    my %supported;
+
+    BEGIN {
+	%supported = map { $_ => 1 } qw{ http https };
+    }
+
+    sub _is_scheme_valid {
+	my ( $scheme, $msg ) = @_;
+	$scheme = lc( $scheme || '' );
+	$msg ||= q<Unsupported scheme '%s'>;
+	$supported{$scheme}
+	    or return sprintf $msg, $scheme;
+	LWP::Protocol::implementor( $scheme )
+	    and return;
+	$msg .= "; have you installed LWP::Protocol::$scheme?";
+	return sprintf $msg, $scheme;
+    }
+}
+
 #	$rslt = _load_module($name)
 #
 #	This subroutine loads the named module using 'require'. It
@@ -1319,10 +1368,15 @@ eod
     return wantarray ? ($pkg, $code) : $pkg;
 }
 
-#	my $resp = $self->_retrieve( $url, \%args );
+#	my $resp = $self->_retrieve( $fragment, \%args );
 #
-#	Retrieve the data from the given URL. The \%args argument is
-#	optional. The return is an HTTP::Response object.
+#	Build a URL from the contents of the 'scheme' and 'server'
+#	attributes, and the given fragment, and retrieve the data from
+#	that URL.  The \%args argument is optional.
+#
+#	The return is an HTTP::Response object. If the response is
+#	indicates that the request is unsuccessful we croak with the URL
+#	(if that can be retrieved) and the status line.
 #
 #	The details depend on the arguments and the state of the
 #	invocant as follows:
@@ -1338,7 +1392,8 @@ eod
 #	get() is done to the URL.
 
 sub _retrieve {
-    my ($self, $url, $args) = @_;
+    my ($self, $fragment, $args) = @_;
+    my $url = $self->__build_url( $fragment );
     $args ||= {};
     my $debug = $self->get ('debug');
     my $ua = _get_user_agent ();
@@ -1370,7 +1425,14 @@ sub _retrieve {
     }
     $debug
 	and print 'Debug - request: ', $resp->request()->as_string(), "\n";
-    return $resp;
+
+    $resp->is_success()
+	and return $resp;
+
+    my $rq = $resp->request()
+	or croak $resp->status_line();
+    my $u = $rq->uri();
+    croak "$u: ", $resp->status_line();
 }
 
 1;
@@ -1536,6 +1598,18 @@ This attribute specifies that url_query() data should be acquired using
 a POST request. If false, a GET request is used.
 
 The default is 1 (i.e. true).
+
+=for html <a name="scheme"></a>
+
+=item scheme (string)
+
+This attribute specifies the server's URI scheme to be used. As of
+January 27 2017, either C<'http'> or C<'https'> is valid.
+
+The default is the value of environment variable
+C<ASTRO_SIMBAD_CLIENT_SCHEME>, or C<'http'> if the environment variable
+is not set, or if it contains a value other than C<'http'> or
+C<'https'>, case-insensitive.
 
 =for html <a name="server"></a>
 

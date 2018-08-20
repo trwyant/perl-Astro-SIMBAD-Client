@@ -15,7 +15,7 @@ our $VERSION = '0.036';
 my %methods = (
 queryObjectById => {
 ##    endpoint => 'http://simweb.u-strasbg.fr:8080/axis/services/WSQuery',
-    endpoint => 'http://%s/axis/services/WSQuery',
+    endpoint => 'axis/services/WSQuery',
     soapaction => '',
     namespace => 'http://uif.simbad.cds',
     parameters => [
@@ -26,7 +26,7 @@ queryObjectById => {
   }, # end queryObjectById
 queryObjectByBib => {
 ##    endpoint => 'http://simweb.u-strasbg.fr:8080/axis/services/WSQuery',
-    endpoint => 'http://%s/axis/services/WSQuery',
+    endpoint => 'axis/services/WSQuery',
     soapaction => '',
     namespace => 'http://uif.simbad.cds',
     parameters => [
@@ -37,7 +37,7 @@ queryObjectByBib => {
   }, # end queryObjectByBib
 queryObjectByCoord => {
 ##    endpoint => 'http://simweb.u-strasbg.fr:8080/axis/services/WSQuery',
-    endpoint => 'http://%s/axis/services/WSQuery',
+    endpoint => 'axis/services/WSQuery',
     soapaction => '',
     namespace => 'http://uif.simbad.cds',
     parameters => [
@@ -62,15 +62,15 @@ use vars qw(@ISA $AUTOLOAD @EXPORT_OK %EXPORT_TAGS);
 sub _call {
   ## TRW vvvv
   ## my ($self, $method) = (shift, shift);
-  my ($self, $method, $server, @parm) = @_;
-  $server or Carp::croak "No server specified";
+  my ($self, $method, $simbad, @parm) = @_;
+  $simbad or Carp::croak 'Astro::SIMBAD::Client object not specified';
   ## my $name = UNIVERSAL::isa($method => 'SOAP::Data') ? $method->name : $method;
   my $name = eval {$method->isa('SOAP::Data')} ? $method->name : $method;
   ## TRW ^^^^
   my %method = %{$methods{$name}};
   ## TRW vvvv
   $method{endpoint} or Carp::croak "No server address (proxy) specified";
-  my $endpoint = sprintf $method{endpoint}, $server;
+  my $endpoint = $simbad->__build_url( $method{endpoint} );
   ## $self->proxy($method{endpoint} || Carp::croak "No server address (proxy) specified") 
   $self->proxy ($endpoint)
     unless $self->proxy;
