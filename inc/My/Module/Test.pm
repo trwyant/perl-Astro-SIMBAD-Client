@@ -194,18 +194,10 @@ sub hidden ($) {
 }
 
 sub load_data ($) {	## no critic (ProhibitSubroutinePrototypes)
-    my ( @args ) = @_;
-    if ( @args ) {
-	my $fn = $args[0];
-	open (my $fh, '<', $fn) or die "Failed to open $fn: $!\n";
-	local $/ = undef;
-	# Perl::Critic does not like string evals, but the
-	# following needs to load arbitrary data dumped with
-	# Data::Dumper. I could switch to YAML, but that is
-	# not a core module.
-	$canned = eval scalar <$fh>;	## no critic (ProhibitStringyEval)
-	$canned or die $@;
-	close $fh;
+    my ( $arg ) = @_;
+    if ( defined $arg ) {
+	local @INC = ( @INC, '.' );
+	$canned = do $arg;
     } else {
 	$canned = undef;
     }
