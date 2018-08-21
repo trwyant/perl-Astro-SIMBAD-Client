@@ -1328,7 +1328,8 @@ sub _get_parser {
 #	appended in parentheses.
 
 sub _get_user_agent {
-    my $ua = LWP::UserAgent->new ();
+    my $ua = LWP::UserAgent->new (
+    );
 ##    $ua->agent ($ua->_agent . ' (' . __PACKAGE__ . ' ' . $VERSION .
 ##	')');
     $ua->agent (&agent);
@@ -1667,12 +1668,44 @@ The default is C<0> (i.e. false).
 
 =head1 ENVIRONMENT
 
+=head2 ASTRO_SIMBAD_CLIENT_SCHEME
+
+If assigned a true value, this environment variable specifies the
+default for the C<'scheme'> attribute. It is read when the module is
+loaded. If you want to change the default after the module has been
+loaded, make a static call to C<set()>.
+
 =head2 ASTRO_SIMBAD_CLIENT_SERVER
 
 If assigned a true value, this environment variable specifies the
 default for the C<'server'> attribute. It is read when the module is
 loaded. If you want to change the default after the module has been
 loaded, make a static call to C<set()>.
+
+=head2 L<LWP::UserAgent|LWP::UserAgent>
+
+The following environment variables control use of a proxy server. They
+are implemented by L<LWP::UserAgent|LWP::UserAgent>, but are documented
+fairly obscurely, so I have chosen to say a few words about them here:
+
+=head3 PERL_LWP_ENV_PROXY
+
+If this environment variable is set to a true value,
+L<LWP::UserAgent|LWP::UserAgent> will take proxy settings for each URL
+scheme from environment variables named C<xxxx_proxy> (yes, lower-case),
+where the C<'xxxx'> is the scheme name. The content of each
+scheme-specific environment variables is the URL (scheme, host, and
+port) of the proxy. The following are relevant to users of this module:
+
+=head3 http_proxy
+
+This environment variable is set to the URL of the C<http:> proxy
+server.
+
+=head2 https_proxy
+
+This environment variable is set to the URL of the C<http:> proxy
+server.
 
 =head1 AUTHOR
 

@@ -72,7 +72,7 @@ sub _call {
   $method{endpoint} or Carp::croak "No server address (proxy) specified";
   my $endpoint = $simbad->__build_url( $method{endpoint} );
   ## $self->proxy($method{endpoint} || Carp::croak "No server address (proxy) specified") 
-  $self->proxy ($endpoint)
+  $self->proxy( $endpoint )
     unless $self->proxy;
   ## TRW ^^^^
   my @templates = @{$method{parameters}};
