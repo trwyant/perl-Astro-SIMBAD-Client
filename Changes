@@ -1,3 +1,6 @@
+0.036_02	2018-09-10	T. R. Wyant
+    Do tests with both http: and https:
+
 0.036_01	2018-09-08	T. R. Wyant
     Add support for https:. Thanks to Christian Carey for making me
     aware of this, and providing patches.
