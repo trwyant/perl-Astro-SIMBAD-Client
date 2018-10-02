@@ -1,4 +1,4 @@
-0.037_01	2018-09-25	T. R. Wyant
+0.038		2018-10-02	T. R. Wyant
     Properly test without https: support. This means checking and
     skipping, but it also means including LWP::Protocol::https in the
     list of optional modules. Reluctantly, because it is not used
