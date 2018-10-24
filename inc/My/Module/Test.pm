@@ -9,6 +9,8 @@ use Test::More 0.96;	# Because of subtest()
 use Exporter ();
 our @ISA = qw{ Exporter };
 
+our @CARP_NOT = ( qw{ Astro::SIMBAD::Client } );
+
 use constant ARRAY_REF	=> ref [];
 use constant HASH_REF	=> ref {};
 use constant REGEXP_REF	=> ref qr{};
