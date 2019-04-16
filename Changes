@@ -1,4 +1,4 @@
-0.038_01	2019-04-09	T. R. Wyant
+0.039		2019-04-16	T. R. Wyant
     Tweak canned test data.  SIMBAD changed the radial velocity of
     Arctusus; because the test checks the actual data returned, I have
     to follow it.
