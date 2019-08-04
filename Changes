@@ -1,4 +1,4 @@
-0.039_01	2019-07-22	T. R. Wyant
+0.040		2019-08-04	T. R. Wyant
     Fix POD link errors and add test to ensure that they stay fixed.
 
 0.039		2019-04-16	T. R. Wyant
