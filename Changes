@@ -1,3 +1,8 @@
+0.040_01	2019-12-02	T. R. Wyant
+    Track change in Arcturus radial velocity (in test)
+
+    Prohibit redirects in URL POD links.
+
 0.040		2019-08-04	T. R. Wyant
     Fix POD link errors and add test to ensure that they stay fixed.
 
