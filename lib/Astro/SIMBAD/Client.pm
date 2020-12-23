@@ -1689,6 +1689,12 @@ server.
 This environment variable is set to the URL of the C<http:> proxy
 server.
 
+=head1 SUPPORT
+
+Support is by the author. Please file bug reports at
+L<https://github.com/trwyant/perl-Astro-SIMBAD-Client/issues>, or in
+electronic mail to the author.
+
 =head1 AUTHOR
 
 Thomas R. Wyant, III (F<wyant at cpan dot org>)

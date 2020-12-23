@@ -513,6 +513,12 @@ the C<Test::More> C<like()> subroutine. If it looks like a number, the
 comparison is done with C<cmp_ok> for numeric equality. Otherwise, the
 comparison is done with C<is>.
 
+=head1 SUPPORT
+
+Support is by the author. Please file bug reports at
+L<https://github.com/trwyant/perl-Astro-SIMBAD-Client/issues/>, or in
+electronic mail to the author.
+
 =head1 AUTHOR
 
 Thomas R. Wyant, III (F<wyant at cpan dot org>)
