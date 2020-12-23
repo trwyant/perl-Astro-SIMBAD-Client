@@ -12,7 +12,7 @@ Astro::SIMBAD::Client - Fetch astronomical data from SIMBAD 4.
 
 As of release 0.027_01 the SOAP interface is deprecated. The University
 of Strasbourg has announced at
-L<http://cds.u-strasbg.fr/resources/doku.php?id=soap> that this
+L<https://cds.u-strasbg.fr/resources.gml?id=soap> that this
 interface will not be maintained after April 1 2014, and that 
 B<this interface will be stopped on December 31 2018>.
 
@@ -332,7 +332,7 @@ VOTables back (rather than a parse error) if that is what the input
 contains.
 
 This is B<not> a full-grown VOTable parser capable of handling
-the full spec (see L<http://www.ivoa.net/documents/latest/VOT.html>).
+the full spec (see L<https://www.ivoa.net/documents/latest/VOT.html>).
 It is oriented toward returning E<lt>TABLEDATAE<gt> contents, and the
 metadata that can reasonably be associated with those contents.
 
