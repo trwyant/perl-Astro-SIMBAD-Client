@@ -19,7 +19,9 @@ sub new {
 
 sub build_requires {
     return +{
+	'Data::Dumper'	=> 0,
 	'Test::More'	=> 0.96,	# For subtest().
+	lib		=> 0,
     };
 }
 
@@ -69,6 +71,7 @@ sub requires {
 ##  if ( ! $self->distribution() ) {
 ##  }
     return +{
+	'Carp'			=> 0,
 	'HTTP::Request::Common'	=> 0,
 	'LWP::Protocol'	=> 0,	# Comes with LWP, but ...
 	'LWP::UserAgent' => 0,
@@ -76,6 +79,9 @@ sub requires {
 	'Scalar::Util' => 1.01,	# Not in Perl 5.6
 	'URI::Escape' => 0,
 	'XML::DoubleEncodedEntities' => 1.0,
+	constant	=> 0,
+	strict		=> 0,
+	warnings	=> 0,
 	@extra,
     };
 }
