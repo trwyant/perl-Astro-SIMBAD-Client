@@ -1,7 +1,5 @@
 package main;
 
-use 5.010;
-
 use strict;
 use warnings;
 
@@ -12,13 +10,20 @@ eval {
     1;
 } or plan skip_all => 'Test::Prereq::Meta not available';
 
-Test::Prereq::Meta->new(
-    accept	=> [ qw{ Time::HiRes YAML } ],
-    prune	=> [ qw{
-	blib/lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
-	blib/script
+my $tpm = Test::Prereq::Meta->new(
+    accept	=> [ qw{
+	Time::HiRes
+	YAML
 	} ],
-)->all_prereq_ok();
+    prune	=> [ qw{
+	blib/script
+	blib/lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
+	} ],
+);
+
+$tpm->all_prereq_ok();
+
+$tpm->all_prereqs_used();
 
 done_testing;
 
