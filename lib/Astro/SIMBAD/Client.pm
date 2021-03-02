@@ -1047,7 +1047,7 @@ is one of:
  sam = query by criteria.
 
 The arguments depend on on the type, and are documented at
-L<http://simbad.u-strasbg.fr/simbad/sim-help?Page=sim-url>. They are
+L<http://simbad.u-strasbg.fr/guide/sim-url.htx>. They are
 specified as name => value. For example:
 
  $simbad->url_query (id =>
@@ -1521,9 +1521,9 @@ Strasbourg shuts down its SOAP server.
 
 This attribute holds the default format for a given query()
 output type. It is specified as a reference to a hash. See
-L<http://simweb.u-strasbg.fr/simbad/sim-help?Page=sim-fscript> for how
-to specify formats for each output type. Output type 'script' is used to
-specify a format for the script() method.
+L<http://simbad.u-strasbg.fr/guide/sim-fscript.htx> for how to specify
+formats for each output type. Output type 'script' is used to specify a
+format for the script() method.
 
 The format can be specified either literally, or as a subroutine name or
 code reference. A string is assumed to be a subroutine name if it looks
