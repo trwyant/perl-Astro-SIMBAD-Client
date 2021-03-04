@@ -97,7 +97,8 @@ module, and any possible problems with installing it.
 =head1 SUPPORT
 
 Support is by the author. Please file bug reports at
-L<https://github.com/trwyant/perl-Astro-SIMBAD-Client/issues/>, or in
+L<https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client>,
+L<https://github.com/trwyant/perl-Astro-SIMBAD-Client/issues>, or in
 electronic mail to the author.
 
 =head1 AUTHOR

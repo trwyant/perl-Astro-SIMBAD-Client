@@ -322,7 +322,6 @@ sub Parse_TXT_Simple {
     return @data;
 }
 
-
 =item $result = Parse_VO_Table ($data);
 
 This subroutine (B<not> method) parses the given VOTable data,
@@ -686,7 +685,6 @@ EOD
 
 }	# End local symbol block.
 
-
 =item $value = $simbad->queryObjectByBib ($bibcode, $format, $type);
 
 This method is B<deprecated>, and will cease to work on December 31
@@ -887,7 +885,6 @@ sub script {
     }
 }
 
-
 =item $value = $simbad->script_file ($filename);
 
 This method submits the given script file to SIMBAD, returning the
@@ -897,7 +894,6 @@ parser for 'script' has been specified, it will be applied to the
 output.
 
 =cut
-
 
 sub script_file {
     my ( $self, $file ) = @_;
@@ -1035,7 +1031,6 @@ it sets the default value of the attribute.
 
 }	# End local symbol block.
 
-
 =item $value = $simbad->url_query ($type => ...)
 
 This method performs a query by URL, returning the results. The type
@@ -1125,7 +1120,6 @@ eod
 
 }	# End local symbol block.
 
-
 ########################################################################
 #
 #	Utility routines
@@ -1181,7 +1175,6 @@ sub _callers_caller {
 	return ($last{$self->{server}} = time);
     }
 }
-
 
 #	$self->_deprecation_notice( $type, $name );
 #
@@ -1692,6 +1685,7 @@ server.
 =head1 SUPPORT
 
 Support is by the author. Please file bug reports at
+L<https://rt.cpan.org/Public/Dist/Display.html?Name=Astro-SIMBAD-Client>,
 L<https://github.com/trwyant/perl-Astro-SIMBAD-Client/issues>, or in
 electronic mail to the author.
 
