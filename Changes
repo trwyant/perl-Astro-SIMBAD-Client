@@ -1,4 +1,4 @@
-0.043_01	2021-03-10	T. R. Wyant
+0.044		2021-03-17	T. R. Wyant
     Add rt.cpan.org back to bug reporting methods. Long live RT!
 
     Refactor authortest into three, to avoid writing stub test files to
