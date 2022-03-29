@@ -25,6 +25,5 @@ CVS/
 ^_build/
 \.tar\.gz$
 ^TODO$
-^\.travis\.yml$
 ^wsdl$
 ^xt/author/optionals/
