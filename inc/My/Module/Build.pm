@@ -17,7 +17,12 @@ sub ACTION_authortest {
 ##  my ( $self, @args ) = @_;	# Arguments unused
     my ( $self ) = @_;
 
-    $self->depends_on( qw{ functional_test optionals_test structural_test } );
+    $self->depends_on( qw{
+	functional_test
+	entities_test
+	optionals_test
+	structural_test
+    } );
 
     return;
 }
@@ -33,6 +38,30 @@ sub ACTION_functional_test {
 
 functional_test
 AUTHOR_TESTING=1
+EOD
+
+    # Not depends_on(), because that is idempotent. But we really do
+    # want to run 'test' more than once if we do more than one of the
+    # *_test actions.
+    $self->dispatch( 'test' );
+
+    return;
+}
+
+sub ACTION_entities_test {
+    my ( $self ) = @_;
+
+    my $optionals = join ',', qw{ XML::DoubleEncodedEntities };
+    local $ENV{AUTHOR_TESTING} = 1;
+    local $ENV{PERL5OPT} = "-MTest::Without::Module=$optionals";
+
+    $self->my_depends_on();
+
+    print <<"EOD";
+
+entities_test
+AUTHOR_TESTING=1
+PERL5OPT=-MTest::Without::Module=$optionals
 EOD
 
     # Not depends_on(), because that is idempotent. But we really do

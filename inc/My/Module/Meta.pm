@@ -155,7 +155,7 @@ sub requires {
 ##	'SOAP::Lite' => 0,
 	'Scalar::Util' => 1.01,	# Not in Perl 5.6
 	'URI::Escape' => 0,
-	'XML::DoubleEncodedEntities' => 1.0,
+	# 'XML::DoubleEncodedEntities' => 1.0,
 	constant	=> 0,
 	strict		=> 0,
 	warnings	=> 0,

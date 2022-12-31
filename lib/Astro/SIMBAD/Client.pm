@@ -99,8 +99,16 @@ use LWP::Protocol;
 use HTTP::Request::Common qw{POST};
 use Scalar::Util 1.01 qw{looks_like_number};
 use URI::Escape ();
-use XML::DoubleEncodedEntities;
+# use XML::DoubleEncodedEntities;
 # use Astro::SIMBAD::Client::WSQueryInterfaceService;
+
+use constant HAVE_DOUBLE_ENCODED	=> do {
+    local $@ = undef;
+    eval {	## no critic (RequireCheckingReturnValueOfEval)
+	require XML::DoubleEncodedEntities;
+	1;
+    };
+};
 
 use constant ARRAY_REF	=> ref [];
 use constant CODE_REF	=> ref sub {};
@@ -676,13 +684,14 @@ EOD
 	SOAP::Lite->import (+trace => $debug ? 'all' : '-all');
 	$self->_delay ();
 ##	$debug and SOAP::Trace->import ('all');
-	my $resp = Astro::SIMBAD::Client::WSQueryInterfaceService->$method(
+	my $rslt = Astro::SIMBAD::Client::WSQueryInterfaceService->$method(
 	    $self, @args);
-	return unless defined $resp;
-	$resp = XML::DoubleEncodedEntities::decode ($resp);
-	return wantarray ? ($parser->($resp)) : [$parser->($resp)]
+	return unless defined $rslt;
+	HAVE_DOUBLE_ENCODED
+	    and $rslt = XML::DoubleEncodedEntities::decode ($rslt);
+	return wantarray ? ($parser->($rslt)) : [$parser->($rslt)]
 	    if $parser;
-	return $resp;
+	return $rslt;
     }
 
 }	# End local symbol block.
@@ -867,7 +876,8 @@ sub script {
 	$debug
 	    and warn "Debug - result:\n$rslt ";
 
-	$rslt = XML::DoubleEncodedEntities::decode( $rslt );
+	HAVE_DOUBLE_ENCODED
+	    and $rslt = XML::DoubleEncodedEntities::decode ($rslt);
 	if ( my $parser = $self->_get_parser( $arg{parser} ) ) {
 	    $debug
 		and warn "Debug - Parser $arg{parser}";
@@ -1108,16 +1118,19 @@ eod
 	}
 	my $resp = $self->_retrieve( "simbad/sim-$query", \%args );
 
-	$resp = XML::DoubleEncodedEntities::decode ($resp->content);
+	my $rslt = $resp->content();
+
+	HAVE_DOUBLE_ENCODED
+	    and $rslt = XML::DoubleEncodedEntities::decode( $rslt );
 
 	my $parser;
 	if (my $type = $type_unmap{$args{'output.format'}}) {
 	    $parser = $self->_get_parser ($type);
-	    return wantarray ? ($parser->($resp)) : [$parser->($resp)]
+	    return wantarray ? ($parser->($rslt)) : [$parser->($rslt)]
 		if $parser;
 	}
 
-	return $resp;
+	return $rslt;
     }
 
 }	# End local symbol block.

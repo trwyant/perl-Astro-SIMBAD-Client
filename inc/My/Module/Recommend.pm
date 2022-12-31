@@ -17,6 +17,12 @@ EOD
       This module is required for the query() method. If you do not
       intend to use this method, SOAP::Lite is not needed.
 EOD
+    __any( 'XML::DoubleEncodedEntities' => <<'EOD' ),
+      This module is not normally required. But at one point the SIMBAD
+      service was double-encoding XML entities, and anything that has
+      gone wrong once can go wrong again. If you find you need this
+      module you cam install it and it will be used.
+EOD
     __any( qw{ XML::Parser XML::Parser::Lite }	=> <<'EOD' ),
       One of these module is required to process the results of
       VO-format queries. If you do not intend to make VO-format queries,
