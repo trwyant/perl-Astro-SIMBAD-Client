@@ -9,6 +9,7 @@ CVS/
 \.DS_Store$
 ^foo/
 ^\.git/
+^.github/
 ^\.gitignore$
 ^ivoa.vo$
 ^Makefile$
