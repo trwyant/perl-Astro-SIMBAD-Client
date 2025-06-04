@@ -24,6 +24,7 @@ META.json
 META.yml
 README
 script/simbadc
+SECURITY
 t/arcturus.simple
 t/arcturus.vo
 t/arcturus.yaml
