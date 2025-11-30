@@ -16,8 +16,8 @@ inc/My/Module/Recommend/None.pm
 inc/My/Module/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
-LICENSES/Artistic
-LICENSES/Copying
+LICENSE-Artistic
+LICENSE-GNU
 Makefile.PL
 MANIFEST
 META.json
