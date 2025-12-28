@@ -17,7 +17,7 @@ inc/My/Module/Test.pm
 lib/Astro/SIMBAD/Client.pm
 lib/Astro/SIMBAD/Client/WSQueryInterfaceService.pm
 LICENSE-Artistic
-LICENSE-GNU
+LICENSE-GPL
 Makefile.PL
 MANIFEST
 META.json
