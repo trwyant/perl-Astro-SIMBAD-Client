@@ -341,7 +341,7 @@ VOTables back (rather than a parse error) if that is what the input
 contains.
 
 This is B<not> a full-grown VOTable parser capable of handling
-the full spec (see L<https://www.ivoa.net/documents/latest/VOT.html>).
+the full spec (see L<https://www.ivoa.net/documents/VOTable/>).
 It is oriented toward returning E<lt>TABLEDATAE<gt> contents, and the
 metadata that can reasonably be associated with those contents.
 
