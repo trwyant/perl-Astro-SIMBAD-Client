@@ -76,7 +76,8 @@ sub _call {
     unless $self->proxy;
   ## TRW ^^^^
   my @templates = @{$method{parameters}};
-  my @parameters = ();
+## TRW  my @parameters = ();
+  my @parameters;
 ## TRW  foreach my $param (@_) {
   foreach my $param (@parm) {	## TRW
     if (@templates) {
