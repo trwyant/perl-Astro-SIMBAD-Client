@@ -212,6 +212,7 @@ my %static = (
     scheme => lc( $ENV{ASTRO_SIMBAD_CLIENT_SCHEME} || 'https' ),
 ##    server => 'simbad.u-strasbg.fr',
     server => $ENV{ASTRO_SIMBAD_CLIENT_SERVER} || 'simbad.u-strasbg.fr',
+    timeout => LWP::UserAgent->new()->timeout(),
     type => 'txt',
     url_args => {},
     verbatim => 0,
@@ -1357,18 +1358,18 @@ sub _get_parser {
     }
 }	# End local symbol block.
 
-#	$ua = _get_user_agent ();
+#	$ua = $self->_get_user_agent();
 #
 #	This subroutine returns an LWP::UserAgent object with its agent
 #	string set to the default, with our class name and version
 #	appended in parentheses.
 
 sub _get_user_agent {
-    my $ua = LWP::UserAgent->new (
+    my ( $self ) = @_;
+    my $ua = LWP::UserAgent->new(
+	agent	=> $self->agent(),
+	timeout	=> $self->get( 'timeout' ),
     );
-##    $ua->agent ($ua->_agent . ' (' . __PACKAGE__ . ' ' . $VERSION .
-##	')');
-    $ua->agent (&agent);
     return $ua;
 }
 
@@ -1432,9 +1433,9 @@ sub _retrieve {
     my ($self, $fragment, $args) = @_;
     my $url = $self->__build_url( $fragment );
     $args ||= {};
-    my $debug = $self->get ('debug');
-    my $ua = _get_user_agent ();
-    $self->_delay ();
+    my $debug = $self->get( 'debug' );
+    my $ua = $self->_get_user_agent();
+    $self->_delay();
     my $resp;
     if (eval {$url->isa('HTTP::Request')}) {
 	$debug
