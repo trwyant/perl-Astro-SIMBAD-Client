@@ -959,6 +959,11 @@ it sets the default value of the attribute.
 	url_args => \&_set_hash,
     );
 
+    my %server_map = (
+	harvard	=> 'simbad.cfa.harvard.edu',
+	strasbourg	=> 'simbad.u-strasbg.fr',
+    );
+
     my %transform = (
 	delay => ($have_time_hires ?
 	    $ckpn :
@@ -986,6 +991,12 @@ it sets the default value of the attribute.
 	    }
 	    $val;
 	},
+	server	=> sub {
+##	    my ( $self, $name, $val, $key ) = @_;
+	    my ( undef, undef, $val ) = @_;	# Invocant name and key unused
+	    return ( defined( $val ) && exists $server_map{$val} ) ?
+		$server_map{$val} : $val;
+	}
     );
 
     foreach my $key (keys %static) {
@@ -1634,7 +1645,8 @@ attribute itself will be retracted.
 
 This string attribute specifies the server to be used. As of March 10
 2010, either C<'simbad.u-strasbg.fr'> or C<'simbad.cfa.harvard.edu'> is
-valid.
+valid. As a convenience, you can specify C<'strasbourg'> or C<harvard>,
+which will be expanded appropriately.
 
 The default is the value of environment variable
 ASTRO_SIMBAD_CLIENT_SERVER, or C<'simbad.u-strasbg.fr'> if the
