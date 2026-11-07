@@ -25,7 +25,7 @@ echo( <<'EOD' );
 Test the handling of simple text
 EOD
 
-foreach my $scheme ( qw{ http https } ) {
+foreach my $scheme ( @TEST_SCHEMES ) {
 
     subtest "Test using $scheme" => sub {
 

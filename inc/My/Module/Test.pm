@@ -42,9 +42,12 @@ our @EXPORT_OK = qw{
     subtest
     test
     test_false
+    @TEST_SCHEMES
     $TODO
 };
 our @EXPORT = @EXPORT_OK;	## no critic (ProhibitAutomaticExportation)
+
+our @TEST_SCHEMES = qw{ https };
 
 my $canned;	# Canned data to test against.
 my $got;	# Result of method call.

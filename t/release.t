@@ -9,7 +9,7 @@ use My::Module::Test;
 
 access();
 
-foreach my $scheme ( qw{ http https } ) {
+foreach my $scheme ( @TEST_SCHEMES ) {
 
     subtest "Get release information under $scheme" => sub {
 

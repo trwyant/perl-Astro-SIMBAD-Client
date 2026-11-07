@@ -153,6 +153,7 @@ sub requires {
 	'HTTP::Request::Common'	=> 0,
 	'LWP::Protocol'	=> 0,	# Comes with LWP, but ...
 	'LWP::UserAgent' => 0,
+	'LWP::Protocol::https'	=> 0,	# As of November 7 2026.
 ##	'SOAP::Lite' => 0,
 	'Scalar::Util' => 1.01,	# Not in Perl 5.6
 	'URI::Escape' => 0,

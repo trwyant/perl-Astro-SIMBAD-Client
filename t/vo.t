@@ -27,7 +27,7 @@ echo( <<'EOD' );
 Test the handling of VO Table data
 EOD
 
-foreach my $scheme ( qw{ http https } ) {
+foreach my $scheme ( @TEST_SCHEMES ) {
 
     subtest "Test using $scheme" => sub {
 

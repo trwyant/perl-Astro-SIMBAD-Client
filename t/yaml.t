@@ -32,7 +32,7 @@ echo( <<'EOD' );
 Test the formatting and handling of YAML
 EOD
 
-foreach my $scheme ( qw{ http https } ) {
+foreach my $scheme ( @TEST_SCHEMES ) {
 
     subtest "Test using $scheme" => sub {
 

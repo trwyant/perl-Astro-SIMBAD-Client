@@ -23,11 +23,11 @@ is $smb->get( 'debug' ), 1, 'Able to set debug to 1';
 $smb->set( debug => 0 );
 
 {
-    my $scheme = Astro::SIMBAD::Client::_is_scheme_valid(
-	$ENV{ASTRO_SIMBAD_CLIENT_SCHEME} ) ?
-	    'http' :
-	    lc $ENV{ASTRO_SIMBAD_CLIENT_SCHEME};
-    is $smb->get( 'scheme' ), $scheme, "Default scheme is '$scheme'";
+    delete local $ENV{ASTRO_SIMBAD_CLIENT_SCHEME};
+    my $scheme = $smb->get( 'scheme' );
+    is $scheme, 'https', 'Default scheme is https:';
+    ok ! Astro::SIMBAD::Client::_is_scheme_valid( $scheme ),
+	'Default scheme is valid';
 }
 
 
