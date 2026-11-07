@@ -13,7 +13,7 @@ use constant TEST_SOAP	=> $ENV{ASTRO_SIMBAD_CLIENT_USE_SOAP};
 local $Data::Dumper::Terse = 1;
 local $Data::Dumper::Sortkeys = 1;
 
-access();
+my $server = access();
 
 load_module_or_skip_all( qw{ XML::Parser XML::Parser::Lite } );
 load_module( qw{ SOAP::Lite } );
@@ -21,6 +21,7 @@ load_data( 't/canned.data' );
 
 call( set => type => 'vo' );
 call( set => parser => 'vo=Parse_VO_Table' );
+call( set => server => $server );
 
 echo( <<'EOD' );
 

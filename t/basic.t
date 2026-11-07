@@ -30,15 +30,6 @@ $smb->set( debug => 0 );
 	'Default scheme is valid';
 }
 
-
-eval {
-    diag join ': ', $smb->__build_url(), scalar $smb->release();
-    1;
-} or do {
-    my $err = $@;
-    diag join ': ', $smb->__build_url(), $err;
-};
-
 done_testing;
 
 1;

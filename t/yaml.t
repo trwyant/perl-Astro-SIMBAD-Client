@@ -9,7 +9,7 @@ use My::Module::Test;
 
 use constant TEST_SOAP	=> $ENV{ASTRO_SIMBAD_CLIENT_USE_SOAP};
 
-access();
+my $server = access();
 
 # If I choose to try more of the possible YAML modules, I need to do
 # three things:
@@ -24,6 +24,7 @@ load_module( qw{ SOAP::Lite } );
 call( set => type => 'txt' );
 module_loaded( 'YAML', call => set => parser => 'txt=YAML::Load' );
 call( set => format => 'txt=FORMAT_TXT_YAML_BASIC' );
+call( set => server => $server );
 
 load_data( 't/canned.data' );
 
