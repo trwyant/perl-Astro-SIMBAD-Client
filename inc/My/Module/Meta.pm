@@ -142,7 +142,7 @@ sub provides {
     return ( provides => $provides );
 }
 
-sub release_status { 'testing' }
+sub release_status { 'stable' }
 
 sub requires {
     my ( undef, @extra ) = @_;		# Invocant not used.
